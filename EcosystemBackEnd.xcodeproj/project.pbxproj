@@ -14,6 +14,7 @@
 		305700C123787999006696D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 305700BF23787999006696D9 /* Main.storyboard */; };
 		305700CD23787999006696D9 /* EcosystemBackEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700CC23787999006696D9 /* EcosystemBackEndTests.swift */; };
 		305700D823787999006696D9 /* EcosystemBackEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700D723787999006696D9 /* EcosystemBackEndUITests.swift */; };
+		305700E623787A96006696D9 /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700E523787A96006696D9 /* MeshRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		305700D323787999006696D9 /* EcosystemBackEndUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EcosystemBackEndUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		305700D723787999006696D9 /* EcosystemBackEndUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EcosystemBackEndUITests.swift; sourceTree = "<group>"; };
 		305700D923787999006696D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		305700E523787A96006696D9 /* MeshRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				305700B723787997006696D9 /* AppDelegate.swift */,
 				305700B923787997006696D9 /* GameViewController.swift */,
 				305700BB23787997006696D9 /* art.scnassets */,
+				305700E523787A96006696D9 /* MeshRenderer.swift */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
 				305700C223787999006696D9 /* Info.plist */,
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
+				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
