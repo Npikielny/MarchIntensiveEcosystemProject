@@ -18,14 +18,14 @@ class GameViewController: NSViewController {
         let scene = SCNScene(named: "art.scnassets/GameScene.scn")!
         
         // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        cameraNode.camera?.zFar = 1000
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
+//        let cameraNode = SCNNode()
+//        cameraNode.camera = SCNCamera()
+//        cameraNode.camera?.zFar = 1000
+//        scene.rootNode.addChildNode(cameraNode)
+//        
+//        // place the camera
+//        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+//        
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
@@ -46,7 +46,8 @@ class GameViewController: NSViewController {
         
         // set the scene to the view
         scnView.scene = scene
-        
+        scnView.loops = true
+        scnView.isPlaying = true
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
         

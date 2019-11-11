@@ -19,6 +19,8 @@ extension GameViewController {
 //
 //        Scene.rootNode.addChildNode(ocean.node)
 //        ocean.INIT_TIMER()
+        
+        
         let ground = SceneGenerator()
         Scene.rootNode.addChildNode(ground.ground.node)
         Scene.rootNode.addChildNode(ground.water.node)
@@ -26,7 +28,6 @@ extension GameViewController {
         for i in ground.pineGen.pines {
             Scene.rootNode.addChildNode(i.node)
         }
-        print(ground.pineGen.pines.count)
         
     }
 }
@@ -69,7 +70,7 @@ class SceneGenerator {
     init() {
         ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 50, heightCount: 50)
-        water.INIT_TIMER()
+//        water.INIT_TIMER()
         pineGen = PineGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
     
@@ -134,6 +135,7 @@ class Ground: Mesh {
         noiseMap = {
             let source = GKPerlinNoiseSource()
             source.persistence = 0.9
+//            source.seed = Int32.random(in: 0...100)
 
             let noise = GKNoise(source)
             let size = vector2(1.0, 1.0)
@@ -185,81 +187,15 @@ class Ground: Mesh {
         }
         
         super.init(Verticies: vertices, Indices: indices)
-        
-        let color: NSColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-        self.node.geometry?.materials.first?.diffuse.contents = color
+        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
+        let color1: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+        let color2: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
+        self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
+            getShader(from: "groundShader")
+        ]
     }
     
 }
-//class Ground {
-//    var Verticies = [SCNVector3]()
-//    var Indices = [UInt16]()
-//
-//    var node: SCNNode!
-//
-//    func source() -> SCNGeometrySource {return SCNGeometrySource(vertices: self.Verticies)}
-//    func element() -> SCNGeometryElement {return SCNGeometryElement(indices: self.Indices, primitiveType: SCNGeometryPrimitiveType.triangles)}
-//
-//
-//
-//    init(Width: CGFloat, widthCount: Int32, Height: CGFloat, heightCount: Int32) {
-//        let noiseMap: GKNoiseMap = {
-//            let source = GKPerlinNoiseSource()
-//            source.persistence = 0.9
-//
-//            let noise = GKNoise(source)
-//            let size = vector2(1.0, 1.0)
-//            let origin = vector2(0.0, 0.0)
-//            let sampleCount = vector2(widthCount, heightCount)
-//            return GKNoiseMap(noise, size: size, origin: origin, sampleCount: sampleCount, seamless: true)
-//        }()
-//        for i in 0..<widthCount*heightCount {
-//            let h = i/widthCount
-//            let w = i - h
-////            Verticies.append(SCNVector3(x: CGFloat(w)/CGFloat(widthCount)*Width, y: CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: CGFloat(h)/CGFloat(heightCount)*Height))
-//            Verticies.append(SCNVector3(x: CGFloat(w)/CGFloat(widthCount)*Width, y: 0, z: CGFloat(h)/CGFloat(heightCount)*Height))
-//        }
-//
-//
-//        let index: (Int32,Int32) -> Int32 = {return $0 * heightCount + $1}
-//
-//
-//        for w in 0..<widthCount-1 {
-//            for h in 0..<heightCount-1 {
-//                var squareVerticies = [UInt16]()
-//                squareVerticies.append(UInt16(index(w,h)))
-//                squareVerticies.append(UInt16(index(w,h+1)))
-//                squareVerticies.append(UInt16(index(w+1,h)))
-//                squareVerticies.append(UInt16(index(w+1,h+1)))
-//
-//                Indices.append(squareVerticies[0])
-//                Indices.append(squareVerticies[1])
-//                Indices.append(squareVerticies[3])
-//
-//                Indices.append(squareVerticies[0])
-//                Indices.append(squareVerticies[3])
-//                Indices.append(squareVerticies[2])
-//
-//                Indices.append(squareVerticies[0])
-//                Indices.append(squareVerticies[3])
-//                Indices.append(squareVerticies[1])
-//
-//                Indices.append(squareVerticies[0])
-//                Indices.append(squareVerticies[2])
-//                Indices.append(squareVerticies[3])
-//            }
-//        }
-//
-//        node = SCNNode(geometry: SCNGeometry(sources: [source()], elements: [element()]))
-//
-//
-//
-//    }
-//
-//
-//
-//}
-
 
 
 class SurfaceWaterMesh: Mesh {
@@ -309,87 +245,28 @@ class SurfaceWaterMesh: Mesh {
         
         super.init(Verticies: vertices, Indices: indices)
         self.initialVertices = self.Verticies
-        
         let color: NSColor = #colorLiteral(red: 0, green: 0.9859127402, blue: 1, alpha: 0.5554098887)
-        self.node.geometry?.materials.first?.diffuse.contents = color
-    }
-    
-    init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int, NoiseMap: GKNoiseMap) {
-        var vertices = [SCNVector3]()
-        for w in 0..<widthCount {
-            for h in 0..<heightCount {
-                let heightMap: CGFloat = 0
-                if NoiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h))) < 2 {
-                    let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount-1)-width/2, y: CGFloat(heightMap), z: height*CGFloat(h)/CGFloat(heightCount-1)-height/2)
-                    vertices.append(vertex)
-                }
-            }
-        }
-
-        var indices = [UInt16]()
-
-        let index: (Int,Int) -> Int = {return $0 * heightCount + $1}
-
-
-        for w in 0..<widthCount-1 {
-            for h in 0..<heightCount-1 {
-                var squareVerticies = [UInt16]()
-                squareVerticies.append(UInt16(index(w,h)))
-                squareVerticies.append(UInt16(index(w,h+1)))
-                squareVerticies.append(UInt16(index(w+1,h)))
-                squareVerticies.append(UInt16(index(w+1,h+1)))
-
-                indices.append(squareVerticies[0])
-                indices.append(squareVerticies[1])
-                indices.append(squareVerticies[3])
-
-                indices.append(squareVerticies[0])
-                indices.append(squareVerticies[3])
-                indices.append(squareVerticies[2])
-
-                indices.append(squareVerticies[0])
-                indices.append(squareVerticies[3])
-                indices.append(squareVerticies[1])
-
-                indices.append(squareVerticies[0])
-                indices.append(squareVerticies[2])
-                indices.append(squareVerticies[3])
-            }
-        }
+        self.node.geometry?.materials.first!.diffuse.contents = color
+        self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
+            getShader(from: "waterShader")
+        ]
         
-        super.init(Verticies: vertices, Indices: indices)
-        self.initialVertices = self.Verticies
-        
-        let color: NSColor = #colorLiteral(red: 0, green: 0.9859127402, blue: 1, alpha: 0.5554098887)
-        self.node.geometry?.materials.first?.diffuse.contents = color
-    }
-    
-    
-    
-    @objc func step() {
-        self.Time += CGFloat.pi/30/4
-        for index in 0..<self.initialVertices.count {
-            let pp = self.Verticies[index].y*0.1
-//            let amp = (200-self.initialVertices[index].x)/200
-            let amp: CGFloat = 1
-            let shoreDistanceTransfer: CGFloat = (200+(self.initialVertices[index].x))/200
-            let positionTransfer: CGFloat = (self.initialVertices[index].x/10)-cos(self.initialVertices[index].z/10)-pp
-            let yComp: CGFloat = sin(Time-positionTransfer)*amp/2+1.5
-            self.Verticies[index] = self.initialVertices[index]+SCNVector3(x: 0, y: yComp, z: 0)
-        }
-        self.makeMesh()
-    }
-    
-    override func customizeMesh() {
-        let color: NSColor = #colorLiteral(red: 0, green: 0.9859127402, blue: 1, alpha: 0.5554098887)
-        self.node.geometry?.materials.first?.diffuse.contents = color
-    }
-    
-    func INIT_TIMER() {
-        _ = Timer.scheduledTimer(timeInterval: 1/60, target: self, selector: #selector(step), userInfo: nil, repeats: true)
     }
     
 }
+
+private func getShader(from filename: String) -> String {
+    do {
+        if let dirs = Bundle.main.url(forResource: filename, withExtension: "shader") {
+            return try String(contentsOf: dirs, encoding: .utf8)
+        }
+    } catch {
+        print(error)
+    }
+    print("shader \(filename) not found")
+    return ""
+}
+
 
 
 extension SCNVector3 {
@@ -538,4 +415,3 @@ enum component {
     case y
     case z
 }
-
