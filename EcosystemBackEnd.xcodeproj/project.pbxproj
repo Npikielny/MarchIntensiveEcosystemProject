@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		303314462379EB4100C856F6 /* fail.shader in Sources */ = {isa = PBXBuildFile; fileRef = 303314452379EB4100C856F6 /* fail.shader */; };
 		303314492379EDF400C856F6 /* groundShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 303314482379EDF400C856F6 /* groundShader.shader */; };
 		3033144D2379F13000C856F6 /* waterShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3033144C2379F13000C856F6 /* waterShader.shader */; };
 		305700B823787997006696D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B723787997006696D9 /* AppDelegate.swift */; };
@@ -39,7 +38,6 @@
 
 /* Begin PBXFileReference section */
 		303314422379EA7A00C856F6 /* EcosystemBackEnd-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EcosystemBackEnd-Bridging-Header.h"; sourceTree = "<group>"; };
-		303314452379EB4100C856F6 /* fail.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fail.shader; sourceTree = "<group>"; };
 		303314482379EDF400C856F6 /* groundShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = groundShader.shader; sourceTree = "<group>"; };
 		3033144C2379F13000C856F6 /* waterShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = waterShader.shader; sourceTree = "<group>"; };
 		305700B423787997006696D9 /* EcosystemBackEnd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcosystemBackEnd.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,7 +85,6 @@
 		303314472379ED9900C856F6 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				303314452379EB4100C856F6 /* fail.shader */,
 				303314482379EDF400C856F6 /* groundShader.shader */,
 				3033144C2379F13000C856F6 /* waterShader.shader */,
 			);
@@ -286,7 +283,6 @@
 				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
-				303314462379EB4100C856F6 /* fail.shader in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
