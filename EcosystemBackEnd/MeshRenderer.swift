@@ -27,6 +27,7 @@ extension GameViewController {
         
         for i in ground.pineGen.pines {
             Scene.rootNode.addChildNode(i.node)
+            i.node.name = "PineTree"
         }
         
     }
@@ -69,8 +70,9 @@ class SceneGenerator {
     var pineGen: PineGenerator
     init() {
         ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
-        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 50, heightCount: 50)
-//        water.INIT_TIMER()
+        ground.node.name = "Terrain"
+        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
+        water.node.name = "Water"
         pineGen = PineGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
     
@@ -190,6 +192,7 @@ class Ground: Mesh {
         self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
         let color1: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         let color2: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
+        self.node.geometry?.materials.first?.roughness.contents = 1
         self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
             getShader(from: "groundShader")
         ]
@@ -247,6 +250,11 @@ class SurfaceWaterMesh: Mesh {
         self.initialVertices = self.Verticies
         let color: NSColor = #colorLiteral(red: 0, green: 0.9859127402, blue: 1, alpha: 0.5554098887)
         self.node.geometry?.materials.first!.diffuse.contents = color
+        self.node.geometry?.materials.first?.metalness.contents = 1
+        self.node.geometry?.materials.first?.roughness.contents = 0
+        self.node.geometry?.materials.first?.multiply.contents = NSColor.white
+        self.node.geometry?.materials.first?.shininess = 1
+        self.node.geometry?.materials.first?.specular.contents = 1
         self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
             getShader(from: "waterShader")
         ]

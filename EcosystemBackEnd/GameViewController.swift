@@ -27,19 +27,30 @@ class GameViewController: NSViewController {
 //        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
 //        
         // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-        scene.rootNode.addChildNode(lightNode)
-        
-        // create and add an ambient light to the scene
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        lightNode.light!.type = .omni
+//        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+//        scene.rootNode.addChildNode(lightNode)
+//        
+//        // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light!.type = .ambient
         ambientLightNode.light!.color = NSColor.darkGray
         ambientLightNode.worldPosition = SCNVector3(x: 0, y: 10, z: 0)
+        ambientLightNode.name = "E"
         scene.rootNode.addChildNode(ambientLightNode)
+        
+        let lightNode: SCNNode = {
+            let node = SCNNode()
+            node.light = SCNLight()
+            node.light?.type = .directional
+            node.worldPosition = SCNVector3(x: 0, y: 100, z: 0)
+            node.eulerAngles = SCNVector3(x: -65, y: 30, z: 0)
+            return node
+        }()
+        scene.rootNode.addChildNode(lightNode)
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
