@@ -229,12 +229,18 @@ class Pine {
             for child in virtualObjectScene.rootNode.childNodes {
                 child.geometry?.firstMaterial?.lightingModel = .physicallyBased
                 child.movabilityHint = .movable
+                if let _ = child.geometry {
+                    for mat in child.geometry!.materials {
+                        mat.shaderModifiers = [.geometry:getShader(from: "tree")]
+                    }
+                }
                 wrapperNode.addChildNode(child)
                 }
+                
                 return wrapperNode
         }()
         self.node = createSprite
-        self.node.eulerAngles = SCNVector3(CGFloat.random(in: -0.2...0.2), CGFloat.random(in: 0...CGFloat.pi*2), CGFloat.random(in: -0.2...0.2))
+//        self.node.eulerAngles = SCNVector3(CGFloat.random(in: -0.2...0.2), CGFloat.random(in: 0...CGFloat.pi*2), CGFloat.random(in: -0.2...0.2))
     }
     
 }

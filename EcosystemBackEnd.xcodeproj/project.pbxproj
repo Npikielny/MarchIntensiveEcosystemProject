@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		303314492379EDF400C856F6 /* groundShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 303314482379EDF400C856F6 /* groundShader.shader */; };
 		3033144D2379F13000C856F6 /* waterShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3033144C2379F13000C856F6 /* waterShader.shader */; };
+		3034681F237B024E00E32BF5 /* tree.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3034681E237B024E00E32BF5 /* tree.shader */; };
 		305700B823787997006696D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B723787997006696D9 /* AppDelegate.swift */; };
 		305700BA23787997006696D9 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B923787997006696D9 /* GameViewController.swift */; };
 		305700BC23787997006696D9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BB23787997006696D9 /* art.scnassets */; };
@@ -41,6 +42,7 @@
 		303314422379EA7A00C856F6 /* EcosystemBackEnd-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EcosystemBackEnd-Bridging-Header.h"; sourceTree = "<group>"; };
 		303314482379EDF400C856F6 /* groundShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = groundShader.shader; sourceTree = "<group>"; };
 		3033144C2379F13000C856F6 /* waterShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = waterShader.shader; sourceTree = "<group>"; };
+		3034681E237B024E00E32BF5 /* tree.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = tree.shader; sourceTree = "<group>"; };
 		305700B423787997006696D9 /* EcosystemBackEnd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcosystemBackEnd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		305700B723787997006696D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		305700B923787997006696D9 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				303314482379EDF400C856F6 /* groundShader.shader */,
 				3033144C2379F13000C856F6 /* waterShader.shader */,
+				3034681E237B024E00E32BF5 /* tree.shader */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			files = (
 				303314492379EDF400C856F6 /* groundShader.shader in Resources */,
 				305700C123787999006696D9 /* Main.storyboard in Resources */,
+				3034681F237B024E00E32BF5 /* tree.shader in Resources */,
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
