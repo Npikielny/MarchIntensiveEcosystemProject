@@ -12,12 +12,10 @@ import GameplayKit
 extension GameViewController {
     func renderMesh(Scene: SCNScene) {
         
-        
         let ground = SceneGenerator()
-//        let ground = SceneGenerator(width: 400, height: 400, widthCount: 100, heightCount: 100)
+        
         Scene.rootNode.addChildNode(ground.ground.node)
         Scene.rootNode.addChildNode(ground.water.node)
-        ground.water.node.worldPosition = SCNVector3(-200, 0, -200)
         
         for i in ground.pineGen.pines {
             Scene.rootNode.addChildNode(i.node)
@@ -65,8 +63,8 @@ class SceneGenerator {
     init() {
         ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         ground.node.name = "Terrain"
-        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25, NoiseMap: ground.noiseMap, Threshold: -1, NoiseMapWidth: 100, NoiseMapHeight: 100)
-//        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
+//        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25, NoiseMap: ground.noiseMap, Threshold: -1, NoiseMapWidth: 100, NoiseMapHeight: 100)
+        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"
         pineGen = PineGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
@@ -246,7 +244,6 @@ class Ground: Mesh {
     
 }
 
-
 class SurfaceWaterMesh: Mesh {
     var Time: CGFloat = 0
     
@@ -304,6 +301,7 @@ class SurfaceWaterMesh: Mesh {
         ]
         
     }
+    
     init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int, NoiseMap: GKNoiseMap, Threshold: CGFloat, NoiseMapWidth: Int, NoiseMapHeight: Int) {
         var vertices = [SCNVector3]()
         var indices = [UInt16]()
@@ -311,13 +309,11 @@ class SurfaceWaterMesh: Mesh {
         var squares = [[SCNVector3]]()
         
         let conversion = NoiseMapWidth/widthCount
-        print(Threshold)
-        for w in 0..<widthCount {
-            for h in 0..<heightCount {
+        for w in 0...widthCount {
+            for h in 0...heightCount {
                 var found: Int = 0
-                for w2 in 0..<conversion {
-                    for h2 in 0..<conversion {
-                        print(vector_float2(Float(w*conversion+w2),Float(h*conversion+h2)),CGFloat(NoiseMap.interpolatedValue(at: vector_float2(Float(w*conversion+w2),Float(h*conversion+h2)))))
+                for w2 in 0...conversion {
+                    for h2 in 0...conversion {
                         if CGFloat(NoiseMap.interpolatedValue(at: vector_float2(Float(w*conversion+w2),Float(h*conversion+h2)))) > Threshold {
                             found += 1
                         }
@@ -349,9 +345,7 @@ class SurfaceWaterMesh: Mesh {
             
         }
         
-        
         super.init(Verticies: vertices, Indices: indices)
-            
     }
     
     override func customizeMesh() {
