@@ -15,7 +15,8 @@ class GameViewController: NSViewController {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/GameScene.scn")!
+        let handler = EnvironmentHandler("art.scnassets/GameScene.scn")
+        let scene = handler.Scene
         
         // create and add a camera to the scene
 //        let cameraNode = SCNNode()
@@ -64,7 +65,6 @@ class GameViewController: NSViewController {
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
-        renderMesh(Scene: scene)
     }
     
 }

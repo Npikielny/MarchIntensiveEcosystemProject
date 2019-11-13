@@ -9,8 +9,8 @@
 import GameplayKit
 import SceneKit
 
-class PineGenerator {
-    var pines = [Pine]()
+class TreeGenerator {
+    var pines = [Acacia]()
     var fails: Int = 0
     init(NumberOfPines: Int, NoiseMap: GKNoiseMap, Width: CGFloat, Height: CGFloat, widthCount: Int, heightCount: Int) {
         let getDistance: ((Int, Int), SCNVector3) -> CGFloat = {
@@ -24,7 +24,7 @@ class PineGenerator {
             iterant += 1
             let attempt = (Int.random(in: 0..<widthCount),Int.random(in: 0..<heightCount))
             if NoiseMap.interpolatedValue(at: vector_float2(Float(attempt.0),Float(attempt.1))) <= -1 && pines.map({getDistance(attempt,$0.position)}).contains(where: {$0<=2}) == false{
-                    pines.append(Pine(Position: SCNVector3(x: CGFloat(attempt.0)/CGFloat(widthCount)*Width, y: 0, z: CGFloat(attempt.1)/CGFloat(heightCount)*Height)))
+                    pines.append(Acacia(Position: SCNVector3(x: CGFloat(attempt.0)/CGFloat(widthCount)*Width, y: 0, z: CGFloat(attempt.1)/CGFloat(heightCount)*Height)))
             }else {
                 fails += 1
             }
@@ -37,7 +37,7 @@ class PineGenerator {
     
 }
 
-class Pine {
+class Acacia {
     
     var position: SCNVector3
     var node: SCNNode
@@ -63,6 +63,43 @@ class Pine {
                         mat.shaderModifiers = [.geometry:getShader(from: "tree")]
                     }
                 }
+                wrapperNode.addChildNode(child)
+                }
+                
+                return wrapperNode
+        }()
+        self.node = createSprite
+        self.node.eulerAngles = SCNVector3(CGFloat.random(in: -0.2...0.2), CGFloat.random(in: 0...CGFloat.pi*2), CGFloat.random(in: -0.2...0.2))
+    }
+    
+}
+
+class Pine {
+    
+    var position: SCNVector3
+    var node: SCNNode
+    init(Position: SCNVector3) {
+        self.position = Position
+        let createSprite: SCNNode = {
+            let virtualObjectScene: SCNScene = {
+//                if Int.random(in: 0...1) == 0 {
+                    return SCNScene(named: "art.scnassets/pine.scn")!
+//                }else {
+//                    return SCNScene(named: "art.scnassets/pine.scn")!
+//                }
+                
+            }()
+            
+            let wrapperNode = SCNNode()
+            
+            for child in virtualObjectScene.rootNode.childNodes {
+                child.geometry?.firstMaterial?.lightingModel = .physicallyBased
+                child.movabilityHint = .movable
+//                if let _ = child.geometry {
+//                    for mat in child.geometry!.materials {
+//                        mat.shaderModifiers = [.geometry:getShader(from: "tree")]
+//                    }
+//                }
                 wrapperNode.addChildNode(child)
                 }
                 

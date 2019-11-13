@@ -9,21 +9,6 @@
 import SceneKit
 import GameplayKit
 
-extension GameViewController {
-    func renderMesh(Scene: SCNScene) {
-        
-        let ground = SceneGenerator()
-        
-        Scene.rootNode.addChildNode(ground.ground.node)
-        Scene.rootNode.addChildNode(ground.water.node)
-        
-        for i in ground.pineGen.pines {
-            Scene.rootNode.addChildNode(i.node)
-            i.node.name = "PineTree"
-        }
-        
-    }
-}
 
 class Mesh {
     
@@ -59,14 +44,14 @@ class Mesh {
 class SceneGenerator {
     var ground: Ground
     var water: SurfaceWaterMesh
-    var pineGen: PineGenerator
+    var pineGen: TreeGenerator
     init() {
         ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         ground.node.name = "Terrain"
 //        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25, NoiseMap: ground.noiseMap, Threshold: -1, NoiseMapWidth: 100, NoiseMapHeight: 100)
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"
-        pineGen = PineGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
+        pineGen = TreeGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
 
 }
@@ -232,6 +217,10 @@ class Ground: Mesh {
         
         super.init(Verticies: vertices, Indices: indices)
         self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
+        
+    }
+    
+    override func customizeMesh() {
         let color1: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         let color2: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
         let color3: NSColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
@@ -241,7 +230,6 @@ class Ground: Mesh {
             getShader(from: "groundShader")
         ]
     }
-    
 }
 
 class SurfaceWaterMesh: Mesh {

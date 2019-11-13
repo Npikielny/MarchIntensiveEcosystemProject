@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		301E6FC9237B692E00B92E19 /* PhysicsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301E6FC8237B692E00B92E19 /* PhysicsHandler.swift */; };
 		303314492379EDF400C856F6 /* groundShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 303314482379EDF400C856F6 /* groundShader.shader */; };
 		3033144D2379F13000C856F6 /* waterShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3033144C2379F13000C856F6 /* waterShader.shader */; };
 		3034681F237B024E00E32BF5 /* tree.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3034681E237B024E00E32BF5 /* tree.shader */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		301E6FC8237B692E00B92E19 /* PhysicsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsHandler.swift; sourceTree = "<group>"; };
 		303314422379EA7A00C856F6 /* EcosystemBackEnd-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EcosystemBackEnd-Bridging-Header.h"; sourceTree = "<group>"; };
 		303314482379EDF400C856F6 /* groundShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = groundShader.shader; sourceTree = "<group>"; };
 		3033144C2379F13000C856F6 /* waterShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = waterShader.shader; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				305700B923787997006696D9 /* GameViewController.swift */,
 				305700BB23787997006696D9 /* art.scnassets */,
 				305700E523787A96006696D9 /* MeshRenderer.swift */,
+				301E6FC8237B692E00B92E19 /* PhysicsHandler.swift */,
 				309C9305237B195C007AF60F /* TreeHandling.swift */,
 				509A27A8237A1664005ACA78 /* VectorHelpers.swift */,
 				303314472379ED9900C856F6 /* Shaders */,
@@ -292,6 +295,7 @@
 			files = (
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
+				301E6FC9237B692E00B92E19 /* PhysicsHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
