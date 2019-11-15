@@ -10,12 +10,12 @@ import SceneKit
 import QuartzCore
 
 class GameViewController: NSViewController {
-    
+    var handler: EnvironmentHandler!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // create a new scene
-        let handler = EnvironmentHandler("art.scnassets/GameScene.scn")
+        handler = EnvironmentHandler("art.scnassets/GameScene.scn")
         let scene = handler.Scene
         
         // create and add a camera to the scene
@@ -35,29 +35,14 @@ class GameViewController: NSViewController {
 //        scene.rootNode.addChildNode(lightNode)
 //        
 //        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = NSColor.darkGray
-        ambientLightNode.worldPosition = SCNVector3(x: 0, y: 10, z: 0)
-        ambientLightNode.name = "E"
-        scene.rootNode.addChildNode(ambientLightNode)
         
-        let lightNode: SCNNode = {
-            let node = SCNNode()
-            node.light = SCNLight()
-            node.light?.type = .directional
-            node.worldPosition = SCNVector3(x: 0, y: 100, z: 0)
-            node.eulerAngles = SCNVector3(x: -65, y: 30, z: 0)
-            return node
-        }()
-        scene.rootNode.addChildNode(lightNode)
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
         
         // set the scene to the view
         scnView.scene = scene
+        
         scnView.loops = true
         scnView.isPlaying = true
         // allows the user to manipulate the camera
@@ -65,6 +50,11 @@ class GameViewController: NSViewController {
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
+        
+        scnView.delegate = self
+        
     }
     
 }
+
+

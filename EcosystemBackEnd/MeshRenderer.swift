@@ -41,21 +41,6 @@ class Mesh {
     
 }
 
-class SceneGenerator {
-    var ground: Ground
-    var water: SurfaceWaterMesh
-    var pineGen: TreeGenerator
-    init() {
-        ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
-        ground.node.name = "Terrain"
-//        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25, NoiseMap: ground.noiseMap, Threshold: -1, NoiseMapWidth: 100, NoiseMapHeight: 100)
-        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
-        water.node.name = "Water"
-        pineGen = TreeGenerator(NumberOfPines: 500, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
-    }
-
-}
-
 //class SceneGenerator {
 //    var ground: Mesh
 //    var water: Mesh
@@ -204,14 +189,14 @@ class Ground: Mesh {
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[3])
                 indices.append(squareVerticies[2])
-//
-//                indices.append(squareVerticies[0])
-//                indices.append(squareVerticies[3])
-//                indices.append(squareVerticies[1])
-//
-//                indices.append(squareVerticies[0])
-//                indices.append(squareVerticies[2])
-//                indices.append(squareVerticies[3])
+
+                indices.append(squareVerticies[0])
+                indices.append(squareVerticies[3])
+                indices.append(squareVerticies[1])
+
+                indices.append(squareVerticies[0])
+                indices.append(squareVerticies[2])
+                indices.append(squareVerticies[3])
             }
         }
         

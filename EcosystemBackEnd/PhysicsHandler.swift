@@ -10,15 +10,16 @@ import SceneKit
 
 class EnvironmentHandler {
     
-    var Scene: SCNScene
+    var Scene: EnvironmentScene
     
     init(_ FileNamed: String) {
-        self.Scene = SCNScene(named: FileNamed)!
+        self.Scene = EnvironmentScene(named: FileNamed)!
         setupPhysics()
-//        self.Scene.
         setupLighting()
+        addAnimals()
     }
     var sky: MDLSkyCubeTexture!
+    var lightSource: SCNNode!
     func setupLighting() {
         sky = MDLSkyCubeTexture(name: nil,
                                     channelEncoding: MDLTextureChannelEncoding.uInt8,
@@ -37,23 +38,44 @@ class EnvironmentHandler {
         sky.update()
         
         self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
-//        let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+        updateTime()
+        pushSky()
+        
+        lightSource = SCNNode()
+        lightSource.light = SCNLight()
+        lightSource.light?.type = .directional
+        lightSource.worldPosition = SCNVector3(1,0,0).toMagnitude(1000)
+        self.Scene.rootNode.addChildNode(lightSource)
+        lightSource.name = "LightSource"
+        
+    }
+    var time: Float = 0
+    var azimuth: Float = 0
+    func updateTime() {
+        time += Float.pi/90000
+        sky.sunElevation = sin(time)
+        if abs(sky.sunElevation) == 1 {
+            azimuth += Float.pi
+        }
+        sky.brightness = (1+sky.sunElevation)/2
+        sky.sunAzimuth = azimuth
+        if Int((time/Float.pi)*30) % 100 == 0 {
+            pushSky()
+        }
+        if let _ = lightSource {
+            lightSource.worldPosition = SCNVector3(cos(time),sin(time),0).toMagnitude(500)
+            lightSource.look(at: SCNVector3().zero())
+        }
     }
     
-    func updateTime() {
-        sky.sunAzimuth += 0.1
-        sky.update()
-        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
+    func pushSky() {
+//        print("L")
+//        sky.update()
+//        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
     }
     
     func setupPhysics() {
         setupTerrrain()
-        
-        let movingPine = Pine(Position: SCNVector3(0, 100, 0))
-        movingPine.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: movingPine.node, options: [:]))
-        movingPine.node.name = "MOVING PINE"
-        movingPine.node.worldPosition = SCNVector3(0, 100, 0)
-        Scene.rootNode.addChildNode(movingPine.node)
     }
     
     func setupTerrrain() {
@@ -73,6 +95,11 @@ class EnvironmentHandler {
         
     }
     
-    
+    func addAnimals() {
+//        let rabbit = Rabbit(Position: SCNVector3(10,10,0))
+//        Scene.rootNode.addChildNode(rabbit.node)
+        
+    }
     
 }
+

@@ -19,7 +19,10 @@
 		305700CD23787999006696D9 /* EcosystemBackEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700CC23787999006696D9 /* EcosystemBackEndTests.swift */; };
 		305700D823787999006696D9 /* EcosystemBackEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700D723787999006696D9 /* EcosystemBackEndUITests.swift */; };
 		305700E623787A96006696D9 /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700E523787A96006696D9 /* MeshRenderer.swift */; };
+		306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB089237C8CD700BF155B /* PrefabHandler.swift */; };
+		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		309C9306237B195C007AF60F /* TreeHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309C9305237B195C007AF60F /* TreeHandling.swift */; };
+		30F83893237DC04A0019A12E /* SceneHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* SceneHandling.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,7 +64,10 @@
 		305700D723787999006696D9 /* EcosystemBackEndUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EcosystemBackEndUITests.swift; sourceTree = "<group>"; };
 		305700D923787999006696D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		305700E523787A96006696D9 /* MeshRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
+		306FB089237C8CD700BF155B /* PrefabHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefabHandler.swift; sourceTree = "<group>"; };
+		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		309C9305237B195C007AF60F /* TreeHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHandling.swift; sourceTree = "<group>"; };
+		30F83892237DC04A0019A12E /* SceneHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneHandling.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,9 +133,12 @@
 				305700B923787997006696D9 /* GameViewController.swift */,
 				305700BB23787997006696D9 /* art.scnassets */,
 				305700E523787A96006696D9 /* MeshRenderer.swift */,
+				30F83892237DC04A0019A12E /* SceneHandling.swift */,
 				301E6FC8237B692E00B92E19 /* PhysicsHandler.swift */,
 				309C9305237B195C007AF60F /* TreeHandling.swift */,
+				306FB08B237C8E3B00BF155B /* Animals.swift */,
 				509A27A8237A1664005ACA78 /* VectorHelpers.swift */,
+				306FB089237C8CD700BF155B /* PrefabHandler.swift */,
 				303314472379ED9900C856F6 /* Shaders */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
@@ -293,10 +302,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30F83893237DC04A0019A12E /* SceneHandling.swift in Sources */,
+				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* PhysicsHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
+				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
 			);
