@@ -52,8 +52,11 @@ class EnvironmentHandler {
         sky.brightness = (1+sky.sunElevation)/2
         sky.sunAzimuth = azimuth
         if Int((time/Float.pi)*90000) % 500 == 0 {
-//            pushSky()
+            pushSky()
         }
+        
+        sky.groundAlbedo = sky.sunElevation
+        
         if let _ = lightSource {
             lightSource.worldPosition = SCNVector3(cos(time),sin(time),0).toMagnitude(500)
             lightSource.look(at: SCNVector3().zero())
