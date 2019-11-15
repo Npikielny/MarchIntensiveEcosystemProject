@@ -28,16 +28,7 @@ class EnvironmentHandler {
                                     sunElevation: 0.500,
                                     upperAtmosphereScattering: 0.150,
                                     groundAlbedo: 0.850)
-        let material = SCNMaterial()
-        material.shininess = 0.15
-        material.fresnelExponent = 0.25
         
-        material.specular.contents = NSColor.white
-        material.diffuse.contents =  NSColor.darkGray
-        
-        sky.update()
-        
-        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
         updateTime()
         pushSky()
         
@@ -50,7 +41,7 @@ class EnvironmentHandler {
         
     }
     var time: Float = 0
-    var azimuth: Float = 0
+    var azimuth: Float = Float.pi/2
     func updateTime() {
         time += Float.pi/90000
         sky.sunElevation = sin(time)
@@ -59,7 +50,7 @@ class EnvironmentHandler {
         }
         sky.brightness = (1+sky.sunElevation)/2
         sky.sunAzimuth = azimuth
-        if Int((time/Float.pi)*30) % 100 == 0 {
+        if Int((time/Float.pi)*90000) % 500 == 0 {
             pushSky()
         }
         if let _ = lightSource {
@@ -70,8 +61,8 @@ class EnvironmentHandler {
     
     func pushSky() {
 //        print("L")
-//        sky.update()
-//        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
+        sky.update()
+        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
     }
     
     func setupPhysics() {
