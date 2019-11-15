@@ -158,7 +158,6 @@ class Ground: Mesh {
             let sampleCount = vector2(Int32(widthCount), Int32(heightCount))
             return GKNoiseMap(noise, size: size, origin: origin, sampleCount: sampleCount, seamless: true)
         }()
-//            Verticies.append(SCNVector3(x: CGFloat(w)/CGFloat(widthCount)*Width, y: CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: CGFloat(h)/CGFloat(heightCount)*Height))
             
         
         

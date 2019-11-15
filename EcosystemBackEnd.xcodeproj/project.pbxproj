@@ -22,6 +22,9 @@
 		306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB089237C8CD700BF155B /* PrefabHandler.swift */; };
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		309C9306237B195C007AF60F /* TreeHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309C9305237B195C007AF60F /* TreeHandling.swift */; };
+		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
+		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
+		30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A444A8237EF66200BA29D4 /* DebugWindow.xib */; };
 		30F83893237DC04A0019A12E /* SceneHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* SceneHandling.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
@@ -67,6 +70,9 @@
 		306FB089237C8CD700BF155B /* PrefabHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefabHandler.swift; sourceTree = "<group>"; };
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		309C9305237B195C007AF60F /* TreeHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHandling.swift; sourceTree = "<group>"; };
+		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
+		30A444A8237EF66200BA29D4 /* DebugWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugWindow.xib; sourceTree = "<group>"; };
 		30F83892237DC04A0019A12E /* SceneHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneHandling.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,9 +143,12 @@
 				301E6FC8237B692E00B92E19 /* PhysicsHandler.swift */,
 				309C9305237B195C007AF60F /* TreeHandling.swift */,
 				306FB08B237C8E3B00BF155B /* Animals.swift */,
+				30A444A5237EF3EF00BA29D4 /* Food.swift */,
 				509A27A8237A1664005ACA78 /* VectorHelpers.swift */,
 				306FB089237C8CD700BF155B /* PrefabHandler.swift */,
 				303314472379ED9900C856F6 /* Shaders */,
+				30A444A7237EF66200BA29D4 /* DebugWindow.swift */,
+				30A444A8237EF66200BA29D4 /* DebugWindow.xib */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
 				305700C223787999006696D9 /* Info.plist */,
@@ -274,6 +283,7 @@
 			files = (
 				303314492379EDF400C856F6 /* groundShader.shader in Resources */,
 				305700C123787999006696D9 /* Main.storyboard in Resources */,
+				30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */,
 				3034681F237B024E00E32BF5 /* tree.shader in Resources */,
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
@@ -309,7 +319,9 @@
 				301E6FC9237B692E00B92E19 /* PhysicsHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
+				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
+				30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

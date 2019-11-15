@@ -17,6 +17,7 @@ class EnvironmentHandler {
         setupPhysics()
         setupLighting()
         addAnimals()
+        MainScene = self
     }
     var sky: MDLSkyCubeTexture!
     var lightSource: SCNNode!
@@ -29,7 +30,7 @@ class EnvironmentHandler {
                                     upperAtmosphereScattering: 0.150,
                                     groundAlbedo: 0.850)
         
-        updateTime()
+//        updateTime()
         pushSky()
         
         lightSource = SCNNode()
@@ -41,17 +42,17 @@ class EnvironmentHandler {
         
     }
     var time: Float = 0
-    var azimuth: Float = Float.pi/2
+    var azimuth: Float = 0
     func updateTime() {
         time += Float.pi/90000
-        sky.sunElevation = sin(time)
-        if abs(sky.sunElevation) == 1 {
+        sky.sunElevation = cos(time)/2+1
+        if (sky.sunElevation) == 1 {
             azimuth += Float.pi
         }
         sky.brightness = (1+sky.sunElevation)/2
         sky.sunAzimuth = azimuth
         if Int((time/Float.pi)*90000) % 500 == 0 {
-            pushSky()
+//            pushSky()
         }
         if let _ = lightSource {
             lightSource.worldPosition = SCNVector3(cos(time),sin(time),0).toMagnitude(500)
@@ -60,7 +61,7 @@ class EnvironmentHandler {
     }
     
     func pushSky() {
-//        print("L")
+        print("L")
         sky.update()
         self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
     }
@@ -82,14 +83,19 @@ class EnvironmentHandler {
         
     }
     
-    func handlePhyiscs() {
-        
+    func addAnimals() {
+        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
+//        Scene.rootNode.addChildNode(rabbit.node)
+        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
+        Scene.rootNode.addChildNode(apple.node)
     }
     
-    func addAnimals() {
-//        let rabbit = Rabbit(Position: SCNVector3(10,10,0))
-//        Scene.rootNode.addChildNode(rabbit.node)
-        
+    var animals = [Animal]()
+    var foods = [Food]()
+    func process() {
+        for i in animals {
+            i.node.look(at: i.node.worldPosition+SCNVector3(1,0,0))
+        }
     }
     
 }

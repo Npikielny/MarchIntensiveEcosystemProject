@@ -1,36 +1,37 @@
 //
-//  Animals.swift
+//  Food.swift
 //  EcosystemBackEnd
 //
-//  Created by Noah Pikielny on 11/13/19.
+//  Created by Noah Pikielny on 11/15/19.
 //  Copyright © 2019 Noah Pikielny. All rights reserved.
 //
 
 import SceneKit
 
-class Animal {
+class Food {
     var node: SCNNode
-    var lookType: LookType
+    var foodType: FoodType
     var handler: EnvironmentHandler
-    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
+    init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)
         self.node.name = Species
-        self.lookType = lookType
+        self.foodType = foodType
         self.handler = Handler
         self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
         self.node.worldPosition = Position
-        self.handler.animals.append(self)
+        self.handler.foods.append(self)
         
     }
 }
 
-class Rabbit: Animal {
+class Apple: Food {
     init(Position: SCNVector3, Handler: EnvironmentHandler) {
-        super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
+        super.init(Position: Position, Species: "apple", foodType: .Fruit, Handler: Handler)
     }
 }
 
-enum LookType {
-    case Velocity
-    case Forward
+enum FoodType {
+    case Meat
+    case Fruit
 }
+
