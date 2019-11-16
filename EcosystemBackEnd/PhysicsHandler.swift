@@ -80,7 +80,7 @@ class EnvironmentHandler {
         Scene.rootNode.addChildNode(ground.ground.node)
         Scene.rootNode.addChildNode(ground.water.node)
         for i in ground.pineGen.pines {
-            Scene.rootNode.addChildNode(i.node)
+//            Scene.rootNode.addChildNode(i.node)
             i.node.name = "PineTree"
         }
         
@@ -88,16 +88,16 @@ class EnvironmentHandler {
     
     func addAnimals() {
         let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
-//        Scene.rootNode.addChildNode(rabbit.node)
         let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
         Scene.rootNode.addChildNode(apple.node)
+        Scene.rootNode.addChildNode(rabbit.node)
     }
     
     var animals = [Animal]()
     var foods = [Food]()
     func process() {
         for i in animals {
-            i.node.look(at: i.node.worldPosition+SCNVector3(1,0,0))
+            
         }
     }
     
