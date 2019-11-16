@@ -31,7 +31,7 @@ class Animal {
     func die() {
         let spin = CABasicAnimation(keyPath: "rotation")
         spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * M_PI)))
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * Float.pi)))
         spin.duration = 3
         self.node.addAnimation(spin, forKey: "rotation")
     }

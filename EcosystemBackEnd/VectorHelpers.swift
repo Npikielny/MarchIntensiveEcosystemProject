@@ -148,6 +148,19 @@ extension SCNVector3 {
         }
         return vector
     }
+    
+    func initOfComponent(Component: component, Value: CGFloat) -> SCNVector3 {
+        if Component == .x {
+            return SCNVector3(Value,0,0)
+        }else if Component == .y {
+            return SCNVector3(0,Value,0)
+        }else if Component == .z {
+            return SCNVector3(0,0,Value)
+        }else {
+            fatalError("Component Not Implemented")
+        }
+    }
+    
 }
 
 enum component {

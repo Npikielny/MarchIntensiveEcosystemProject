@@ -11,6 +11,7 @@ import SceneKit
 class EnvironmentHandler {
     
     var Scene: EnvironmentScene
+    var Environment: SceneGenerator!
     
     init(_ FileNamed: String) {
         self.Scene = EnvironmentScene(named: FileNamed)!
@@ -75,29 +76,29 @@ class EnvironmentHandler {
     
     func setupTerrrain() {
             
-        let ground = SceneGenerator()
+        Environment = SceneGenerator()
         
-        Scene.rootNode.addChildNode(ground.ground.node)
-        Scene.rootNode.addChildNode(ground.water.node)
-        for i in ground.pineGen.pines {
-//            Scene.rootNode.addChildNode(i.node)
+        Scene.rootNode.addChildNode(Environment.ground.node)
+        Scene.rootNode.addChildNode(Environment.water.node)
+        for i in Environment.pineGen.trees {
+            Scene.rootNode.addChildNode(i.node)
             i.node.name = "PineTree"
         }
         
     }
     
     func addAnimals() {
-        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
-        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
-        Scene.rootNode.addChildNode(apple.node)
-        Scene.rootNode.addChildNode(rabbit.node)
+//        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
+//        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
+//        Scene.rootNode.addChildNode(apple.node)
+//        Scene.rootNode.addChildNode(rabbit.node)
     }
     
     var animals = [Animal]()
     var foods = [Food]()
     func process() {
-        for i in animals {
-            
+        for i in Environment.pineGen.trees {
+            i.apple(Handler: self)
         }
     }
     
