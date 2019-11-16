@@ -29,13 +29,13 @@ extension GameViewController: SCNSceneRendererDelegate {
 class SceneGenerator {
     var ground: Ground
     var water: SurfaceWaterMesh
-    var pineGen: TreeGenerator
+    var treeGen: TreeGenerator
     init() {
         ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         ground.node.name = "Terrain"
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"
-        pineGen = TreeGenerator(NumberOfPines: 250, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
+        treeGen = TreeGenerator(NumberOfPines: 250, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
 
 }

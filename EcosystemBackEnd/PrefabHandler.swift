@@ -10,23 +10,25 @@ import SceneKit
 
 func getPrefab(_ FileName: String, Shaders: String?) -> SCNNode {
     let createSprite: SCNNode = {
-                let virtualObjectScene: SCNScene = SCNScene(named: "art.scnassets/"+FileName)!
-                
-                let wrapperNode = SCNNode()
-                
-                for child in virtualObjectScene.rootNode.childNodes {
-                    child.geometry?.firstMaterial?.lightingModel = .physicallyBased
-                    child.movabilityHint = .movable
-                    if let shader = Shaders {
-                        if let _ = child.geometry {
-                            for mat in child.geometry!.materials {
-                                mat.shaderModifiers = [.geometry:getShader(from: shader)]
-                            }
-                        }
-                        }
-                    wrapperNode.addChildNode(child)
+        let virtualObjectScene: SCNScene = SCNScene(named: "art.scnassets/"+FileName)!
+        
+        let wrapperNode = SCNNode()
+        
+        for child in virtualObjectScene.rootNode.childNodes {
+            child.geometry?.firstMaterial?.lightingModel = .physicallyBased
+            child.movabilityHint = .movable
+            if let shader = Shaders {
+                if let _ = child.geometry {
+                    for mat in child.geometry!.materials {
+                        mat.shaderModifiers = [.geometry:getShader(from: shader)]
                     }
-                    return wrapperNode
-            }()
+                }else {
+                    
+                }
+            }
+            wrapperNode.addChildNode(child)
+        }
+        return wrapperNode
+    }()
     return createSprite
 }

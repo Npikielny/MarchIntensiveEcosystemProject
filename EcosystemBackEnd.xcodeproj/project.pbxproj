@@ -19,6 +19,7 @@
 		305700CD23787999006696D9 /* EcosystemBackEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700CC23787999006696D9 /* EcosystemBackEndTests.swift */; };
 		305700D823787999006696D9 /* EcosystemBackEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700D723787999006696D9 /* EcosystemBackEndUITests.swift */; };
 		305700E623787A96006696D9 /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700E523787A96006696D9 /* MeshRenderer.swift */; };
+		3059C82D2380769000C7289C /* genericShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3059C82C2380769000C7289C /* genericShader.shader */; };
 		306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB089237C8CD700BF155B /* PrefabHandler.swift */; };
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		309C9306237B195C007AF60F /* TreeHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309C9305237B195C007AF60F /* TreeHandling.swift */; };
@@ -67,6 +68,7 @@
 		305700D723787999006696D9 /* EcosystemBackEndUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EcosystemBackEndUITests.swift; sourceTree = "<group>"; };
 		305700D923787999006696D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		305700E523787A96006696D9 /* MeshRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
+		3059C82C2380769000C7289C /* genericShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = genericShader.shader; sourceTree = "<group>"; };
 		306FB089237C8CD700BF155B /* PrefabHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefabHandler.swift; sourceTree = "<group>"; };
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		309C9305237B195C007AF60F /* TreeHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHandling.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				303314482379EDF400C856F6 /* groundShader.shader */,
 				3033144C2379F13000C856F6 /* waterShader.shader */,
 				3034681E237B024E00E32BF5 /* tree.shader */,
+				3059C82C2380769000C7289C /* genericShader.shader */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */,
 				3034681F237B024E00E32BF5 /* tree.shader in Resources */,
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
+				3059C82D2380769000C7289C /* genericShader.shader in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
 			);

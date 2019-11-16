@@ -80,7 +80,7 @@ class EnvironmentHandler {
         
         Scene.rootNode.addChildNode(Environment.ground.node)
         Scene.rootNode.addChildNode(Environment.water.node)
-        for i in Environment.pineGen.trees {
+        for i in Environment.treeGen.trees {
             Scene.rootNode.addChildNode(i.node)
             i.node.name = "PineTree"
         }
@@ -97,8 +97,8 @@ class EnvironmentHandler {
     var animals = [Animal]()
     var foods = [Food]()
     func process() {
-        for i in Environment.pineGen.trees {
-            i.apple(Handler: self)
+        for i in Environment.treeGen.trees {
+//            i.apple(Handler: self)
         }
     }
     
