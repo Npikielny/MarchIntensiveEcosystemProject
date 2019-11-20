@@ -63,16 +63,6 @@ class EnvironmentHandler {
     
     var animals = [Animal]()
     var foods = [Food]()
-    func process() {
-        for i in animals {
-            if i.dead == false {
-                
-            }
-        }
-//        for i in Environment.treeGen.trees {
-//            i.apple(Handler: self)
-//        }
-    }
     
 }
 

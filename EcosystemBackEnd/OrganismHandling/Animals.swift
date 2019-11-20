@@ -19,6 +19,8 @@ class Animal {
     var priority: Priority = .Idle
     var age: Int = 0
     var dead: Bool = false
+    var target: SCNVector3 = SCNVector3().zero()
+    
     lazy var priorities: () -> [(Priority,Int)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)

@@ -19,24 +19,6 @@ extension Animal {
         }
     }
     
-    func setMovement() {
-        switch self.priority {
-        case .Food:
-            print("E")
-        case .Water:
-            print("E")
-        case .Breed:
-            print("E")
-        case .Idle:
-            print("E")
-        case .Flee:
-            print("E")
-        default:
-            print("E")
-        }
-    }
-    
-    
 }
 
 enum Priority {
