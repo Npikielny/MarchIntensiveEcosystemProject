@@ -33,9 +33,3 @@ class Apple: Food {
         self.node.scale = SCNVector3(0.5,0.5,0.5)
     }
 }
-
-enum FoodType {
-    case Meat
-    case Fruit
-}
-

@@ -15,7 +15,11 @@ class Animal {
     var hunger: Int = 0
     var thirst: Int = 0
     var health: Int = 1
+    var breedingUrge: Int = 0
+    var priority: Priority = .Idle
     var age: Int = 0
+    var dead: Bool = false
+    lazy var priorities: () -> [(Priority,Int)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)
         self.node.name = Species
@@ -29,21 +33,20 @@ class Animal {
     }
     
     func die() {
+        dead = true
         let spin = CABasicAnimation(keyPath: "rotation")
         spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * Float.pi)))
-        spin.duration = 3
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * Float.pi)/4))
+        spin.duration = 10
         self.node.addAnimation(spin, forKey: "rotation")
+        
     }
+    
+    
 }
 
 class Rabbit: Animal {
     init(Position: SCNVector3, Handler: EnvironmentHandler) {
         super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
     }
-}
-
-enum LookType {
-    case Velocity
-    case Forward
 }

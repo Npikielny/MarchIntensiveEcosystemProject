@@ -21,8 +21,8 @@ class EnvironmentHandler {
         self.Scene = EnvironmentScene(named: FileNamed)!
         setupPhysics()
         setupLighting()
-//        setupTerrrain()
-//        addAnimals()
+        setupTerrrain()
+        addAnimals()
         MainScene = self
     }
     var lightSource: SCNNode!
@@ -31,7 +31,7 @@ class EnvironmentHandler {
         lightSource = SCNNode()
         lightSource.light = SCNLight()
         lightSource.light?.type = .directional
-        lightSource.worldPosition = SCNVector3(1,0,0).toMagnitude(1000)
+        lightSource.worldPosition = SCNVector3(0,0,1).toMagnitude(500)
         self.Scene.rootNode.addChildNode(lightSource)
         lightSource.name = "LightSource"
         setupSky()
@@ -48,22 +48,27 @@ class EnvironmentHandler {
         Scene.rootNode.addChildNode(Environment.ground.node)
         Scene.rootNode.addChildNode(Environment.water.node)
         for i in Environment.treeGen.trees {
-            Scene.rootNode.addChildNode(i.node)
+//            Scene.rootNode.addChildNode(i.node)
             i.node.name = "PineTree"
         }
         
     }
     
     func addAnimals() {
-//        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
+        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
 //        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
 //        Scene.rootNode.addChildNode(apple.node)
-//        Scene.rootNode.addChildNode(rabbit.node)
+        Scene.rootNode.addChildNode(rabbit.node)
     }
     
     var animals = [Animal]()
     var foods = [Food]()
     func process() {
+        for i in animals {
+            if i.dead == false {
+                
+            }
+        }
 //        for i in Environment.treeGen.trees {
 //            i.apple(Handler: self)
 //        }
@@ -71,3 +76,17 @@ class EnvironmentHandler {
     
 }
 
+
+class SceneGenerator {
+    var ground: Ground
+    var water: SurfaceWaterMesh
+    var treeGen: TreeGenerator
+    init() {
+        ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
+        ground.node.name = "Terrain"
+        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
+        water.node.name = "Water"
+        treeGen = TreeGenerator(NumberOfPines: 250, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
+    }
+
+}

@@ -26,8 +26,11 @@
 		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
 		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
 		30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A444A8237EF66200BA29D4 /* DebugWindow.xib */; };
+		30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB45238583E4001FEECE /* MovementHandling.swift */; };
+		30ADAB4823858407001FEECE /* LookHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB4723858407001FEECE /* LookHandling.swift */; };
+		30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB492385842D001FEECE /* priorityHandling.swift */; };
 		30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5A5F32380920B001F4524 /* SkyHandler.swift */; };
-		30F83893237DC04A0019A12E /* SceneHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* SceneHandling.swift */; };
+		30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* RenderHandler.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,8 +79,11 @@
 		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
 		30A444A8237EF66200BA29D4 /* DebugWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugWindow.xib; sourceTree = "<group>"; };
+		30ADAB45238583E4001FEECE /* MovementHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementHandling.swift; sourceTree = "<group>"; };
+		30ADAB4723858407001FEECE /* LookHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookHandling.swift; sourceTree = "<group>"; };
+		30ADAB492385842D001FEECE /* priorityHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = priorityHandling.swift; sourceTree = "<group>"; };
 		30E5A5F32380920B001F4524 /* SkyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyHandler.swift; sourceTree = "<group>"; };
-		30F83892237DC04A0019A12E /* SceneHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneHandling.swift; sourceTree = "<group>"; };
+		30F83892237DC04A0019A12E /* RenderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderHandler.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +123,48 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		303ECA232384424E0013503C /* SceneHandling */ = {
+			isa = PBXGroup;
+			children = (
+				305700E523787A96006696D9 /* MeshRenderer.swift */,
+				30F83892237DC04A0019A12E /* RenderHandler.swift */,
+				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
+				30E5A5F32380920B001F4524 /* SkyHandler.swift */,
+				309C9305237B195C007AF60F /* TreeHandling.swift */,
+			);
+			path = SceneHandling;
+			sourceTree = "<group>";
+		};
+		303ECA24238442620013503C /* OrganismHandling */ = {
+			isa = PBXGroup;
+			children = (
+				306FB08B237C8E3B00BF155B /* Animals.swift */,
+				30ADAB4723858407001FEECE /* LookHandling.swift */,
+				30A444A5237EF3EF00BA29D4 /* Food.swift */,
+				30ADAB45238583E4001FEECE /* MovementHandling.swift */,
+				30ADAB492385842D001FEECE /* priorityHandling.swift */,
+			);
+			path = OrganismHandling;
+			sourceTree = "<group>";
+		};
+		303ECA25238442720013503C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				509A27A8237A1664005ACA78 /* VectorHelpers.swift */,
+				306FB089237C8CD700BF155B /* PrefabHandler.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		303ECA26238442790013503C /* Debugging */ = {
+			isa = PBXGroup;
+			children = (
+				30A444A7237EF66200BA29D4 /* DebugWindow.swift */,
+				30A444A8237EF66200BA29D4 /* DebugWindow.xib */,
+			);
+			path = Debugging;
+			sourceTree = "<group>";
+		};
 		305700AB23787997006696D9 = {
 			isa = PBXGroup;
 			children = (
@@ -143,18 +191,11 @@
 				305700B723787997006696D9 /* AppDelegate.swift */,
 				305700B923787997006696D9 /* GameViewController.swift */,
 				305700BB23787997006696D9 /* art.scnassets */,
-				305700E523787A96006696D9 /* MeshRenderer.swift */,
-				30F83892237DC04A0019A12E /* SceneHandling.swift */,
-				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
-				30E5A5F32380920B001F4524 /* SkyHandler.swift */,
-				309C9305237B195C007AF60F /* TreeHandling.swift */,
-				306FB08B237C8E3B00BF155B /* Animals.swift */,
-				30A444A5237EF3EF00BA29D4 /* Food.swift */,
-				509A27A8237A1664005ACA78 /* VectorHelpers.swift */,
-				306FB089237C8CD700BF155B /* PrefabHandler.swift */,
+				303ECA232384424E0013503C /* SceneHandling */,
+				303ECA24238442620013503C /* OrganismHandling */,
+				303ECA25238442720013503C /* Helpers */,
 				303314472379ED9900C856F6 /* Shaders */,
-				30A444A7237EF66200BA29D4 /* DebugWindow.swift */,
-				30A444A8237EF66200BA29D4 /* DebugWindow.xib */,
+				303ECA26238442790013503C /* Debugging */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
 				305700C223787999006696D9 /* Info.plist */,
@@ -319,10 +360,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30F83893237DC04A0019A12E /* SceneHandling.swift in Sources */,
+				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
+				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
+				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
 				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
+				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,

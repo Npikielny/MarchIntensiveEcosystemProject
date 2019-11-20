@@ -24,33 +24,33 @@ extension EnvironmentHandler {
     }
     
     func updateTime() {
-        time += Float.pi/900
+        time += Float.pi/90000
         
         sky.sunElevation = sin(time)/2+0.5
         
         if sky.sunElevation > 0 {
             sky.brightness = pow(sin(time),3)/2
-            sky.upperAtmosphereScattering = sin(time)/6+0.17
-            sky.groundAlbedo = sin(time)/4+0.3
-            sky.turbidity = pow(cos(time),4)
         }else {
             sky.brightness = -1*pow(abs(sin(time)),(1/256/256))
-            sky.upperAtmosphereScattering = 0
-            sky.groundAlbedo = 0
-            sky.turbidity = 0
+        }
+        sky.upperAtmosphereScattering = sin(time)/6+0.17
+        sky.groundAlbedo = sin(time)/4+0.3
+        sky.turbidity = pow(cos(time),4)
+        
+        if (sky.sunElevation == 1) || (sky.sunElevation == 0) {
+            sky.sunAzimuth += Float.pi
         }
         
         if Int((time/Float.pi)*90000) % 500 == 0 {
             pushSky()
         }
         if let _ = lightSource {
-            lightSource.worldPosition = SCNVector3(sin(time),cos(time),0).toMagnitude(500)
+            lightSource.worldPosition = SCNVector3(0,sin(time),cos(time)).toMagnitude(500)
             lightSource.look(at: SCNVector3().zero())
         }
     }
     
     func pushSky() {
-        print(time, sky.sunElevation, sky.brightness)
         sky.update()
         self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
     }
