@@ -8,9 +8,11 @@
 
 import SceneKit
 
-class EnvironmentScene: SCNScene {
+class EnvironmentScene: SCNScene, SCNPhysicsContactDelegate {
     
-    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        print("CONTACT")
+    }
 }
 
 

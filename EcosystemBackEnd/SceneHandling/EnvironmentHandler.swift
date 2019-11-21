@@ -48,7 +48,7 @@ class EnvironmentHandler {
         Scene.rootNode.addChildNode(Environment.ground.node)
         Scene.rootNode.addChildNode(Environment.water.node)
         for i in Environment.treeGen.trees {
-//            Scene.rootNode.addChildNode(i.node)
+            Scene.rootNode.addChildNode(i.node)
             i.node.name = "PineTree"
         }
         
@@ -59,6 +59,12 @@ class EnvironmentHandler {
 //        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
 //        Scene.rootNode.addChildNode(apple.node)
         Scene.rootNode.addChildNode(rabbit.node)
+        for _ in 0...10 {
+            let apple = Apple(Position: SCNVector3().random().setValue(Component: .y, Value: 40), Handler: self)
+            apple.addPhysicsBody()
+            self.Scene.rootNode.addChildNode(apple.node)
+            
+        }
     }
     
     var animals = [Animal]()

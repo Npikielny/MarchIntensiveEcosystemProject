@@ -17,13 +17,20 @@ class Food {
         self.node.name = Species
         self.foodType = foodType
         self.handler = Handler
+        
+        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: self.node, options: [:]))
+        self.node.physicsBody?.angularVelocityFactor = SCNVector3().initOfComponent(Component: .y, Value: 1)
+        
         self.node.worldPosition = Position
         self.handler.foods.append(self)
     }
     
     func addPhysicsBody() {
-        self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
-        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
+        if let _ = self.node.physicsBody {
+            if self.node.physicsBody?.type == .static {
+                    self.node.physicsBody?.type = .dynamic
+            }
+        }
     }
 }
 
@@ -31,5 +38,6 @@ class Apple: Food {
     init(Position: SCNVector3, Handler: EnvironmentHandler) {
         super.init(Position: Position, Species: "apple", foodType: .Fruit, Handler: Handler)
         self.node.scale = SCNVector3(0.5,0.5,0.5)
+        
     }
 }

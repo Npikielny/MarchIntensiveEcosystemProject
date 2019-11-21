@@ -22,13 +22,16 @@ class Animal {
     var target: SCNVector3 = SCNVector3().zero()
     
     lazy var priorities: () -> [(Priority,Int)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
+    
+    
     init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)
         self.node.name = Species
         self.lookType = lookType
         self.handler = Handler
         self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
-        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
+        self.node.physicsBody?.angularVelocityFactor = SCNVector3().initOfComponent(Component: .y, Value: 1)
+//        self.node.categoryBitMask = 2
         self.node.worldPosition = Position
         self.handler.animals.append(self)
         

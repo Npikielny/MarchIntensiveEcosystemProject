@@ -43,9 +43,9 @@ extension Animal {
         move()
         additionalPhysics()
         look()
-        print(self.node.boundingBox.min.y+self.node.worldPosition.y)
-        print(self.node.worldPosition.y)
-        print(self.node.boundingSphere.center.y - CGFloat(self.node.boundingSphere.radius)+self.node.worldPosition.y)
+//        print(self.node.boundingBox.min.y+self.node.worldPosition.y)
+//        print(self.node.worldPosition.y)
+//        print(self.node.boundingSphere.center.y - CGFloat(self.node.boundingSphere.radius)+self.node.worldPosition.y)
     }
     
     func additionalPhysics() {
@@ -56,7 +56,7 @@ extension Animal {
 extension EnvironmentHandler {
     func process() {
         for i in animals {
-            i.movementHandler()
+//            i.movementHandler()
         }
     }
 }

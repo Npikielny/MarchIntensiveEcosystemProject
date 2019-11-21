@@ -213,6 +213,7 @@ class Ground: Mesh {
         self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
             getShader(from: "groundShader")
         ]
+//        self.node.categoryBitMask = 1
     }
 }
 
