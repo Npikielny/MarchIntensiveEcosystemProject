@@ -25,7 +25,9 @@ extension EnvironmentHandler {
     
     func updateTime() {
         time += Float.pi/90000
-        
+        if building == true {
+            time = Float.pi/4
+        }
         sky.sunElevation = sin(time)/2+0.5
         
         if sky.sunElevation > 0 {
@@ -41,7 +43,7 @@ extension EnvironmentHandler {
             sky.sunAzimuth += Float.pi
         }
         
-        if Int((time/Float.pi)*90000) % 500 == 0 {
+        if Int((time/Float.pi)*90000) % 500 == 0 && building == false {
             pushSky()
         }
         if let _ = lightSource {
