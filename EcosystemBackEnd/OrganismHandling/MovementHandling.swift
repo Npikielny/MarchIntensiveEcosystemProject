@@ -34,9 +34,6 @@ extension Animal {
         return ((self.target - self.node.worldPosition).zero(.y).getMagnitude() <= self.Speed/2)
     }
     
-    func handleStats() {
-        self.hunger = Float(CGFloat(self.hunger)-((self.node.physicsBody?.velocity.getMagnitude())! * 0.001))
-    }
     
     func movementHandler() {
         if isNearTarget() { // logic for setting new target

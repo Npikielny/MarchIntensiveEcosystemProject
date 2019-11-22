@@ -22,6 +22,7 @@
 		3059C82D2380769000C7289C /* genericShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3059C82C2380769000C7289C /* genericShader.shader */; };
 		306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB089237C8CD700BF155B /* PrefabHandler.swift */; };
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
+		30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30898E9F238858EF00427C76 /* StatsHandling.swift */; };
 		309C9306237B195C007AF60F /* TreeHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309C9305237B195C007AF60F /* TreeHandling.swift */; };
 		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
 		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
@@ -75,6 +76,7 @@
 		3059C82C2380769000C7289C /* genericShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = genericShader.shader; sourceTree = "<group>"; };
 		306FB089237C8CD700BF155B /* PrefabHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefabHandler.swift; sourceTree = "<group>"; };
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
+		30898E9F238858EF00427C76 /* StatsHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHandling.swift; sourceTree = "<group>"; };
 		309C9305237B195C007AF60F /* TreeHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHandling.swift; sourceTree = "<group>"; };
 		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				30ADAB4723858407001FEECE /* LookHandling.swift */,
 				30A444A5237EF3EF00BA29D4 /* Food.swift */,
 				30ADAB45238583E4001FEECE /* MovementHandling.swift */,
+				30898E9F238858EF00427C76 /* StatsHandling.swift */,
 				30ADAB492385842D001FEECE /* priorityHandling.swift */,
 			);
 			path = OrganismHandling;
@@ -362,6 +365,7 @@
 			files = (
 				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
 				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
+				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,

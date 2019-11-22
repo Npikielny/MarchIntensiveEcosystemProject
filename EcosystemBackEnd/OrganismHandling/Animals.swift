@@ -16,7 +16,7 @@ class Animal {
     //Priority Handling
     var hunger: Float = 100
     var thirst: Float = 100
-    var damage: Float = 100
+    var health: Float = 100
     var breedingUrge: Float = 100
     var priority: Priority = .Idle
     //Life Handling
@@ -124,7 +124,7 @@ class Rabbit: Animal {
     override func additionalPhysics() {
         self.targetNode.worldPosition = self.target
         self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 5)
-        let text = SCNText(string: "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst)), extrusionDepth: 0.1)
+        let text = SCNText(string: "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health)), extrusionDepth: 0.1)
         text.font = NSFont.systemFont(ofSize: 1)
         self.statsNode.geometry = text
     }
