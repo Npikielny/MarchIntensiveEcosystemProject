@@ -25,38 +25,39 @@ extension Animal {
     }
     
     func randomTarget() {
-        self.target = self.node.worldPosition + SCNVector3().random().setValue(Component: .y, Value: 2)
-    }
-    
-    func move() {
-        self.node.physicsBody?.velocity = (self.target-self.node.worldPosition).toMagnitude(1)
+//        let organismHeight = (self.node.boundingBox.max.y+self.node.boundingBox.min.y)/2
+        let organismHeight: CGFloat = self.node.boundingBox.min.y
+        self.target = (self.node.worldPosition + SCNVector3().random().toMagnitude(20)).setValue(Component: .y, Value: 2-organismHeight)
     }
     
     func isNearTarget() -> Bool {
-        return (self.target - self.node.worldPosition).getMagnitude() <= (self.node.physicsBody?.velocity.getMagnitude())!
+        return ((self.target - self.node.worldPosition).zero(.y).getMagnitude() <= self.Speed/2)
     }
     
     func movementHandler() {
-        if isNearTarget() {
+        if isNearTarget() { // logic for setting new target
+            print("NEAR")
             setTarget()
         }
-        move()
-        additionalPhysics()
-        look()
-//        print(self.node.boundingBox.min.y+self.node.worldPosition.y)
-//        print(self.node.worldPosition.y)
-//        print(self.node.boundingSphere.center.y - CGFloat(self.node.boundingSphere.radius)+self.node.worldPosition.y)
+        move() // handling movement
+        additionalPhysics() // overridable function
+        look() // handles looking
     }
     
-    func additionalPhysics() {
-        
+    func syncNode() { // This function realigns the node's position with the physicsbody after rendering
+        node.transform = node.presentation.transform
     }
+    
 }
+
+
+    //MARK: - Calling Physics Handling
 
 extension EnvironmentHandler {
     func process() {
         for i in animals {
-//            i.movementHandler()
+            i.syncNode()
+            i.movementHandler()
         }
     }
 }

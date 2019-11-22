@@ -19,7 +19,7 @@ class Food {
         self.handler = Handler
         
         self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: self.node, options: [:]))
-        self.node.physicsBody?.angularVelocityFactor = SCNVector3().initOfComponent(Component: .y, Value: 1)
+        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
         
         self.node.worldPosition = Position
         self.handler.foods.append(self)

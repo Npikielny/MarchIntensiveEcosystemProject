@@ -113,6 +113,18 @@ extension SCNVector3 {
         return finalVector
     }
     
+    func clampPartialMagnitude(Excluding: component..., Min: CGFloat, Max: CGFloat) -> SCNVector3 {
+        var vector = self
+        for comp in Excluding {
+            vector = vector.zero(comp)
+        }
+        vector = vector.clamp(Min: Min, Max: Max)
+        for comp in Excluding {
+            vector = vector.setValue(Component: comp, Value: self.getComponent(comp))
+        }
+        return self
+    }
+    
     func setValue(Component: component, Value: CGFloat) -> SCNVector3 {
         if Component == .x {
             return SCNVector3(Value,self.y,self.z)
@@ -160,6 +172,20 @@ extension SCNVector3 {
             fatalError("Component Not Implemented")
         }
     }
+    
+    func getComponent(_ Component: component) -> CGFloat {
+        switch Component {
+        case .x:
+            return self.x
+        case .y:
+            return self.y
+        case .z:
+            return self.z
+//        default:
+//             print("COMPONENT NOT IMPLEMENTED")
+        }
+    }
+    
     
 }
 
