@@ -34,6 +34,10 @@ extension Animal {
         return ((self.target - self.node.worldPosition).zero(.y).getMagnitude() <= self.Speed/2)
     }
     
+    func handleStats() {
+        self.hunger = Float(CGFloat(self.hunger)-((self.node.physicsBody?.velocity.getMagnitude())! * 0.001))
+    }
+    
     func movementHandler() {
         if isNearTarget() { // logic for setting new target
             print("NEAR")
@@ -42,6 +46,7 @@ extension Animal {
         move() // handling movement
         additionalPhysics() // overridable function
         look() // handles looking
+        handleStats()
     }
     
     func syncNode() { // This function realigns the node's position with the physicsbody after rendering

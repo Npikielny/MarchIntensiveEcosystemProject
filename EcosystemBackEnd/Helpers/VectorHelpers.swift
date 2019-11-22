@@ -72,6 +72,7 @@ extension SCNVector3 {
         return SCNVector3(x: 0, y: 0, z: 0)
     }
     
+    
     func clamp(Min: CGFloat, Max: CGFloat) -> SCNVector3 {
         if self.getMagnitude() < Min {
             return self.toMagnitude(Min)

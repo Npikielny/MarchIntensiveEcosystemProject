@@ -14,13 +14,13 @@ class Animal {
     var lookType: LookType
     var handler: EnvironmentHandler
     //Priority Handling
-    var hunger: Int = 0
-    var thirst: Int = 0
-    var damage: Int = 0
-    var breedingUrge: Int = 0
+    var hunger: Float = 100
+    var thirst: Float = 100
+    var damage: Float = 100
+    var breedingUrge: Float = 100
     var priority: Priority = .Idle
     //Life Handling
-    var age: Int = 0
+    var age: Float = 0
     var dead: Bool = false
     
     //Movement
@@ -30,7 +30,7 @@ class Animal {
     //Individual Traits
     var Speed: CGFloat = 2
     
-    lazy var priorities: () -> [(Priority,Int)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
+    lazy var priorities: () -> [(Priority,Float)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     
     
     init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
@@ -104,9 +104,7 @@ class Rabbit: Animal {
                 self.node.physicsBody?.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
             }
         }
-//        else {
-//            NSLog("VEL"+String(Float((self.node.physicsBody?.velocity.getMagnitude())!)))
-//        }
+        
     }
     
     var targetNode: SCNNode = {
@@ -115,13 +113,26 @@ class Rabbit: Animal {
         return node
     }()
     
+    var statsNode: SCNNode = {
+        let text = SCNText(string: "Diego", extrusionDepth: 1)
+        text.font = NSFont.systemFont(ofSize: 10)
+        let node = SCNNode()
+        node.geometry = text
+        return node
+    }()
+    
     override func additionalPhysics() {
         self.targetNode.worldPosition = self.target
-        self.handler.Scene.rootNode.addChildNode(self.targetNode)
+        self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 5)
+        let text = SCNText(string: String(Int(self.hunger)), extrusionDepth: 0.1)
+        text.font = NSFont.systemFont(ofSize: 5)
+        self.statsNode.geometry = text
     }
     
     override func additionalSetup() {
         self.node.physicsBody?.friction = 1
+        self.handler.Scene.rootNode.addChildNode(self.targetNode)
+        self.handler.Scene.rootNode.addChildNode(self.statsNode)
     }
     
 }

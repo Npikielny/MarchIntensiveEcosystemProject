@@ -58,6 +58,7 @@ class EnvironmentHandler {
     
     func addAnimals() {
         let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
+        rabbit.node.name = "Diego"
 //        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
 //        Scene.rootNode.addChildNode(apple.node)
 //        let rabbit = debugger(Handler: self)
