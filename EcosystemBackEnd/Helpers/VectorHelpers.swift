@@ -182,8 +182,8 @@ extension SCNVector3 {
             return self.y
         case .z:
             return self.z
-//        default:
-//             print("COMPONENT NOT IMPLEMENTED")
+        default:
+             print("COMPONENT NOT IMPLEMENTED")
         }
     }
     

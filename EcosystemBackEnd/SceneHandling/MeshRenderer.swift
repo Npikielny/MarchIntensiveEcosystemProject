@@ -141,10 +141,16 @@ class Mesh {
 //    }
 //}
 
+struct SpaciallyAwareVector {
+    var vector: SCNVector3
+    var isNearWater: Bool = false
+}
+
+
 class Ground: Mesh {
     var noiseMap: GKNoiseMap
+    var vertices = [SpaciallyAwareVector]()
     init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int) {
-        var vertices = [SCNVector3]()
         
         noiseMap = {
             let source = GKPerlinNoiseSource()
@@ -164,7 +170,7 @@ class Ground: Mesh {
         for w in 0..<widthCount {
             for h in 0..<heightCount {
                 let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount-1)-width/2, y: 1-CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: height*CGFloat(h)/CGFloat(heightCount-1)-height/2)
-                vertices.append(vertex)
+                vertices.append(SpaciallyAwareVector(vector: vertex))
             }
         }
 
@@ -180,7 +186,6 @@ class Ground: Mesh {
                 squareVerticies.append(UInt16(index(w,h+1)))
                 squareVerticies.append(UInt16(index(w+1,h)))
                 squareVerticies.append(UInt16(index(w+1,h+1)))
-
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[1])
                 indices.append(squareVerticies[3])
@@ -196,10 +201,23 @@ class Ground: Mesh {
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[2])
                 indices.append(squareVerticies[3])
+                var found: Bool = false
+                for i in squareVerticies {
+                    if self.vertices[Int(i)].vector.y == 0 {
+                        found = true
+                    }
+                }
+                if found == true {
+                    for i in squareVerticies {
+                        if self.vertices[Int(i)].vector.y != 0 {
+                            self.vertices[Int(i)].isNearWater = true
+                        }
+                    }
+                }
             }
         }
         
-        super.init(Verticies: vertices, Indices: indices)
+        super.init(Verticies: vertices.map({$0.vector}), Indices: indices)
         self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
         
     }

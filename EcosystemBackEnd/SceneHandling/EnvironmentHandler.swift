@@ -24,6 +24,7 @@ class EnvironmentHandler {
         setupTerrrain()
         addAnimals()
         MainScene = self
+//        debugPoints()
     }
     var lightSource: SCNNode!
     
@@ -41,19 +42,20 @@ class EnvironmentHandler {
         
     }
     
+    var viableVerticies: [SpaciallyAwareVector]!
     func setupTerrrain() {
             
         Environment = SceneGenerator()
         
         Scene.rootNode.addChildNode(Environment.ground.node)
-        Scene.rootNode.addChildNode(Environment.water.node)
         if building == false {
+            Scene.rootNode.addChildNode(Environment.water.node)
             for i in Environment.treeGen.trees {
                 Scene.rootNode.addChildNode(i.node)
-                i.node.name = "PineTree"
             }
         }
-        
+        viableVerticies = Environment.ground.vertices
+        viableVerticies.removeAll(where: {$0.vector.y == 0})
     }
     
     func addAnimals() {
@@ -63,14 +65,24 @@ class EnvironmentHandler {
 //        Scene.rootNode.addChildNode(apple.node)
 //        let rabbit = debugger(Handler: self)
         Scene.rootNode.addChildNode(rabbit.node)
-//        if building == true {
-//            for _ in 0...10 {
-//                let apple = Apple(Position: SCNVector3().random().setValue(Component: .y, Value: 40), Handler: self)
-//                apple.addPhysicsBody()
-//                self.Scene.rootNode.addChildNode(apple.node)
-//
-//            }
-//        }
+        for _ in 0...10 {
+            let apple = Apple(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat.random(in: 0...200)).setValue(Component: .y, Value: 20), Handler: self)
+            apple.addPhysicsBody()
+            self.Scene.rootNode.addChildNode(apple.node)
+        }
+    }
+    
+    func debugPoints() {
+        for i in self.Environment.ground.vertices {
+            let node = SCNNode(geometry: SCNSphere(radius: 0.3))
+            if i.isNearWater == true {
+                node.geometry?.materials.first?.diffuse.contents = NSColor.blue
+            }else {
+                node.geometry?.materials.first?.diffuse.contents = NSColor.yellow
+            }
+            Scene.rootNode.addChildNode(node)
+            node.worldPosition = i.vector
+        }
     }
     
     var animals = [Animal]()
