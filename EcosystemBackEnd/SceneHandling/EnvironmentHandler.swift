@@ -27,7 +27,8 @@ class EnvironmentHandler {
 //        debugPoints()
     }
     var lightSource: SCNNode!
-    
+    var skySave: [Float:CGImage?] = [:]
+    var skyIndex: Float = 0
     func setupLighting() {
         lightSource = SCNNode()
         lightSource.light = SCNLight()

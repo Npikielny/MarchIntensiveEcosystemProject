@@ -47,7 +47,6 @@ class DebugWindow: NSViewController {
         MainScene.sky.sunElevation = ElevationValue.floatValue
         MainScene.sky.upperAtmosphereScattering = scatteringValue.floatValue
         MainScene.sky.groundAlbedo = albedoValue.floatValue
-        MainScene.pushSky()
     }
     
     
