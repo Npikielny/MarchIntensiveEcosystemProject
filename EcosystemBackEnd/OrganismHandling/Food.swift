@@ -11,6 +11,7 @@ import SceneKit
 class Food {
     var node: SCNNode
     var foodType: FoodType
+    var foodValue: Float = 20
     var handler: EnvironmentHandler
     init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)
@@ -28,9 +29,15 @@ class Food {
     func addPhysicsBody() {
         if let _ = self.node.physicsBody {
             if self.node.physicsBody?.type == .static {
-                    self.node.physicsBody?.type = .dynamic
+                self.node.physicsBody?.type = .dynamic
+                self.node.physicsBody?.velocityFactor = SCNVector3(0, 1, 0)
             }
         }
+    }
+    
+    func eaten() {
+        handler.foods.removeAll(where: {$0.node == self.node})
+        self.node.removeFromParentNode()
     }
 }
 

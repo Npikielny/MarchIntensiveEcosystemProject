@@ -122,8 +122,8 @@ class Rabbit: Animal {
     }()
     
     var thirstNode: SCNNode = {
-        let geo = SCNCapsule(capRadius: 1, height: 5)
-        geo.heightSegmentCount = 20
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "waterStatShader")]
@@ -132,8 +132,8 @@ class Rabbit: Animal {
     }()
     
     var hungerNode: SCNNode = {
-        let geo = SCNCapsule(capRadius: 1, height: 5)
-        geo.heightSegmentCount = 20
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "hungerStatShader")]
@@ -142,8 +142,8 @@ class Rabbit: Animal {
     }()
     
     var healthNode: SCNNode = {
-        let geo = SCNCapsule(capRadius: 1, height: 5)
-        geo.heightSegmentCount = 20
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "healthStatShader")]
@@ -154,8 +154,8 @@ class Rabbit: Animal {
     override func additionalPhysics() {
         self.targetNode.worldPosition = self.target.setValue(Component: .y, Value: 2.1)
         self.thirstNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)
-        self.hungerNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(3, 0, 0)
-        self.healthNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(6, 0, 0)
+        self.hungerNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
+        self.healthNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
         let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
         
         self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.thirst/100-Float(height/2), forKey: "threshold")
@@ -163,25 +163,25 @@ class Rabbit: Animal {
         self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.health/100-Float(height/2), forKey: "threshold")
         
 //        self.thirstNode
-//        self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 5)
+        self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
 //        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
-//        let priorityString: String = {
-//            switch self.priority {
-//            case .Idle:
-//                return "Idle"
-//            case .Food:
-//                return "Food"
-//            case .Water:
-//                return "Water"
-//            case .Breed:
-//                return "Breed"
-//            default:
-//                return "Nil"
-//            }
-//        }()
-//        let text = SCNText(string: statString + "\r\n" + "Priority: " + priorityString, extrusionDepth: 0.1)
-//        text.font = NSFont.systemFont(ofSize: 1)
-//        self.statsNode.geometry = text
+        let priorityString: String = {
+            switch self.priority {
+            case .Idle:
+                return "Idle"
+            case .Food:
+                return "Food"
+            case .Water:
+                return "Water"
+            case .Breed:
+                return "Breed"
+            default:
+                return "Nil"
+            }
+        }()
+        let text = SCNText(string: priorityString, extrusionDepth: 0.1)
+        text.font = NSFont.systemFont(ofSize: 0.5)
+        self.statsNode.geometry = text
     }
     
     override func additionalSetup() {
@@ -190,6 +190,8 @@ class Rabbit: Animal {
         self.handler.Scene.rootNode.addChildNode(self.thirstNode)
         self.handler.Scene.rootNode.addChildNode(self.hungerNode)
         self.handler.Scene.rootNode.addChildNode(self.healthNode)
+        
+        self.handler.Scene.rootNode.addChildNode(self.statsNode)
     }
     
 }

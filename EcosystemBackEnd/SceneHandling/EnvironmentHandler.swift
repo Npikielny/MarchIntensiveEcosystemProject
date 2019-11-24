@@ -100,7 +100,7 @@ class SceneGenerator {
         ground.node.name = "Terrain"
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"
-        treeGen = TreeGenerator(NumberOfPines: 250, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
+        treeGen = TreeGenerator(NumberOfPines: 150, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
     }
 
 }

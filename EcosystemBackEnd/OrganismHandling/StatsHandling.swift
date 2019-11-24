@@ -39,4 +39,19 @@ extension Animal {
         }
     }
     
+    func eat(Item: Food) {
+        if Item.foodValue <= 0 {
+            Item.eaten()
+            self.inProcess = false
+            self.checkPriority()
+        }else if self.hunger >= 100 {
+            self.hunger = 100
+            self.inProcess = false
+            self.checkPriority()
+        }else {
+            self.hunger += 0.1
+            Item.foodValue -= 0.1
+        }
+    }
+    
 }

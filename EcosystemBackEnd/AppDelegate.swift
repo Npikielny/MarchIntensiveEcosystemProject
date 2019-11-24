@@ -9,7 +9,7 @@
 import Cocoa
 
 var MainScene: EnvironmentHandler!
-var building: Bool = true
+var building: Bool = false
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     

@@ -13,6 +13,11 @@ extension Animal {
         switch self.priority {
         case .Food:
             var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
+            if let position = nearbyFoods.first?.node.worldPosition {
+                self.target = position
+            }else {
+                randomTarget()
+            }
         case .Water:
             var groundVerts = self.handler.viableVerticies!
             groundVerts.removeAll(where: {$0.isNearWater == false})
@@ -53,6 +58,18 @@ extension Animal {
                     }else if (self.handler.viableVerticies.contains(where: {($0.vector == self.target) && ($0.isNearWater == true)})) {
                         self.inProcess = true
                         self.drink()
+                    }
+                }else if self.priority == .Food {
+                    let closestFood = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
+                    if self.inProcess {
+                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+                        self.node.physicsBody?.velocity = SCNVector3().zero()
+                        self.eat(Item: closestFood.first!)
+                    }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).getMagnitude() <= 3 {
+                        self.inProcess = true
+                        self.eat(Item: closestFood.first!)
+                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+                        self.node.physicsBody?.velocity = SCNVector3().zero()
                     }
                 }else {
                     checkPriority()
