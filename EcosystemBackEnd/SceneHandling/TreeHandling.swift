@@ -12,26 +12,32 @@ import SceneKit
 class TreeGenerator {
     var trees = [Tree]()
     var fails: Int = 0
-    init(NumberOfPines: Int, NoiseMap: GKNoiseMap, Width: CGFloat, Height: CGFloat, widthCount: Int, heightCount: Int) {
-        let getDistance: ((Int, Int), SCNVector3) -> CGFloat = {
-            let xDistance = $1.x - CGFloat($0.0)/CGFloat(widthCount)*Width
-            let yDistance = $1.y - CGFloat($0.1)/CGFloat(heightCount)*Height
-            return pow(pow(xDistance,0.5)+pow(yDistance,0.5), 2)
+    init(NumberOfPines: Int, Points: inout [SpaciallyAwareVector]) {
+        let getDistance: (SCNVector3, SCNVector3) -> CGFloat = {
+            let xDistance = $1.x - $0.x
+            let zDistance = $1.z - $0.z
+            return pow(pow(xDistance,2)+pow(zDistance,2), 0.5)
         }
         var iterant: Int = 0
+        var points = Points
+        points.removeAll(where: {$0.status == .Water})
         while (trees.count < NumberOfPines) && (fails <= 100) {
             iterant += 1
-            let attempt = (Int.random(in: 0..<widthCount),Int.random(in: 0..<heightCount))
-            if NoiseMap.interpolatedValue(at: vector_float2(Float(attempt.0),Float(attempt.1))) <= -1 && trees.map({getDistance(attempt,$0.position)}).contains(where: {$0<=2}) == false{
-                    trees.append(Acacia(Position: SCNVector3(x: CGFloat(attempt.0)/CGFloat(widthCount)*Width, y: 0, z: CGFloat(attempt.1)/CGFloat(heightCount)*Height)))
-            }else {
-                fails += 1
-            }
+            let attempt = points.randomElement()!.vector
+            if trees.map({getDistance(attempt,$0.position)}).contains(where: {$0<=2}) == false{
+                    trees.append(Acacia(Position: attempt))
+//                print(Points.firstIndex(where: {$0.vector == attempt})!, Points[Points.firstIndex(where: {$0.vector == attempt})!].vector, attempt)
+                Points[Points.firstIndex(where: {$0.vector == attempt})!].status = .Tree
+             }else {fails += 1}
             
         }
+        if trees.count < NumberOfPines {
+            print("Tree Failed Out")
+        }
         for tree in trees {
-            tree.position = tree.position - SCNVector3(Width/2,-2,Height/2)
             tree.node.worldPosition = tree.position
+//            tree.position = tree.position - SCNVector3(Width/2,-2,Height/2)
+//            tree.node.worldPosition = tree.position
         }
     }
     

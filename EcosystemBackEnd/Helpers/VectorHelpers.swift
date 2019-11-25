@@ -40,7 +40,7 @@ extension SCNVector3 {
     }
     
     static func == (left: SCNVector3, right: SCNVector3) -> Bool {
-        if (left.x==right.x&&left.y==right.y&&left.z==left.z) {return true}else{return false}
+        if (left.x==right.x&&left.y==right.y&&left.z==right.z) {return true}else{return false}
     }
     
     static func != (left: SCNVector3, right: SCNVector3) -> Bool {

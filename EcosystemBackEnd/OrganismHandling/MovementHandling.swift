@@ -20,7 +20,7 @@ extension Animal {
             }
         case .Water:
             var groundVerts = self.handler.viableVerticies!
-            groundVerts.removeAll(where: {$0.isNearWater == false})
+            groundVerts.removeAll(where: {$0.status == .Normal})
             groundVerts.sort(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()})
             if let position = groundVerts.first {
                 self.target = position.vector
@@ -55,7 +55,7 @@ extension Animal {
                 if self.priority == .Water {
                     if self.inProcess {
                         self.drink()
-                    }else if (self.handler.viableVerticies.contains(where: {($0.vector == self.target) && ($0.isNearWater == true)})) {
+                    }else if (self.handler.viableVerticies.contains(where: {($0.vector == self.target) && ($0.status == .NearWater)})) {
                         self.inProcess = true
                         self.drink()
                     }

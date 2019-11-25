@@ -11,7 +11,7 @@ import SceneKit
 class Food {
     var node: SCNNode
     var foodType: FoodType
-    var foodValue: Float = 20
+    var foodValue: Float = 40
     var handler: EnvironmentHandler
     init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)

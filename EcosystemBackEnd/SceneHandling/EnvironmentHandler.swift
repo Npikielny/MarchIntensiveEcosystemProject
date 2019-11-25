@@ -56,17 +56,20 @@ class EnvironmentHandler {
             }
         }
         viableVerticies = Environment.ground.vertices
-        viableVerticies.removeAll(where: {$0.vector.y == 0})
+        viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
     }
     
     func addAnimals() {
-        let rabbit = Rabbit(Position: SCNVector3(10,10,0), Handler: self)
-        rabbit.node.name = "Diego"
-//        let apple = Apple(Position: SCNVector3(x: 0, y: 10, z: 0), Handler: self)
-//        Scene.rootNode.addChildNode(apple.node)
-//        let rabbit = debugger(Handler: self)
-        Scene.rootNode.addChildNode(rabbit.node)
-        for _ in 0...10 {
+        let Diego = Rabbit(Position: SCNVector3(0,10,0), Handler: self)
+        Diego.node.name = "Diego"
+        Scene.rootNode.addChildNode(Diego.node)
+        
+        for i in 0..<25-1 {
+            let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 10), Handler: self)
+            Scene.rootNode.addChildNode(rabbit.node)
+        }
+        
+        for _ in 0..<50 {
             let apple = Apple(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat.random(in: 0...200)).setValue(Component: .y, Value: 20), Handler: self)
             apple.addPhysicsBody()
             self.Scene.rootNode.addChildNode(apple.node)
@@ -76,10 +79,14 @@ class EnvironmentHandler {
     func debugPoints() {
         for i in self.Environment.ground.vertices {
             let node = SCNNode(geometry: SCNSphere(radius: 0.3))
-            if i.isNearWater == true {
+            if i.status == .NearWater {
+                node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+            }else if i.status == .Water {
                 node.geometry?.materials.first?.diffuse.contents = NSColor.blue
+            }else if i.status == .Tree {
+                node.geometry?.materials.first?.diffuse.contents = NSColor.orange
             }else {
-                node.geometry?.materials.first?.diffuse.contents = NSColor.yellow
+                node.geometry?.materials.first?.diffuse.contents = NSColor.green
             }
             Scene.rootNode.addChildNode(node)
             node.worldPosition = i.vector
@@ -101,7 +108,7 @@ class SceneGenerator {
         ground.node.name = "Terrain"
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"
-        treeGen = TreeGenerator(NumberOfPines: 150, NoiseMap: ground.noiseMap, Width: 400, Height: 400, widthCount: 100, heightCount: 100)
+        treeGen = TreeGenerator(NumberOfPines: 200, Points: &ground.vertices)
     }
 
 }

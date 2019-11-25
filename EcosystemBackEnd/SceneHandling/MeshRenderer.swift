@@ -143,7 +143,14 @@ class Mesh {
 
 struct SpaciallyAwareVector {
     var vector: SCNVector3
-    var isNearWater: Bool = false
+    var status: pointTypes = .Normal
+}
+
+enum pointTypes {
+    case Tree
+    case NearWater
+    case Normal
+    case Water
 }
 
 
@@ -210,7 +217,9 @@ class Ground: Mesh {
                 if found == true {
                     for i in squareVerticies {
                         if self.vertices[Int(i)].vector.y != 0 {
-                            self.vertices[Int(i)].isNearWater = true
+                            self.vertices[Int(i)].status = .NearWater
+                        }else {
+                            self.vertices[Int(i)].status = .Water
                         }
                     }
                 }
@@ -280,16 +289,6 @@ class SurfaceWaterMesh: Mesh {
         }
         
         super.init(Verticies: vertices, Indices: indices)
-        let color: NSColor = #colorLiteral(red: 0, green: 0.9859127402, blue: 1, alpha: 0.5554098887)
-        self.node.geometry?.materials.first!.diffuse.contents = color
-        self.node.geometry?.materials.first?.metalness.contents = 1
-        self.node.geometry?.materials.first?.roughness.contents = 0
-        self.node.geometry?.materials.first?.multiply.contents = NSColor.white
-        self.node.geometry?.materials.first?.shininess = 1
-        self.node.geometry?.materials.first?.specular.contents = 1
-        self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
-            getShader(from: "waterShader")
-        ]
         
     }
     
