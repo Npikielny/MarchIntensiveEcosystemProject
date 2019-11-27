@@ -11,20 +11,40 @@ import SceneKit
 class EnvironmentHandler {
     
     var Scene: EnvironmentScene
-    var Environment: SceneGenerator!
+    
+    var terrain: Ground!
+    var water: SurfaceWaterMesh!
+    var treeGen: TreeGenerator!
     
     var sky: MDLSkyCubeTexture!
         var time: Float = 0
         var azimuth: Float = 0
         
+    
+    lazy var setupFunctions: [()->()] = [()->()]()
+    var setupFunctionIndex: Int = 0
     init(_ FileNamed: String) {
         self.Scene = EnvironmentScene(named: FileNamed)!
-        setupLighting()
-        setupTerrrain()
-        addAnimals()
-        addFood()
-//        debugPoints()
+        setupFunctions.append(setupLighting)
+        setupFunctions.append(setupTerrrain)
+        setupFunctions.append(setupWater)
+        setupFunctions.append(setupTrees)
+        setupFunctions.append(classifyVerticies)
+        setupFunctions.append(addAnimals)
+        setupFunctions.append(addFood)
+//        setupFunctions.append(debugPoints)
     }
+    
+    func runSetupFunction() {
+        if setupFunctionIndex < setupFunctions.count {
+            setupFunctions[setupFunctionIndex]()
+            setupFunctionIndex += 1
+        }else {
+            fatalError("Index Out of Range")
+        }
+    }
+    
+    
     var lightSource: SCNNode!
     var skySave: [Float:CGImage?] = [:]
     var skyIndex: Float = 0
@@ -36,24 +56,49 @@ class EnvironmentHandler {
         self.Scene.rootNode.addChildNode(lightSource)
         lightSource.name = "LightSource"
         setupSky()
+        
+        let ambientNode = SCNNode()
+        ambientNode.light = SCNLight()
+        ambientNode.light?.type = .ambient
+        ambientNode.worldPosition = SCNVector3(0, 100, 0)
+        
+        ambientNode.light?.color = NSColor.white
+        ambientNode.light?.intensity = 500
+        self.Scene.rootNode.addChildNode(ambientNode)
+        ambientNode.name = "Ambient Light"
     }
     
     var viableVerticies: [SpaciallyAwareVector]!
     var drinkableVertices: [SpaciallyAwareVector]!
     func setupTerrrain() {
-            
-        Environment = SceneGenerator()
         
-        Scene.rootNode.addChildNode(Environment.ground.node)
+        terrain = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
+        terrain.node.name = "Terrain"
+        Scene.rootNode.addChildNode(terrain.node)
+        
+    }
+    
+    func setupWater() {
+        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
+        water.node.name = "Water"
         if building == false {
-            Scene.rootNode.addChildNode(Environment.water.node)
-            for i in Environment.treeGen.trees {
+            Scene.rootNode.addChildNode(water.node)
+        }
+    }
+    
+    func setupTrees() {
+        treeGen = TreeGenerator(NumberOfPines: 200, Points: &terrain.vertices)
+        if building == false {
+            for i in treeGen.trees {
                 Scene.rootNode.addChildNode(i.node)
             }
         }
-        viableVerticies = Environment.ground.vertices
+    }
+    
+    func classifyVerticies() {
+        viableVerticies = terrain.vertices
         viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
-        drinkableVertices = Environment.ground.vertices
+        drinkableVertices = terrain.vertices
         drinkableVertices.removeAll(where: {$0.status != .NearWater})
     }
     
@@ -78,7 +123,7 @@ class EnvironmentHandler {
     }
     
     func debugPoints() {
-        for i in self.Environment.ground.vertices {
+        for i in self.terrain.vertices {
             let node = SCNNode(geometry: SCNSphere(radius: 0.3))
             if i.status == .NearWater {
                 node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
@@ -97,19 +142,4 @@ class EnvironmentHandler {
     var animals = [Animal]()
     var foods = [Food]()
     
-}
-
-
-class SceneGenerator {
-    var ground: Ground
-    var water: SurfaceWaterMesh
-    var treeGen: TreeGenerator
-    init() {
-        ground = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
-        ground.node.name = "Terrain"
-        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
-        water.node.name = "Water"
-        treeGen = TreeGenerator(NumberOfPines: 200, Points: &ground.vertices)
-    }
-
 }

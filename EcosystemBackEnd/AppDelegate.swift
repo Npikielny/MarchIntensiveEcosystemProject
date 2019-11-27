@@ -18,9 +18,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        let debugWindow = NSWindow(contentViewController: DebugWindow())
         
 //        debugWindow.makeKeyAndOrderFront(self)
-        let splashScreen = NSWindow(contentViewController: SplashController())
+        let splashCont = SplashController()
+        let splashScreen = NSWindow(contentViewController: splashCont)
         splashScreen.makeKeyAndOrderFront(self)
-        Manager = WindowManager(SplashScreen: splashScreen)
+        Manager = WindowManager(SplashScreen: splashScreen, splashController: splashCont)
         let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(startGame), userInfo: nil, repeats: false)
     }
     

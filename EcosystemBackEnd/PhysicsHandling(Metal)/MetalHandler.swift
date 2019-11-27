@@ -18,7 +18,7 @@ struct animalData {
 }
 extension EnvironmentHandler {
     func getIndividualAnimalData(animal: Animal) -> animalData {
-        let heightMap = animal.handler.Environment.ground.noiseMap
+        let heightMap = animal.handler.terrain.noiseMap
         let coords = (animal.node.worldPosition.x/400,animal.node.worldPosition.y/400)
         return animalData(position: animal.node.worldPosition, velocity: animal.velocity, heightOfMap: Float(1), id: animal.Id)
     }

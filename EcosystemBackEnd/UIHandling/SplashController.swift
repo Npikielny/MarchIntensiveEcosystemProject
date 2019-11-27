@@ -13,7 +13,15 @@ class SplashController: NSViewController {
     convenience init() {
         self.init(nibName: "SplashScreen", bundle: nil)
     }
-    
+    var progressBar: NSProgressIndicator = {
+        let bar = NSProgressIndicator()
+        bar.minValue = 0
+        bar.maxValue = 1
+        bar.doubleValue = 0.0
+        bar.isBezeled = true
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        return bar
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -46,20 +54,14 @@ class SplashController: NSViewController {
         title.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
         title.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        let progressBar = NSProgressIndicator()
-        progressBar.minValue = 0
-        progressBar.maxValue = 1
-        progressBar.increment(by: 0.1)
-        progressBar.doubleValue = 0.2
-        progressBar.isBezeled = true
-        progressBar.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(progressBar)
         progressBar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         progressBar.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25).isActive = true
         progressBar.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
+        progressBar.startAnimation(self)
+        progressBar.isIndeterminate = false
         
     }
     
