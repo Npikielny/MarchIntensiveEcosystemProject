@@ -97,7 +97,7 @@ extension Animal {
                 self.die()
             }
             if self.node.worldPosition.y < 2 {
-                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2)
+                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2.5)
             }
         }
     }

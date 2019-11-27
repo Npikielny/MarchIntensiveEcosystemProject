@@ -36,7 +36,7 @@ class WindowManager {
         if self.gameController!.handler.setupFunctionIndex < self.gameController!.handler.setupFunctions.count {
             self.gameController!.handler.runSetupFunction()
             increment()
-            let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setupGame), userInfo: nil, repeats: false)
+            let _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(setupGame), userInfo: nil, repeats: false)
         }else {
             showGame()
         }
@@ -54,5 +54,11 @@ class WindowManager {
     
     func increment() {
         splashController.progressBar.increment(by: Double(self.gameController!.handler.setupFunctionIndex)/Double(self.gameController!.handler.setupFunctions.count))
+        if self.gameController!.handler.setupFunctionIndex < self.gameController!.handler.setupFunctions.count - 1 {
+            splashController.progressText.string = (self.gameController?.handler.setupFunctions[(self.gameController?.handler.setupFunctionIndex)!+1].1)!
+        }else {
+            splashController.progressText.string = "Loading Game"
+        }
+        
     }
 }

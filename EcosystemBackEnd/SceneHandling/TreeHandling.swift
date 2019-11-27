@@ -53,15 +53,6 @@ class Tree {
         naturalizeTree()
     }
     
-    func apple(Handler: EnvironmentHandler) {
-        if Int.random(in: 0...50000) == 1 {
-            let apple = Apple(Position: self.position+SCNVector3().random().toMagnitude(1).zero(.y)+self.node.boundingBox.max.scalarMultiplication(Scalar: CGFloat.random(in: 0.7...0.9)).zero(.x,.z), Handler: Handler)
-            Handler.Scene.rootNode.addChildNode(apple.node)
-            apple.node.geometry?.shaderModifiers = [.geometry:getShader(from: "tree")]
-        }
-        
-    }
-    
     func naturalizeTree() {
         self.node.eulerAngles = SCNVector3(CGFloat.random(in: -0.2...0.2), CGFloat.random(in: 0...CGFloat.pi*2), CGFloat.random(in: -0.2...0.2))
         self.node.scale = SCNVector3(1, 1, 1).scalarMultiplication(Scalar: CGFloat.random(in: 0.5...1.5))

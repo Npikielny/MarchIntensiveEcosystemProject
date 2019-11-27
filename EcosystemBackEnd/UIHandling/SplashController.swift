@@ -22,6 +22,19 @@ class SplashController: NSViewController {
         bar.translatesAutoresizingMaskIntoConstraints = false
         return bar
     }()
+    
+    var progressText: NSText = {
+        let view = NSTextView()
+        view.string = "Loading SCNScene"
+        view.backgroundColor = NSColor.clear
+        view.isEditable = false
+        view.isSelectable = false
+        view.alignment = .center
+        view.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        view.font = NSFont.boldSystemFont(ofSize: 10)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -62,6 +75,13 @@ class SplashController: NSViewController {
         progressBar.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         progressBar.startAnimation(self)
         progressBar.isIndeterminate = false
+        
+        view.addSubview(progressText)
+        progressText.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        progressText.bottomAnchor.constraint(equalTo: progressBar.topAnchor, constant: -10).isActive = true
+        progressText.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
+        progressText.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         
     }
     

@@ -21,23 +21,24 @@ class EnvironmentHandler {
         var azimuth: Float = 0
         
     
-    lazy var setupFunctions: [()->()] = [()->()]()
+    lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
     var setupFunctionIndex: Int = 0
     init(_ FileNamed: String) {
         self.Scene = EnvironmentScene(named: FileNamed)!
-        setupFunctions.append(setupLighting)
-        setupFunctions.append(setupTerrrain)
-        setupFunctions.append(setupWater)
-        setupFunctions.append(setupTrees)
-        setupFunctions.append(classifyVerticies)
-        setupFunctions.append(addAnimals)
-        setupFunctions.append(addFood)
+        setupFunctions.append(({}, "Setting Up SCNScene"))
+        setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
+        setupFunctions.append((setupTerrrain, "Adding Terrain"))
+        setupFunctions.append((setupWater, "Adding Water"))
+        setupFunctions.append((setupTrees, "Adding Trees"))
+        setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
+        setupFunctions.append((addAnimals, "Adding Animals"))
+        setupFunctions.append((addFood, "Adding Food"))
 //        setupFunctions.append(debugPoints)
     }
     
     func runSetupFunction() {
         if setupFunctionIndex < setupFunctions.count {
-            setupFunctions[setupFunctionIndex]()
+            (setupFunctions[setupFunctionIndex].0)()
             setupFunctionIndex += 1
         }else {
             fatalError("Index Out of Range")
@@ -57,15 +58,15 @@ class EnvironmentHandler {
         lightSource.name = "LightSource"
         setupSky()
         
-        let ambientNode = SCNNode()
-        ambientNode.light = SCNLight()
-        ambientNode.light?.type = .ambient
-        ambientNode.worldPosition = SCNVector3(0, 100, 0)
-        
-        ambientNode.light?.color = NSColor.white
-        ambientNode.light?.intensity = 500
-        self.Scene.rootNode.addChildNode(ambientNode)
-        ambientNode.name = "Ambient Light"
+//        let ambientNode = SCNNode()
+//        ambientNode.light = SCNLight()
+//        ambientNode.light?.type = .ambient
+//        ambientNode.worldPosition = SCNVector3(0, 100, 0)
+//        
+//        ambientNode.light?.color = NSColor.white
+//        ambientNode.light?.intensity = 100
+//        self.Scene.rootNode.addChildNode(ambientNode)
+//        ambientNode.name = "Ambient Light"
     }
     
     var viableVerticies: [SpaciallyAwareVector]!
