@@ -23,7 +23,8 @@ class Animal {
     var age: Float = 0
     var dead: Bool = false
     var inProcess: Bool = false
-    
+    var velocity: SCNVector3 = SCNVector3().zero()
+    var Id: Int32
     //Movement
     var target: SCNVector3 = SCNVector3().zero()
     func getHeight() -> CGFloat {return self.node.worldPosition.y-(self.node.boundingBox.min.y)/2}
@@ -41,6 +42,7 @@ class Animal {
         self.handler = Handler
         self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
         self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
+        self.Id = Int32(handler.animals.count)
         additionalSetup()
         self.node.worldPosition = Position
         self.handler.animals.append(self)
@@ -53,6 +55,7 @@ class Animal {
         self.handler = DebugInit
         self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
         self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
+        self.Id = Int32(DebugInit.animals.count)
         additionalSetup()
         self.node.worldPosition = SCNVector3().initOfComponent(Component: .y, Value: 10)
         self.handler.animals.append(self)
@@ -106,81 +109,85 @@ class Rabbit: Animal {
             }
         }
     }
-//    
-//    var targetNode: SCNNode = {
-//        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
-//        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
-//        return node
-//    }()
-//    
-//    var statsNode: SCNNode = {
-//        let text = SCNText(string: "Diego", extrusionDepth: 1)
-//        text.font = NSFont.systemFont(ofSize: 10)
-//        let node = SCNNode()
-//        node.geometry = text
-//        return node
-//    }()
-//    
-//    var thirstNode: SCNNode = {
-//        let geo = SCNCapsule(capRadius: 0.2, height: 3)
-//        geo.heightSegmentCount = 30
-//        let node = SCNNode(geometry: geo)
-//        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
-//        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "waterStatShader")]
-//        node.geometry?.materials.first!.transparencyMode = .aOne
-//        return node
-//    }()
-//    
-//    var hungerNode: SCNNode = {
-//        let geo = SCNCapsule(capRadius: 0.2, height: 3)
-//        geo.heightSegmentCount = 30
-//        let node = SCNNode(geometry: geo)
-//        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
-//        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "hungerStatShader")]
-//        node.geometry?.materials.first!.transparencyMode = .aOne
-//        return node
-//    }()
-//    
-//    var healthNode: SCNNode = {
-//        let geo = SCNCapsule(capRadius: 0.2, height: 3)
-//        geo.heightSegmentCount = 30
-//        let node = SCNNode(geometry: geo)
-//        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
-//        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "healthStatShader")]
-//        node.geometry?.materials.first!.transparencyMode = .aOne
-//        return node
-//    }()
+    
+    var targetNode: SCNNode = {
+        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
+        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+        return node
+    }()
+    
+    var statsNode: SCNNode = {
+        let text = SCNText(string: "Diego", extrusionDepth: 1)
+        text.font = NSFont.systemFont(ofSize: 10)
+        let node = SCNNode()
+        node.geometry = text
+        return node
+    }()
+    
+    var thirstNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "waterStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+    
+    var hungerNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "hungerStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+    
+    var healthNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "healthStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+    
+    var isSelected: Bool = false
     
     override func additionalPhysics() {
-//        self.targetNode.worldPosition = self.target.setValue(Component: .y, Value: 2.1)
-//        self.thirstNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)
-//        self.hungerNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
-//        self.healthNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
-//        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
-//
-//        self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.thirst/100-Float(height/2), forKey: "threshold")
-//        self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.hunger/100-Float(height/2), forKey: "threshold")
-//        self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.health/100-Float(height/2), forKey: "threshold")
-        
-//        self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
-//        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
-//        let priorityString: String = {
-//            switch self.priority {
-//            case .Idle:
-//                return "Idle"
-//            case .Food:
-//                return "Food"
-//            case .Water:
-//                return "Water"
-//            case .Breed:
-//                return "Breed"
-//            default:
-//                return "Nil"
-//            }
-//        }()
-//        let text = SCNText(string: priorityString, extrusionDepth: 0.1)
-//        text.font = NSFont.systemFont(ofSize: 0.5)
-//        self.statsNode.geometry = text
+        if isSelected {
+            self.targetNode.worldPosition = self.target.setValue(Component: .y, Value: 2.1)
+            self.thirstNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)
+            self.hungerNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
+            self.healthNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
+            let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
+
+            self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.thirst/100-Float(height/2), forKey: "threshold")
+            self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.hunger/100-Float(height/2), forKey: "threshold")
+            self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.health/100-Float(height/2), forKey: "threshold")
+            
+            self.statsNode.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
+    //        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
+            let priorityString: String = {
+                switch self.priority {
+                case .Idle:
+                    return "Idle"
+                case .Food:
+                    return "Food"
+                case .Water:
+                    return "Water"
+                case .Breed:
+                    return "Breed"
+                default:
+                    return "Nil"
+                }
+            }()
+            let text = SCNText(string: priorityString, extrusionDepth: 0.1)
+            text.font = NSFont.systemFont(ofSize: 0.5)
+            self.statsNode.geometry = text
+        }
     }
     
     override func additionalSetup() {
@@ -189,7 +196,6 @@ class Rabbit: Animal {
 //        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
 //        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
 //        self.handler.Scene.rootNode.addChildNode(self.healthNode)
-//
 //        self.handler.Scene.rootNode.addChildNode(self.statsNode)
     }
     

@@ -19,10 +19,10 @@ class EnvironmentHandler {
         
     init(_ FileNamed: String) {
         self.Scene = EnvironmentScene(named: FileNamed)!
-        setupPhysics()
         setupLighting()
         setupTerrrain()
         addAnimals()
+        addFood()
         MainScene = self
 //        debugPoints()
     }
@@ -39,11 +39,8 @@ class EnvironmentHandler {
         setupSky()
     }
     
-    func setupPhysics() {
-        
-    }
-    
     var viableVerticies: [SpaciallyAwareVector]!
+    var drinkableVertices: [SpaciallyAwareVector]!
     func setupTerrrain() {
             
         Environment = SceneGenerator()
@@ -57,6 +54,8 @@ class EnvironmentHandler {
         }
         viableVerticies = Environment.ground.vertices
         viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
+        drinkableVertices = Environment.ground.vertices
+        drinkableVertices.removeAll(where: {$0.status != .NearWater})
     }
     
     func addAnimals() {
@@ -64,11 +63,14 @@ class EnvironmentHandler {
         Diego.node.name = "Diego"
         Scene.rootNode.addChildNode(Diego.node)
         
-        for i in 0..<25-1 {
+        for _ in 0..<25-1 {
             let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 10), Handler: self)
             Scene.rootNode.addChildNode(rabbit.node)
         }
         
+    }
+    
+    func addFood() {
         for _ in 0..<50 {
             let apple = Apple(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat.random(in: 0...200)).setValue(Component: .y, Value: 20), Handler: self)
             apple.addPhysicsBody()

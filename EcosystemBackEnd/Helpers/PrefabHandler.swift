@@ -17,6 +17,7 @@ func getPrefab(_ FileName: String, Shaders: String?) -> SCNNode {
         for child in virtualObjectScene.rootNode.childNodes {
             child.geometry?.firstMaterial?.lightingModel = .physicallyBased
             child.movabilityHint = .movable
+            child.castsShadow = true
             if let shader = Shaders {
                 if let _ = child.geometry {
                     for mat in child.geometry!.materials {

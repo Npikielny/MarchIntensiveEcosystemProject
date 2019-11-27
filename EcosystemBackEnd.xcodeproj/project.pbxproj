@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */; };
+		300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC5238D62B100B7F363 /* MetalHandler.swift */; };
 		301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */; };
 		302908A8238A1DA300D4396D /* hungerStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A7238A1DA300D4396D /* hungerStatShader.shader */; };
 		302908AA238A1DC900D4396D /* healthStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A9238A1DC900D4396D /* healthStatShader.shader */; };
@@ -56,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhysicsHandler.metal; sourceTree = "<group>"; };
+		300DBEC5238D62B100B7F363 /* MetalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalHandler.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentHandler.swift; sourceTree = "<group>"; };
 		302908A7238A1DA300D4396D /* hungerStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = hungerStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		302908A9238A1DC900D4396D /* healthStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = healthStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
@@ -120,6 +124,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		300DBEC4238D629800B7F363 /* PhysicsHandling(Metal) */ = {
+			isa = PBXGroup;
+			children = (
+				300DBEC5238D62B100B7F363 /* MetalHandler.swift */,
+				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
+			);
+			path = "PhysicsHandling(Metal)";
+			sourceTree = "<group>";
+		};
 		303314472379ED9900C856F6 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +221,7 @@
 				303ECA25238442720013503C /* Helpers */,
 				303314472379ED9900C856F6 /* Shaders */,
 				303ECA26238442790013503C /* Debugging */,
+				300DBEC4238D629800B7F363 /* PhysicsHandling(Metal) */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
 				305700C223787999006696D9 /* Info.plist */,
@@ -385,12 +399,14 @@
 				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
+				300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
 				30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
+				300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

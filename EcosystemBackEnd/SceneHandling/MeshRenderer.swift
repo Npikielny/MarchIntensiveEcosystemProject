@@ -176,7 +176,7 @@ class Ground: Mesh {
         
         for w in 0..<widthCount {
             for h in 0..<heightCount {
-                let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount-1)-width/2, y: 1-CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: height*CGFloat(h)/CGFloat(heightCount-1)-height/2)
+                let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount)-width/2, y: 1-CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: height*CGFloat(h)/CGFloat(heightCount)-height/2)
                 vertices.append(SpaciallyAwareVector(vector: vertex))
             }
         }
