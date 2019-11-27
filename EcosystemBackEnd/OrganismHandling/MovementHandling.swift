@@ -37,7 +37,8 @@ extension Animal {
     
     func randomTarget() {
 //        let organismHeight = (self.node.boundingBox.max.y+self.node.boundingBox.min.y)/2
-        let organismHeight: CGFloat = self.node.boundingBox.min.y
+//        let organismHeight: CGFloat = self.node.boundingBox.min.y
+        let organismHeight: CGFloat = 2.2
         let target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20))).setValue(Component: .y, Value: 2)
 //        let targetPoint = self.handler.viableVerticies.sorted(by: {($0.vector-target).getMagnitude() < ($1.vector-target).getMagnitude()}).first?.vector
 //        self.target = target

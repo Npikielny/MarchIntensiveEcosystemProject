@@ -13,7 +13,7 @@ class EnvironmentScene: SCNScene {
 }
 
 
-extension GameViewController: SCNSceneRendererDelegate {
+extension GameController: SCNSceneRendererDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         self.handler.updateTime()

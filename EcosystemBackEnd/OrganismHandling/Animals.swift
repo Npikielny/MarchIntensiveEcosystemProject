@@ -90,6 +90,7 @@ class Animal {
 class Rabbit: Animal {
     init(Position: SCNVector3, Handler: EnvironmentHandler) {
         super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
+        setTarget()
     }
     
     override func move() {

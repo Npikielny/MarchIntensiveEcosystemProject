@@ -17,7 +17,6 @@
 		3034681F237B024E00E32BF5 /* tree.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3034681E237B024E00E32BF5 /* tree.shader */; };
 		30361B592389BAE60002B42D /* waterStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 30361B582389BAE60002B42D /* waterStatShader.shader */; };
 		305700B823787997006696D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B723787997006696D9 /* AppDelegate.swift */; };
-		305700BA23787997006696D9 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B923787997006696D9 /* GameViewController.swift */; };
 		305700BC23787997006696D9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BB23787997006696D9 /* art.scnassets */; };
 		305700BE23787999006696D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BD23787999006696D9 /* Assets.xcassets */; };
 		305700C123787999006696D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 305700BF23787999006696D9 /* Main.storyboard */; };
@@ -29,6 +28,11 @@
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30898E9F238858EF00427C76 /* StatsHandling.swift */; };
 		309C9306237B195C007AF60F /* TreeHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309C9305237B195C007AF60F /* TreeHandling.swift */; };
+		30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A27F13238EE7FA0092DAF3 /* GameController.swift */; };
+		30A27F16238EE7FA0092DAF3 /* GameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A27F14238EE7FA0092DAF3 /* GameController.xib */; };
+		30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A27F17238F097F0092DAF3 /* WindowManager.swift */; };
+		30A27F1B238F0D0B0092DAF3 /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A27F19238F0D0B0092DAF3 /* SplashController.swift */; };
+		30A27F1C238F0D0B0092DAF3 /* SplashScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */; };
 		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
 		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
 		30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A444A8237EF66200BA29D4 /* DebugWindow.xib */; };
@@ -70,7 +74,6 @@
 		30361B582389BAE60002B42D /* waterStatShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = waterStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		305700B423787997006696D9 /* EcosystemBackEnd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcosystemBackEnd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		305700B723787997006696D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		305700B923787997006696D9 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		305700BB23787997006696D9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		305700BD23787999006696D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		305700C023787999006696D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -88,6 +91,11 @@
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		30898E9F238858EF00427C76 /* StatsHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHandling.swift; sourceTree = "<group>"; };
 		309C9305237B195C007AF60F /* TreeHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHandling.swift; sourceTree = "<group>"; };
+		30A27F13238EE7FA0092DAF3 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		30A27F14238EE7FA0092DAF3 /* GameController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameController.xib; sourceTree = "<group>"; };
+		30A27F17238F097F0092DAF3 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		30A27F19238F0D0B0092DAF3 /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
+		30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SplashScreen.xib; sourceTree = "<group>"; };
 		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
 		30A444A8237EF66200BA29D4 /* DebugWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugWindow.xib; sourceTree = "<group>"; };
@@ -214,7 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				305700B723787997006696D9 /* AppDelegate.swift */,
-				305700B923787997006696D9 /* GameViewController.swift */,
+				30A27F1D238F0D110092DAF3 /* UIHandling */,
 				305700BB23787997006696D9 /* art.scnassets */,
 				303ECA232384424E0013503C /* SceneHandling */,
 				303ECA24238442620013503C /* OrganismHandling */,
@@ -247,6 +255,18 @@
 				305700D923787999006696D9 /* Info.plist */,
 			);
 			path = EcosystemBackEndUITests;
+			sourceTree = "<group>";
+		};
+		30A27F1D238F0D110092DAF3 /* UIHandling */ = {
+			isa = PBXGroup;
+			children = (
+				30A27F17238F097F0092DAF3 /* WindowManager.swift */,
+				30A27F19238F0D0B0092DAF3 /* SplashController.swift */,
+				30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */,
+				30A27F13238EE7FA0092DAF3 /* GameController.swift */,
+				30A27F14238EE7FA0092DAF3 /* GameController.xib */,
+			);
+			path = UIHandling;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,10 +375,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				303314492379EDF400C856F6 /* groundShader.shader in Resources */,
+				30A27F1C238F0D0B0092DAF3 /* SplashScreen.xib in Resources */,
 				30361B592389BAE60002B42D /* waterStatShader.shader in Resources */,
 				302908A8238A1DA300D4396D /* hungerStatShader.shader in Resources */,
 				305700C123787999006696D9 /* Main.storyboard in Resources */,
 				30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */,
+				30A27F16238EE7FA0092DAF3 /* GameController.xib in Resources */,
 				302908AA238A1DC900D4396D /* healthStatShader.shader in Resources */,
 				3034681F237B024E00E32BF5 /* tree.shader in Resources */,
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
@@ -389,13 +411,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A27F1B238F0D0B0092DAF3 /* SplashController.swift in Sources */,
 				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
+				30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */,
 				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
+				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
-				305700BA23787997006696D9 /* GameViewController.swift in Sources */,
 				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,

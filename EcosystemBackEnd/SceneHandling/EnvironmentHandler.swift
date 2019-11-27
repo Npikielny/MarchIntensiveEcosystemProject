@@ -23,7 +23,6 @@ class EnvironmentHandler {
         setupTerrrain()
         addAnimals()
         addFood()
-        MainScene = self
 //        debugPoints()
     }
     var lightSource: SCNNode!
