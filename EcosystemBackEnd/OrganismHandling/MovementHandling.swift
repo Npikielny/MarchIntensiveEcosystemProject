@@ -117,5 +117,14 @@ extension EnvironmentHandler {
             i.movementHandler()
         }
 //        handleMetal()
+        if let _ = self.terrain {
+            if let individual = self.selectedAnimal {
+                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
+                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.z), forKey: "z")
+            }else {
+                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
+                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+            }
+        }
     }
 }

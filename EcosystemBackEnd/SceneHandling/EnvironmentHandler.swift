@@ -21,6 +21,18 @@ class EnvironmentHandler {
         var azimuth: Float = 0
         
     
+    var selectionIndex: Int? = nil {
+        didSet {
+            if self.selectionIndex! < self.animals.count {
+                self.selectedAnimal = self.animals[self.selectionIndex!]
+            }else {
+                fatalError("Index Out of Range")
+            }
+        }
+    }
+    
+    var selectedAnimal: Animal?
+    
     lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
     var setupFunctionIndex: Int = 0
     init(_ FileNamed: String) {
@@ -58,15 +70,15 @@ class EnvironmentHandler {
         lightSource.name = "LightSource"
         setupSky()
         
-//        let ambientNode = SCNNode()
-//        ambientNode.light = SCNLight()
-//        ambientNode.light?.type = .ambient
-//        ambientNode.worldPosition = SCNVector3(0, 100, 0)
-//        
-//        ambientNode.light?.color = NSColor.white
-//        ambientNode.light?.intensity = 100
-//        self.Scene.rootNode.addChildNode(ambientNode)
-//        ambientNode.name = "Ambient Light"
+        let ambientNode = SCNNode()
+        ambientNode.light = SCNLight()
+        ambientNode.light?.type = .ambient
+        ambientNode.worldPosition = SCNVector3(0, 100, 0)
+        
+        ambientNode.light?.color = NSColor.white
+        ambientNode.light?.intensity = 100
+        self.Scene.rootNode.addChildNode(ambientNode)
+        ambientNode.name = "Ambient Light"
     }
     
     var viableVerticies: [SpaciallyAwareVector]!
@@ -76,6 +88,8 @@ class EnvironmentHandler {
         terrain = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         terrain.node.name = "Terrain"
         Scene.rootNode.addChildNode(terrain.node)
+        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
+        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
         
     }
     

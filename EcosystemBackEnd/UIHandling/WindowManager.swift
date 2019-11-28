@@ -25,7 +25,7 @@ class WindowManager {
         self.splashController = splashController
         SplashScreen.title = ""
         Manager = self
-        
+        self.UserInputWindow.1.Manager = self
     }
     
     func loadGame() {
