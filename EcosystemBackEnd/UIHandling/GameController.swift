@@ -32,9 +32,9 @@ class GameController: NSViewController {
        GameView.allowsCameraControl = true
        
        // show statistics such as fps and timing information
-        if building == true {
+//        if building == true {
        GameView.showsStatistics = true
-        }
+//        }
        GameView.delegate = self
         
         GameView.translatesAutoresizingMaskIntoConstraints = false
