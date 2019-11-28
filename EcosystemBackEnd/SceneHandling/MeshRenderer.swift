@@ -292,6 +292,11 @@ class SurfaceWaterMesh: Mesh {
         
     }
     
+    init(GroundVertices: [SCNVector3], GroundIndices: [UInt16]) {
+        let verts = GroundVertices.map({$0.setValue(Component: .y, Value: 0)})
+        super.init(Verticies: verts, Indices: GroundIndices)
+    }
+    
     init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int, NoiseMap: GKNoiseMap, Threshold: CGFloat, NoiseMapWidth: Int, NoiseMapHeight: Int) {
         var vertices = [SCNVector3]()
         var indices = [UInt16]()

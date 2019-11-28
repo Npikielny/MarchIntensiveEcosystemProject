@@ -33,6 +33,8 @@
 		30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A27F17238F097F0092DAF3 /* WindowManager.swift */; };
 		30A27F1B238F0D0B0092DAF3 /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A27F19238F0D0B0092DAF3 /* SplashController.swift */; };
 		30A27F1C238F0D0B0092DAF3 /* SplashScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */; };
+		30A30DD22390360900AD3BAB /* UserControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A30DD02390360900AD3BAB /* UserControls.swift */; };
+		30A30DD32390360900AD3BAB /* UserControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A30DD12390360900AD3BAB /* UserControls.xib */; };
 		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
 		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
 		30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A444A8237EF66200BA29D4 /* DebugWindow.xib */; };
@@ -96,6 +98,8 @@
 		30A27F17238F097F0092DAF3 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		30A27F19238F0D0B0092DAF3 /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
 		30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SplashScreen.xib; sourceTree = "<group>"; };
+		30A30DD02390360900AD3BAB /* UserControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserControls.swift; sourceTree = "<group>"; };
+		30A30DD12390360900AD3BAB /* UserControls.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserControls.xib; sourceTree = "<group>"; };
 		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
 		30A444A8237EF66200BA29D4 /* DebugWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugWindow.xib; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 				30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */,
 				30A27F13238EE7FA0092DAF3 /* GameController.swift */,
 				30A27F14238EE7FA0092DAF3 /* GameController.xib */,
+				30A30DD02390360900AD3BAB /* UserControls.swift */,
+				30A30DD12390360900AD3BAB /* UserControls.xib */,
 			);
 			path = UIHandling;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3059C82D2380769000C7289C /* genericShader.shader in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
+				30A30DD32390360900AD3BAB /* UserControls.xib in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +422,7 @@
 				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
 				30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */,
 				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
+				30A30DD22390360900AD3BAB /* UserControls.swift in Sources */,
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
