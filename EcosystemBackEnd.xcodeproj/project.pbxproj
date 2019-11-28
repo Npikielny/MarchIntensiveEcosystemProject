@@ -10,6 +10,7 @@
 		300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */; };
 		300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC5238D62B100B7F363 /* MetalHandler.swift */; };
 		301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */; };
+		301E8FD823908ADA001B8727 /* PetNames.csv in Resources */ = {isa = PBXBuildFile; fileRef = 301E8FD723908ADA001B8727 /* PetNames.csv */; };
 		302908A8238A1DA300D4396D /* hungerStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A7238A1DA300D4396D /* hungerStatShader.shader */; };
 		302908AA238A1DC900D4396D /* healthStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A9238A1DC900D4396D /* healthStatShader.shader */; };
 		303314492379EDF400C856F6 /* groundShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 303314482379EDF400C856F6 /* groundShader.shader */; };
@@ -67,6 +68,7 @@
 		300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhysicsHandler.metal; sourceTree = "<group>"; };
 		300DBEC5238D62B100B7F363 /* MetalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalHandler.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentHandler.swift; sourceTree = "<group>"; };
+		301E8FD723908ADA001B8727 /* PetNames.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PetNames.csv; sourceTree = "<group>"; };
 		302908A7238A1DA300D4396D /* hungerStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = hungerStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		302908A9238A1DC900D4396D /* healthStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = healthStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		303314422379EA7A00C856F6 /* EcosystemBackEnd-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EcosystemBackEnd-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				30ADAB45238583E4001FEECE /* MovementHandling.swift */,
 				30898E9F238858EF00427C76 /* StatsHandling.swift */,
 				30ADAB492385842D001FEECE /* priorityHandling.swift */,
+				301E8FD723908ADA001B8727 /* PetNames.csv */,
 			);
 			path = OrganismHandling;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 				3034681F237B024E00E32BF5 /* tree.shader in Resources */,
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3059C82D2380769000C7289C /* genericShader.shader in Resources */,
+				301E8FD823908ADA001B8727 /* PetNames.csv in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
 				30A30DD32390360900AD3BAB /* UserControls.xib in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,

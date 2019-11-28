@@ -37,7 +37,7 @@ class Animal {
     
     init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
         self.node = getPrefab(Species+".scn", Shaders: nil)
-        self.node.name = Species
+        self.node.name = Handler.Names.randomElement()
         self.lookType = lookType
         self.handler = Handler
         self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))

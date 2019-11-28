@@ -43,9 +43,27 @@ class EnvironmentHandler {
         setupFunctions.append((setupWater, "Adding Water"))
         setupFunctions.append((setupTrees, "Adding Trees"))
         setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
+        setupFunctions.append((getNames, "Finding Animal Names"))
         setupFunctions.append((addAnimals, "Adding Animals"))
         setupFunctions.append((addFood, "Adding Food"))
 //        setupFunctions.append(debugPoints)
+    }
+    
+    var Names: [String]!
+    
+    func getNames() {
+        guard let filepath = Bundle.main.path(forResource: "PetNames", ofType: "csv")
+            else {
+                fatalError("FailedtoFindPath")
+        }
+        
+        
+        var contents = try! String(contentsOfFile: filepath)
+        var nems = contents.components(separatedBy: ",")
+        nems = nems.map({$0.lowercased()})
+        nems = nems.map({$0.capitalized})
+        
+        self.Names = nems
     }
     
     func runSetupFunction() {
