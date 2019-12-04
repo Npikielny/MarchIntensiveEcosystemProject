@@ -142,6 +142,7 @@ extension SCNVector3 {
     func random() -> SCNVector3 {
         let vector = SCNVector3(x: CGFloat.random(in: -5...5), y: CGFloat.random(in: -5...5), z: CGFloat.random(in: -5...5)).unitVector()
         if vector.getMagnitude() == 0 {
+            print(vector)
             return random()
         }else {
             return vector

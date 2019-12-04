@@ -12,7 +12,7 @@ extension Animal {
     func setTarget() {
         switch self.priority {
         case .Food:
-            var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
+            let nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
             if let position = nearbyFoods.first?.node.worldPosition {
                 self.target = position
             }else {
@@ -42,13 +42,15 @@ extension Animal {
         let target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20))).setValue(Component: .y, Value: 2)
 //        let targetPoint = self.handler.viableVerticies.sorted(by: {($0.vector-target).getMagnitude() < ($1.vector-target).getMagnitude()}).first?.vector
 //        self.target = target
-        let targetPoint2 = self.handler.viableVerticies.first(where: {$0.vector == target})
+//        let targetPoint2 = self.handler.viableVerticies.first(where: {$0.vector == target})
 //        print(target.x,target.y,target.z,targetPoint!.x,targetPoint!.y,targetPoint!.z)
-        if let point = targetPoint2?.vector {
-            self.target = point
-        }else {
-            randomTarget()
-        }
+//        if let point = targetPoint2?.vector {
+//            self.target = point
+//        }else {
+//            let targetPoint2 = self.handler.viableVerticies.sorted(by: {($0.vector-self.node.worldPosition).getMagnitude()<($1.vector-self.node.worldPosition).getMagnitude()})
+//            self.target = targetPoint2.first?.vector ?? SCNVector3().zero() // MARK: This will need fixing
+//        }
+        self.target = target
         
     }
     
@@ -72,7 +74,7 @@ extension Animal {
                         self.inProcess = true
                         self.drink()
                     }
-                }else if self.priority == .Food {
+                }else if self.priority == .Food { //MARK: Force Unwrapping Food
                     let closestFood = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
                     if self.inProcess {
                         self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
@@ -96,9 +98,17 @@ extension Animal {
             if self.health <= 0 {
                 self.die()
             }
-            if self.node.worldPosition.y < 2 {
-                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2.5)
+//            print(self.height)
+            if self.node.worldPosition.y < self.height/2+2 {
+//                print("TR", self.node.name)
+                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: self.height/2)
+                self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
             }
+//            if self.node.worldPosition.y < 1 {
+//                print("EXEC")
+//                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 1)
+//                self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
+//            }
         }
     }
     
@@ -111,20 +121,77 @@ extension Animal {
     //MARK: - Calling Physics Handling
 
 extension EnvironmentHandler {
+    
+    func commenceEngine() {
+        self.initialized = true
+        self.Scene.rootNode.addChildNode(thirstNode)
+        self.Scene.rootNode.addChildNode(hungerNode)
+        self.Scene.rootNode.addChildNode(healthNode)
+        self.Scene.rootNode.addChildNode(statsNode)
+
+        self.thirstNode.isHidden = true
+        self.hungerNode.isHidden = true
+        self.healthNode.isHidden = true
+        self.statsNode.isHidden = true
+    }
+    
     func process() {
-        for i in animals {
-            i.syncNode()
-            i.movementHandler()
-        }
-//        handleMetal()
-        if let _ = self.terrain {
-            if let individual = self.selectedAnimal {
-                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
-                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.z), forKey: "z")
-            }else {
-                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
-                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+        if self.initialized {
+            for i in animals {
+                i.syncNode()
+                i.movementHandler()
+            }
+    //        handleMetal()
+            if let _ = self.terrain {
+                if let individual = self.selectedAnimal {
+                    self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
+                    self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.z), forKey: "z")
+                    setStats()
+                    self.thirstNode.isHidden = false
+                    self.hungerNode.isHidden = false
+                    self.healthNode.isHidden = false
+                    self.statsNode.isHidden = false
+                }else {
+                    self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
+                    self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+                    self.thirstNode.isHidden = true
+                    self.hungerNode.isHidden = true
+                    self.healthNode.isHidden = true
+                    self.statsNode.isHidden = true
+                }
             }
         }
+    }
+    
+    func setStats() {
+        self.thirstNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)
+        self.hungerNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
+        self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
+       let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
+
+        self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.thirst/100-Float(height/2), forKey: "threshold")
+        self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.hunger/100-Float(height/2), forKey: "threshold")
+        self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.health/100-Float(height/2), forKey: "threshold")
+
+        self.statsNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
+//        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
+       let priorityString: String = {
+        switch self.selectedAnimal!.priority {
+           case .Idle:
+               return "Idle"
+           case .Food:
+               return "Food"
+           case .Water:
+               return "Water"
+           case .Breed:
+               return "Breed"
+           default:
+               return "Nil"
+           }
+       }()
+        let animalName = self.selectedAnimal?.node.name
+       let text = SCNText(string: animalName! + " – " + priorityString, extrusionDepth: 0.1)
+       text.font = NSFont.systemFont(ofSize: 0.5)
+        self.statsNode.geometry = text
     }
 }

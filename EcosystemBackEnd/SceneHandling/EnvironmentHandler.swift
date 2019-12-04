@@ -35,6 +35,7 @@ class EnvironmentHandler {
     
     lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
     var setupFunctionIndex: Int = 0
+    var initialized: Bool = false // Necessary to keep animals from moving before startup
     init(_ FileNamed: String) {
         self.Scene = EnvironmentScene(named: FileNamed)!
         setupFunctions.append(({}, "Setting Up SCNScene"))
@@ -46,7 +47,8 @@ class EnvironmentHandler {
         setupFunctions.append((getNames, "Finding Animal Names"))
         setupFunctions.append((addAnimals, "Adding Animals"))
         setupFunctions.append((addFood, "Adding Food"))
-//        setupFunctions.append(debugPoints)
+//        setupFunctions.append((debugPoints,"Adding Debugging Points"))
+        setupFunctions.append((commenceEngine, "Starting Physics Engine"))
     }
     
     var Names: [String]!
@@ -141,7 +143,7 @@ class EnvironmentHandler {
         Scene.rootNode.addChildNode(Diego.node)
         
         for _ in 0..<25-1 {
-            let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 10), Handler: self)
+            let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
             Scene.rootNode.addChildNode(rabbit.node)
         }
         
@@ -174,5 +176,43 @@ class EnvironmentHandler {
     
     var animals = [Animal]()
     var foods = [Food]()
+
+    var statsNode: SCNNode = {
+        let text = SCNText(string: "Diego", extrusionDepth: 1)
+        text.font = NSFont.systemFont(ofSize: 10)
+        let node = SCNNode()
+        node.geometry = text
+        return node
+    }()
+
+    var thirstNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "waterStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+
+    var hungerNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "hungerStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+
+    var healthNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "healthStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
     
 }

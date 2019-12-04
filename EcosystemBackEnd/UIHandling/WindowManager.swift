@@ -39,7 +39,7 @@ class WindowManager {
         if self.gameController!.handler.setupFunctionIndex < self.gameController!.handler.setupFunctions.count {
             self.gameController!.handler.runSetupFunction()
             increment()
-            let _ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(setupGame), userInfo: nil, repeats: false)
+            let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setupGame), userInfo: nil, repeats: false)
         }else {
             showGame()
         }
