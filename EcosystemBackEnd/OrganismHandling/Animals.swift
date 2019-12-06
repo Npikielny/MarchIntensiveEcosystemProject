@@ -49,7 +49,6 @@ class Animal {
         self.Id = Int32(handler.animals.count)
         additionalSetup()
         self.node.worldPosition = Position
-        print(Position.y)
         self.handler.animals.append(self)
         
     }
@@ -102,7 +101,6 @@ class Rabbit: Animal {
     override func move() {
         if (self.node.physicsBody?.velocity.zero(.y))!.getMagnitude() <= 0.01 {
             let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
-//            print(distance)
             if distance <= self.Speed {
                 if distance < 1.2 {
                     self.node.worldPosition = self.target

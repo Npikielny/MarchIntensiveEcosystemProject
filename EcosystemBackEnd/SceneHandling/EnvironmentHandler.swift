@@ -150,7 +150,7 @@ class EnvironmentHandler {
     }
     
     func addFood() {
-        for _ in 0..<50 {
+        for _ in 0..<100 {
             let apple = Apple(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat.random(in: 0...200)).setValue(Component: .y, Value: 20), Handler: self)
             apple.addPhysicsBody()
             self.Scene.rootNode.addChildNode(apple.node)

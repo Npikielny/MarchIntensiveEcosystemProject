@@ -69,6 +69,7 @@ extension Animal {
             if isNearTarget() { // logic for setting new target
                 if self.priority == .Water {
                     if self.inProcess {
+//                        print("DRINKING")
                         self.drink()
                     }else if (self.handler.drinkableVertices.contains(where: {($0.vector == self.target)})) {
                         self.inProcess = true
@@ -77,8 +78,8 @@ extension Animal {
                 }else if self.priority == .Food { //MARK: Force Unwrapping Food
                     let closestFood = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
                     if self.inProcess {
-                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
-                        self.node.physicsBody?.velocity = SCNVector3().zero()
+//                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+//                        self.node.physicsBody?.velocity = SCNVector3().zero()
                         self.eat(Item: closestFood.first!)
                     }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).getMagnitude() <= 3 {
                         self.inProcess = true
@@ -87,11 +88,13 @@ extension Animal {
                         self.node.physicsBody?.velocity = SCNVector3().zero()
                     }
                 }else {
+                    print("REG")
                     checkPriority()
                     setTarget()
                 }
+            }else {
+                move()
             }
-            move()
             additionalPhysics() // overridable function
             look() // handles looking
             handleStats()
@@ -103,6 +106,7 @@ extension Animal {
 //                print("TR", self.node.name)
                 self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: self.height/2)
                 self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
+                node.physicsBody?.resetTransform()
             }
 //            if self.node.worldPosition.y < 1 {
 //                print("EXEC")
