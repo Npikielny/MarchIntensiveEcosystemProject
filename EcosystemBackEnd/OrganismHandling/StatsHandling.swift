@@ -27,6 +27,11 @@ extension Animal {
             self.thirst = 0
             self.health -= 0.01
         }
+        if self.breedingUrge > 0 {
+            self.breedingUrge -= 0.01
+        }else {
+            self.breedingUrge = 0
+        }
     }
     
     func drink() {

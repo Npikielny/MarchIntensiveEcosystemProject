@@ -215,4 +215,14 @@ class EnvironmentHandler {
         return node
     }()
     
+    var breedNode: SCNNode = {
+        let geo = SCNCapsule(capRadius: 0.2, height: 3)
+        geo.heightSegmentCount = 30
+        let node = SCNNode(geometry: geo)
+        node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
+        node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "breedingStatShader")]
+        node.geometry?.materials.first!.transparencyMode = .aOne
+        return node
+    }()
+    
 }

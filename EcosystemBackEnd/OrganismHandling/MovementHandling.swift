@@ -38,7 +38,7 @@ extension Animal {
     func randomTarget() {
 //        let organismHeight = (self.node.boundingBox.max.y+self.node.boundingBox.min.y)/2
 //        let organismHeight: CGFloat = self.node.boundingBox.min.y
-        let organismHeight: CGFloat = 2.2
+//        let organismHeight: CGFloat = 2.2
         let target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20))).setValue(Component: .y, Value: 2)
 //        let targetPoint = self.handler.viableVerticies.sorted(by: {($0.vector-target).getMagnitude() < ($1.vector-target).getMagnitude()}).first?.vector
 //        self.target = target
@@ -69,7 +69,6 @@ extension Animal {
             if isNearTarget() { // logic for setting new target
                 if self.priority == .Water {
                     if self.inProcess {
-//                        print("DRINKING")
                         self.drink()
                     }else if (self.handler.drinkableVertices.contains(where: {($0.vector == self.target)})) {
                         self.inProcess = true
@@ -87,8 +86,9 @@ extension Animal {
                         self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
                         self.node.physicsBody?.velocity = SCNVector3().zero()
                     }
+                }else if self.priority == .Breed {
+                    
                 }else {
-                    print("REG")
                     checkPriority()
                     setTarget()
                 }
@@ -107,13 +107,23 @@ extension Animal {
                 self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: self.height/2)
                 self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
                 node.physicsBody?.resetTransform()
+                if self.node.worldPosition.y < self.height/2+2 {
+                    reset()
+                }
             }
 //            if self.node.worldPosition.y < 1 {
 //                print("EXEC")
 //                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 1)
 //                self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
 //            }
+            if max(abs(self.node.worldPosition.x),abs(self.node.worldPosition.y)) > 200 {
+                reset()
+            }
         }
+    }
+    
+    func reset() {
+        self.node.worldPosition = self.target.setValue(Component: .y, Value: 10)
     }
     
     func syncNode() { // This function realigns the node's position with the physicsbody after rendering
@@ -132,11 +142,13 @@ extension EnvironmentHandler {
         self.Scene.rootNode.addChildNode(hungerNode)
         self.Scene.rootNode.addChildNode(healthNode)
         self.Scene.rootNode.addChildNode(statsNode)
+        self.Scene.rootNode.addChildNode(breedNode)
 
         self.thirstNode.isHidden = true
         self.hungerNode.isHidden = true
         self.healthNode.isHidden = true
         self.statsNode.isHidden = true
+        self.breedNode.isHidden = true
     }
     
     func process() {
@@ -155,6 +167,7 @@ extension EnvironmentHandler {
                     self.hungerNode.isHidden = false
                     self.healthNode.isHidden = false
                     self.statsNode.isHidden = false
+                    self.breedNode.isHidden = false
                 }else {
                     self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
                     self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
@@ -162,6 +175,7 @@ extension EnvironmentHandler {
                     self.hungerNode.isHidden = true
                     self.healthNode.isHidden = true
                     self.statsNode.isHidden = true
+                    self.breedNode.isHidden = true
                 }
             }
         }
@@ -171,11 +185,14 @@ extension EnvironmentHandler {
         self.thirstNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)
         self.hungerNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
         self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
+        self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
+        
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 
         self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.thirst/100-Float(height/2), forKey: "threshold")
         self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.hunger/100-Float(height/2), forKey: "threshold")
         self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.health/100-Float(height/2), forKey: "threshold")
+        self.breedNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.breedingUrge/100-Float(height/2), forKey: "threshold")
 
         self.statsNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
 //        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
@@ -197,5 +214,6 @@ extension EnvironmentHandler {
        let text = SCNText(string: animalName! + " – " + priorityString, extrusionDepth: 0.1)
        text.font = NSFont.systemFont(ofSize: 0.5)
         self.statsNode.geometry = text
+//        let color: NSColor = #colorLiteral(red: 1, green: 0, blue: 0.9662935138, alpha: 1)
     }
 }
