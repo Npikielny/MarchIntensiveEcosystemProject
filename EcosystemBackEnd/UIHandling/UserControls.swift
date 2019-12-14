@@ -44,15 +44,19 @@ class UserControls: NSViewController {
     var animalIndex: Int?
     @objc func nextAnimal() {
         if let _ = animalIndex {
-            animalIndex! += 1
+            self.animalIndex! += 1
             if animalIndex! >= self.Manager.gameController!.handler.animals.count {
-                animalIndex = 0
+                self.animalIndex = 0
             }
         }else {
-            animalIndex = 0
+            self.animalIndex = 0
         }
         self.Manager.gameController?.handler.selectionIndex = self.animalIndex!
-        self.Name.string = "Name: " + (self.Manager.gameController?.handler.selectedAnimal!.node.name)!
+        if let _ = self.Manager.gameController?.handler.selectedAnimal {
+            self.Name.string = "Name: " + (self.Manager.gameController?.handler.selectedAnimal!.node.name)!
+        }else {
+            self.Name.string = "No Animal Selected"
+        }
     }
     
     @objc func previousAnimal() {

@@ -23,10 +23,18 @@ class EnvironmentHandler {
     
     var selectionIndex: Int? = nil {
         didSet {
-            if self.selectionIndex! < self.animals.count {
-                self.selectedAnimal = self.animals[self.selectionIndex!]
+            if let _ = selectionIndex {
+                if self.selectionIndex! < self.animals.count {
+                    self.selectedAnimal = self.animals[self.selectionIndex!]
+                }else {
+                    self.selectedAnimal = nil
+                }
             }else {
-                fatalError("Index Out of Range")
+                if self.animals.count > 0 {
+                    self.selectionIndex = 0
+                }else {
+                    self.selectedAnimal = nil
+                }
             }
         }
     }
@@ -151,7 +159,7 @@ class EnvironmentHandler {
     
     func addFood() {
         for _ in 0..<100 {
-            let apple = Apple(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat.random(in: 0...200)).setValue(Component: .y, Value: 20), Handler: self)
+            let apple = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
             apple.addPhysicsBody()
             self.Scene.rootNode.addChildNode(apple.node)
         }
@@ -224,5 +232,20 @@ class EnvironmentHandler {
         node.geometry?.materials.first!.transparencyMode = .aOne
         return node
     }()
+    
+    
+    var lastTime: Float = 0
+    func Physics() {
+        let difference = self.time - lastTime
+        
+        for item in animals {
+            if item.node.worldPosition.y > 1 {
+                
+            }
+            
+        }
+        
+        lastTime = self.time
+    }
     
 }

@@ -27,7 +27,22 @@ extension Animal {
                 randomTarget()
             }
         case .Breed:
-            randomTarget()
+            if let _ = self.targetMate {}else {
+                var breedingTargets = self.handler.animals
+                breedingTargets.removeAll(where: {$0.priority != .Breed})
+                breedingTargets.removeAll(where: {$0.node == self.node})
+                breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+                if let _ = breedingTargets.first {
+                    self.targetMate = breedingTargets.first
+                }
+            }
+            
+            if let _ = self.targetMate {
+                self.target = (self.targetMate!.node.worldPosition + self.node.worldPosition).scalarMultiplication(Scalar: 0.5)
+                print(self.target-self.node.worldPosition)
+            }else {
+                randomTarget()
+            }
         case .Flee:
             randomTarget()
         default: //Idle
@@ -80,11 +95,11 @@ extension Animal {
 //                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
 //                        self.node.physicsBody?.velocity = SCNVector3().zero()
                         self.eat(Item: closestFood.first!)
-                    }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).getMagnitude() <= 3 {
+                    }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).zero(.y).getMagnitude() <= 4 {
                         self.inProcess = true
                         self.eat(Item: closestFood.first!)
-                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
-                        self.node.physicsBody?.velocity = SCNVector3().zero()
+//                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+//                        self.node.physicsBody?.velocity = SCNVector3().zero()
                     }
                 }else if self.priority == .Breed {
                     
@@ -123,7 +138,8 @@ extension Animal {
     }
     
     func reset() {
-        self.node.worldPosition = self.target.setValue(Component: .y, Value: 10)
+//        self.node.worldPosition = self.target.setValue(Component: .y, Value: 3)
+        NSLog("RESET")
     }
     
     func syncNode() { // This function realigns the node's position with the physicsbody after rendering
@@ -156,6 +172,9 @@ extension EnvironmentHandler {
             for i in animals {
                 i.syncNode()
                 i.movementHandler()
+            }
+            for i in foods {
+                i.syncNode()
             }
     //        handleMetal()
             if let _ = self.terrain {
@@ -216,4 +235,7 @@ extension EnvironmentHandler {
         self.statsNode.geometry = text
 //        let color: NSColor = #colorLiteral(red: 1, green: 0, blue: 0.9662935138, alpha: 1)
     }
+    
 }
+
+

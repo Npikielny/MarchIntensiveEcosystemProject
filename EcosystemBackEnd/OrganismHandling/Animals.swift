@@ -18,7 +18,13 @@ class Animal {
     //Priority Handling
     var hunger: Float = 100
     var thirst: Float = 100
-    var health: Float = 100
+    var health: Float = 100 {
+        didSet {
+            if self.health <= 0 {
+                self.die()
+            }
+        }
+    }
     var breedingUrge: Float = 100
     var priority: Priority = .Idle
     //Life Handling
@@ -30,7 +36,7 @@ class Animal {
     //Movement
     var target: SCNVector3 = SCNVector3().zero()
     func getHeight() -> CGFloat {return self.node.worldPosition.y-(self.node.boundingBox.min.y)/2}
-    
+    var targetMate: Animal?
     //Individual Traits
     var Speed: CGFloat = 2
     
@@ -69,11 +75,16 @@ class Animal {
     
     func die() {
         dead = true
-        let spin = CABasicAnimation(keyPath: "rotation")
-        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * Float.pi)/4))
-        spin.duration = 10
-        self.node.addAnimation(spin, forKey: "rotation")
+//        let spin = CABasicAnimation(keyPath: "rotation")
+//        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
+//        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 0, z: 1, w: CGFloat(2 * Float.pi)/4))
+//        spin.duration = 10
+//        self.node.addAnimation(spin, forKey: "rotation")
+        let action = SCNAction.rotateBy(x: 0, y: 0, z: CGFloat.pi/4, duration: 1)
+        self.node.runAction(action, completionHandler: {
+            self.handler.animals.removeAll(where: {$0.node == self.node})
+            self.node.removeFromParentNode()
+        })
         
     }
     

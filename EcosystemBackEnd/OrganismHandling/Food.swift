@@ -39,6 +39,10 @@ class Food {
         handler.foods.removeAll(where: {$0.node == self.node})
         self.node.removeFromParentNode()
     }
+    
+    func syncNode() { // This function realigns the node's position with the physicsbody after rendering
+        node.transform = node.presentation.transform
+    }
 }
 
 class Apple: Food {

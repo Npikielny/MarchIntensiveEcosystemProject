@@ -17,7 +17,7 @@ extension Animal {
             }
         }else {
             self.hunger = 0
-            self.health -= 0.005
+            self.health -= 0.01
         }
         if self.thirst > 0 {
             if (self.inProcess == true && self.priority == .Water) == false {
@@ -28,7 +28,7 @@ extension Animal {
             self.health -= 0.01
         }
         if self.breedingUrge > 0 {
-            self.breedingUrge -= 0.01
+            self.breedingUrge -= 0.002
         }else {
             self.breedingUrge = 0
         }
