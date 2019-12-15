@@ -12,7 +12,7 @@ extension Animal {
     
     func look() {
         if self.lookType == .Velocity {
-            self.node.look(at: self.node.worldPosition + self.node.physicsBody!.velocity)
+            self.node.look(at: self.node.worldPosition + self.velocity)
         }else {
             self.node.eulerAngles = self.getLookingAngle(self.target)
         }

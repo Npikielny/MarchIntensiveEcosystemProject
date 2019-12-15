@@ -21,6 +21,7 @@ class GameController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         handler = EnvironmentHandler("art.scnassets/GameScene.scn")
+        handler.View = GameView
        let scene = handler.Scene
        
        // set the scene to the view
@@ -30,7 +31,8 @@ class GameController: NSViewController {
        GameView.isPlaying = true
        // allows the user to manipulate the camera
        GameView.allowsCameraControl = true
-       
+        GameView.scene?.isPaused = false
+        
        // show statistics such as fps and timing information
 //        if building == true {
        GameView.showsStatistics = true

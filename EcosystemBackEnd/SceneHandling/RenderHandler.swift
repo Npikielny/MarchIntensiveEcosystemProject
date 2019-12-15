@@ -18,6 +18,7 @@ extension GameController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         self.handler.updateTime()
         self.handler.process()
+        self.handler.Physics()
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {

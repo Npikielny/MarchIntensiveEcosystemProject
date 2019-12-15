@@ -17,6 +17,7 @@
 		3033144D2379F13000C856F6 /* waterShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3033144C2379F13000C856F6 /* waterShader.shader */; };
 		3034681F237B024E00E32BF5 /* tree.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3034681E237B024E00E32BF5 /* tree.shader */; };
 		30361B592389BAE60002B42D /* waterStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 30361B582389BAE60002B42D /* waterStatShader.shader */; };
+		30545AB023A544AE00006313 /* Matter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30545AAF23A544AE00006313 /* Matter.swift */; };
 		305700B823787997006696D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B723787997006696D9 /* AppDelegate.swift */; };
 		305700BC23787997006696D9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BB23787997006696D9 /* art.scnassets */; };
 		305700BE23787999006696D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BD23787999006696D9 /* Assets.xcassets */; };
@@ -77,6 +78,7 @@
 		3033144C2379F13000C856F6 /* waterShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = waterShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		3034681E237B024E00E32BF5 /* tree.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = tree.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		30361B582389BAE60002B42D /* waterStatShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = waterStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		30545AAF23A544AE00006313 /* Matter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matter.swift; sourceTree = "<group>"; };
 		305700B423787997006696D9 /* EcosystemBackEnd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcosystemBackEnd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		305700B723787997006696D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		305700BB23787997006696D9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				30898E9F238858EF00427C76 /* StatsHandling.swift */,
 				30ADAB492385842D001FEECE /* priorityHandling.swift */,
 				301E8FD723908ADA001B8727 /* PetNames.csv */,
+				30545AAF23A544AE00006313 /* Matter.swift */,
 			);
 			path = OrganismHandling;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
+				30545AB023A544AE00006313 /* Matter.swift in Sources */,
 				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,

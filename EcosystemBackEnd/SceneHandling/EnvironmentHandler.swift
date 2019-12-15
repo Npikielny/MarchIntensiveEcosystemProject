@@ -8,9 +8,13 @@
 
 import SceneKit
 
+func bottom (_ Object: Matter) -> (CGFloat) {return Object.node.worldPosition.y+Object.node.boundingBox.min.y}
+
 class EnvironmentHandler {
     
-    var Scene: EnvironmentScene
+    var Scene: SCNScene
+    
+    var View: SCNView?
     
     var terrain: Ground!
     var water: SurfaceWaterMesh!
@@ -45,7 +49,8 @@ class EnvironmentHandler {
     var setupFunctionIndex: Int = 0
     var initialized: Bool = false // Necessary to keep animals from moving before startup
     init(_ FileNamed: String) {
-        self.Scene = EnvironmentScene(named: FileNamed)!
+        self.Scene = SCNScene(named: FileNamed)!
+        
         setupFunctions.append(({}, "Setting Up SCNScene"))
         setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
@@ -148,11 +153,9 @@ class EnvironmentHandler {
     func addAnimals() {
         let Diego = Rabbit(Position: SCNVector3(0,10,0), Handler: self)
         Diego.node.name = "Diego"
-        Scene.rootNode.addChildNode(Diego.node)
         
-        for _ in 0..<25-1 {
+        for _ in 0..<2-1 {
             let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
-            Scene.rootNode.addChildNode(rabbit.node)
         }
         
     }
@@ -160,7 +163,7 @@ class EnvironmentHandler {
     func addFood() {
         for _ in 0..<100 {
             let apple = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
-            apple.addPhysicsBody()
+//            apple.addPhysicsBody()
             self.Scene.rootNode.addChildNode(apple.node)
         }
     }
@@ -233,19 +236,33 @@ class EnvironmentHandler {
         return node
     }()
     
+    var targetNode: SCNNode = {
+        let node = SCNNode()
+        node.geometry = SCNSphere(radius: 0.3)
+        node.geometry?.materials.first?.diffuse.contents = NSColor.orange
+        return node
+    }()
     
     var lastTime: Float = 0
     func Physics() {
-        let difference = self.time - lastTime
-        
-        for item in animals {
-            if item.node.worldPosition.y > 1 {
-                
+        if self.initialized {
+            let difference = Float(1)/Float(10)
+            for item in animals+foods {
+                item.acceleration = SCNVector3().zero()
+                if bottom(item) > 2 {
+                    item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
+                }else if bottom(item) < 2 {
+                    item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y)
+                }
+                if bottom(item) - 2 < 0.005 && item.velocity.y < 0 {
+                    item.velocity = SCNVector3().zero()
+                }
+                item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+                item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
             }
             
+            lastTime = self.time
         }
-        
-        lastTime = self.time
     }
     
 }

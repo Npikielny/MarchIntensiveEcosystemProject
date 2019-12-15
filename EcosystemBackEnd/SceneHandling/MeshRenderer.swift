@@ -227,7 +227,7 @@ class Ground: Mesh {
         }
         
         super.init(Verticies: vertices.map({$0.vector}), Indices: indices)
-        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
+//        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
         
     }
     

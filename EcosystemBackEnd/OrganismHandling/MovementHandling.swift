@@ -29,17 +29,25 @@ extension Animal {
         case .Breed:
             if let _ = self.targetMate {}else {
                 var breedingTargets = self.handler.animals
-                breedingTargets.removeAll(where: {$0.priority != .Breed})
                 breedingTargets.removeAll(where: {$0.node == self.node})
                 breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
-                if let _ = breedingTargets.first {
-                    self.targetMate = breedingTargets.first
+                for index in 0..<breedingTargets.count {
+                    if let _ = self.targetMate{} else {
+                        if let _ = breedingTargets[index].targetMate {} else {
+                            breedingTargets[index].breedRequest(self)
+                        }
+                    }
+                }
+                if let _ = self.targetMate {} else {
+                    randomTarget()
                 }
             }
             
             if let _ = self.targetMate {
-                self.target = (self.targetMate!.node.worldPosition + self.node.worldPosition).scalarMultiplication(Scalar: 0.5)
-                print(self.target-self.node.worldPosition)
+                if ((self.targetMate?.node.worldPosition)! - self.node.worldPosition).getMagnitude() < 4 {
+                    self.inProcess = true
+                    self.targetMate?.inProcess = true
+                }else {self.target = (self.targetMate!.node.worldPosition + self.node.worldPosition).scalarMultiplication(Scalar: 0.5)}
             }else {
                 randomTarget()
             }
@@ -102,7 +110,22 @@ extension Animal {
 //                        self.node.physicsBody?.velocity = SCNVector3().zero()
                     }
                 }else if self.priority == .Breed {
-                    
+                    if self.inProcess {
+                        self.breed()
+                    }else {
+                        if let checker = self.targetMate?.targetMate {
+                            if checker.node != self.node {
+                                self.setTarget()
+                            }else {
+                                self.inProcess = true
+                                self.targetMate!.inProcess = true
+                                self.velocity = SCNVector3().zero()
+                                self.targetMate!.velocity = SCNVector3().zero()
+                            }
+                        }else {
+                            self.randomTarget()
+                        }
+                    }
                 }else {
                     checkPriority()
                     setTarget()
@@ -116,29 +139,26 @@ extension Animal {
             if self.health <= 0 {
                 self.die()
             }
-//            print(self.height)
-            if self.node.worldPosition.y < self.height/2+2 {
-//                print("TR", self.node.name)
-                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: self.height/2)
-                self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
-                node.physicsBody?.resetTransform()
-                if self.node.worldPosition.y < self.height/2+2 {
-                    reset()
-                }
-            }
-//            if self.node.worldPosition.y < 1 {
-//                print("EXEC")
-//                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 1)
-//                self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.zero(.y))!
+//            if self.node.worldPosition.y < self.height/2+2 {
+//                self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: self.height/2)
+//                self.velocity = (self.velocity.zero(.y))
+//                if self.node.worldPosition.y < self.height/2+2 {
+//                    reset()
+//                }
 //            }
-            if max(abs(self.node.worldPosition.x),abs(self.node.worldPosition.y)) > 200 {
-                reset()
+//            if max(abs(self.node.worldPosition.x),abs(self.node.worldPosition.z)) > 200 {
+//                reset()
+//                print("E")
+//            }
+            
+            if (self.node.worldPosition.zero(.y) - self.target.zero(.y)).getMagnitude() <= 0.5 {
+                self.node.worldPosition = self.target.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y+0.1)
+                self.velocity = SCNVector3().zero()
             }
         }
     }
     
     func reset() {
-//        self.node.worldPosition = self.target.setValue(Component: .y, Value: 3)
         NSLog("RESET")
     }
     
@@ -154,17 +174,20 @@ extension EnvironmentHandler {
     
     func commenceEngine() {
         self.initialized = true
+        
         self.Scene.rootNode.addChildNode(thirstNode)
         self.Scene.rootNode.addChildNode(hungerNode)
         self.Scene.rootNode.addChildNode(healthNode)
         self.Scene.rootNode.addChildNode(statsNode)
         self.Scene.rootNode.addChildNode(breedNode)
+        self.Scene.rootNode.addChildNode(targetNode)
 
         self.thirstNode.isHidden = true
         self.hungerNode.isHidden = true
         self.healthNode.isHidden = true
         self.statsNode.isHidden = true
         self.breedNode.isHidden = true
+        self.targetNode.isHidden = true
     }
     
     func process() {
@@ -187,6 +210,7 @@ extension EnvironmentHandler {
                     self.healthNode.isHidden = false
                     self.statsNode.isHidden = false
                     self.breedNode.isHidden = false
+                    self.targetNode.isHidden = false
                 }else {
                     self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
                     self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
@@ -195,6 +219,7 @@ extension EnvironmentHandler {
                     self.healthNode.isHidden = true
                     self.statsNode.isHidden = true
                     self.breedNode.isHidden = true
+                    self.targetNode.isHidden = true
                 }
             }
         }
@@ -205,6 +230,7 @@ extension EnvironmentHandler {
         self.hungerNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(0.5, 0, 0)
         self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
         self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
+        self.targetNode.worldPosition = self.selectedAnimal!.target
         
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 
