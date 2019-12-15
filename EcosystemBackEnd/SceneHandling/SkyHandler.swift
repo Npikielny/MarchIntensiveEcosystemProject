@@ -84,6 +84,6 @@ extension EnvironmentHandler {
     
     func setSky(Index: Float) {
 //        self.Scene.background.contents = (sky.imageFromTexture())?.takeUnretainedValue()
-        self.Scene.background.contents = self.skySave[Index]
+        self.Scene.background.contents = self.skySave[Index] as Any?
     }
 }

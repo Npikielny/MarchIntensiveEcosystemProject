@@ -18,8 +18,8 @@ struct animalData {
 }
 extension EnvironmentHandler {
     func getIndividualAnimalData(animal: Animal) -> animalData {
-        let heightMap = animal.handler.terrain.noiseMap
-        let coords = (animal.node.worldPosition.x/400,animal.node.worldPosition.y/400)
+//        let heightMap = animal.handler.terrain.noiseMap
+//        let coords = (animal.node.worldPosition.x/400,animal.node.worldPosition.y/400)
         return animalData(position: animal.node.worldPosition, velocity: animal.velocity, heightOfMap: Float(1), id: animal.Id)
     }
 
@@ -67,7 +67,7 @@ extension EnvironmentHandler {
         commandEncoder.setBuffer(buffer, offset: 0, index: 0)
 
         let w = pipeline.threadExecutionWidth
-        let h = pipeline.maxTotalThreadsPerThreadgroup / w
+//        let h = pipeline.maxTotalThreadsPerThreadgroup / w
         let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
 
         commandEncoder.dispatchThreadgroups(MTLSize(width: data.count, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)

@@ -12,6 +12,8 @@ func bottom (_ Object: Matter) -> (CGFloat) {return Object.node.worldPosition.y+
 
 class EnvironmentHandler {
     
+    var frameNumber: Int = 0
+    
     var Scene: SCNScene
     
     var View: SCNView?
@@ -23,7 +25,9 @@ class EnvironmentHandler {
     var sky: MDLSkyCubeTexture!
         var time: Float = 0
         var azimuth: Float = 0
-        
+    
+    var animalDataStorage = [Int]()
+    var foodDataStorage = [Int]()
     
     var selectionIndex: Int? = nil {
         didSet {
@@ -73,7 +77,7 @@ class EnvironmentHandler {
         }
         
         
-        var contents = try! String(contentsOfFile: filepath)
+        let contents = try! String(contentsOfFile: filepath)
         var nems = contents.components(separatedBy: ",")
         nems = nems.map({$0.lowercased()})
         nems = nems.map({$0.capitalized})
@@ -155,16 +159,15 @@ class EnvironmentHandler {
         Diego.node.name = "Diego"
         
         for _ in 0..<2-1 {
-            let rabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         }
         
     }
     
     func addFood() {
         for _ in 0..<100 {
-            let apple = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
+            _ = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
 //            apple.addPhysicsBody()
-            self.Scene.rootNode.addChildNode(apple.node)
         }
     }
     

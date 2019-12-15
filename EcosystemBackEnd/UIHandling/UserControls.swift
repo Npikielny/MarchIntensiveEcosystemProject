@@ -72,6 +72,23 @@ class UserControls: NSViewController {
         self.Name.string = "Name: " + (self.Manager.gameController?.handler.selectedAnimal!.node.name)!
     }
     
+    var dataCollectionButton: NSButton = {
+        let button = NSButton(title: "Collect Data", target: self, action: #selector(printData))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func printData() {
+        print("Animals")
+        for i in (self.Manager.gameController?.handler.animalDataStorage)! {
+            print(i)
+        }
+        print("Plants")
+        for i in (self.Manager.gameController?.handler.foodDataStorage)!{
+            print(i)
+        }
+    }
+    
     func setupViews() {
         view.addSubview(Name)
         
@@ -95,6 +112,12 @@ class UserControls: NSViewController {
         previousButton.rightAnchor.constraint(equalTo: Name.leftAnchor, constant: -5).isActive = true
         previousButton.topAnchor.constraint(equalTo: Name.topAnchor).isActive = true
         previousButton.heightAnchor.constraint(equalTo: Name.heightAnchor, multiplier: 1).isActive = true
+        
+        view.addSubview(dataCollectionButton)
+        dataCollectionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        
+        
     }
     
     

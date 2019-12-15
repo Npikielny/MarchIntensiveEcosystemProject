@@ -102,10 +102,9 @@ class Animal: Matter {
 //        self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.clampPartialMagnitude(Excluding: .y, Min: 0, Max: self.Speed))!
     }
     
-    func breedRequest(_ Partner: Animal) -> Bool{
+    func breedRequest(_ Partner: Animal) {
         if self.hunger > 60 && self.thirst > 60 {
             if let _ = self.targetMate {
-               return false
             }else {
                 self.targetMate = Partner
                 Partner.targetMate = self
@@ -113,10 +112,8 @@ class Animal: Matter {
                 let target = (self.node.worldPosition + Partner.node.worldPosition).scalarMultiplication(Scalar: 0.5)
                 self.target = target
                 Partner.target = target
-                return true
             }
         }else {
-            return false
         }
     }
     

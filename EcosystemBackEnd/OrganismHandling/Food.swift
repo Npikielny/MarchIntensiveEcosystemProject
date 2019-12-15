@@ -10,7 +10,7 @@ import SceneKit
 
 class Food: Matter {
     var foodType: FoodType
-    var foodValue: Float = 40
+    var foodValue: Float = 60
     var handler: EnvironmentHandler
     
     init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: EnvironmentHandler) {
@@ -24,6 +24,7 @@ class Food: Matter {
         
         self.node.worldPosition = Position
         self.handler.foods.append(self)
+        self.handler.Scene.rootNode.addChildNode(self.node)
     }
     
 //    func addPhysicsBody() {
@@ -40,9 +41,6 @@ class Food: Matter {
         self.node.removeFromParentNode()
     }
     
-    func syncNode() { // This function realigns the node's position with the physicsbody after rendering
-        node.transform = node.presentation.transform
-    }
 }
 
 class Apple: Food {

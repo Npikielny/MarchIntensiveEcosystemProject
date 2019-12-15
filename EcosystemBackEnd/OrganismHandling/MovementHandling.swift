@@ -99,15 +99,19 @@ extension Animal {
                     }
                 }else if self.priority == .Food { //MARK: Force Unwrapping Food
                     let closestFood = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
-                    if self.inProcess {
-//                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
-//                        self.node.physicsBody?.velocity = SCNVector3().zero()
-                        self.eat(Item: closestFood.first!)
-                    }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).zero(.y).getMagnitude() <= 4 {
-                        self.inProcess = true
-                        self.eat(Item: closestFood.first!)
-//                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
-//                        self.node.physicsBody?.velocity = SCNVector3().zero()
+                    if let _ = closestFood.first {
+                        if self.inProcess {
+    //                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+    //                        self.node.physicsBody?.velocity = SCNVector3().zero()
+                            self.eat(Item: closestFood.first!)
+                        }else if (self.node.worldPosition-closestFood.first!.node.worldPosition).zero(.y).getMagnitude() <= 4 {
+                            self.inProcess = true
+                            self.eat(Item: closestFood.first!)
+    //                        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y)
+    //                        self.node.physicsBody?.velocity = SCNVector3().zero()
+                        }
+                    }else {
+                        self.randomTarget()
                     }
                 }else if self.priority == .Breed {
                     if self.inProcess {
@@ -162,9 +166,6 @@ extension Animal {
         NSLog("RESET")
     }
     
-    func syncNode() { // This function realigns the node's position with the physicsbody after rendering
-        node.transform = node.presentation.transform
-    }
 }
 
 
@@ -174,7 +175,6 @@ extension EnvironmentHandler {
     
     func commenceEngine() {
         self.initialized = true
-        
         self.Scene.rootNode.addChildNode(thirstNode)
         self.Scene.rootNode.addChildNode(hungerNode)
         self.Scene.rootNode.addChildNode(healthNode)
@@ -191,13 +191,18 @@ extension EnvironmentHandler {
     }
     
     func process() {
+        if self.frameNumber % 30*50*40 == 0 {
+            self.collectData()
+        }
+        self.frameNumber += 1
         if self.initialized {
             for i in animals {
-                i.syncNode()
                 i.movementHandler()
             }
-            for i in foods {
-                i.syncNode()
+            for _ in foods {
+                if Int.random(in: 0..<200*30*50*40) == 0 {
+                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+                }
             }
     //        handleMetal()
             if let _ = self.terrain {
@@ -260,6 +265,11 @@ extension EnvironmentHandler {
        text.font = NSFont.systemFont(ofSize: 0.5)
         self.statsNode.geometry = text
 //        let color: NSColor = #colorLiteral(red: 1, green: 0, blue: 0.9662935138, alpha: 1)
+    }
+    
+    func collectData() {
+        self.animalDataStorage.append(self.animals.count)
+        self.foodDataStorage.append(self.foods.count)
     }
     
 }
