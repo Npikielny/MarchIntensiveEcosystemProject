@@ -157,10 +157,13 @@ class EnvironmentHandler {
     func addAnimals() {
         let Diego = Rabbit(Position: SCNVector3(0,10,0), Handler: self)
         Diego.node.name = "Diego"
+        Diego.sex = .Male
         
-        for _ in 0..<2-1 {
-            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
-        }
+        let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+        secondRabbit.sex = .Female
+//        for _ in 0..<2-1 {
+//            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+//        }
         
     }
     

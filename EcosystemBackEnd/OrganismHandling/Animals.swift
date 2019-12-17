@@ -28,6 +28,13 @@ class Animal: Matter {
     var priority: Priority = .Idle
     //Life Handling
     var age: Float = 0
+    var sex: Sex = {
+        if Int.random(in: 0...1) == 0 {
+            return .Male
+        }else {
+            return .Female
+        }
+    }()
     var dead: Bool = false
     var inProcess: Bool = false
     var Id: Int32
@@ -51,8 +58,6 @@ class Animal: Matter {
         self.Id = Int32(handler.animals.count)
         super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: model)
         self.node.name = Handler.Names.randomElement()
-//        self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
-//        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
         additionalSetup()
         self.node.worldPosition = Position
         self.handler.animals.append(self)
@@ -182,4 +187,9 @@ class debugger: Animal {
         self.targetNode.worldPosition = self.target
     }
     
+}
+
+enum Sex {
+    case Male
+    case Female
 }

@@ -30,6 +30,7 @@ extension Animal {
             if let _ = self.targetMate {}else {
                 var breedingTargets = self.handler.animals
                 breedingTargets.removeAll(where: {$0.node == self.node})
+                breedingTargets.removeAll(where: {$0.sex == self.sex})
                 breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
                 for index in 0..<breedingTargets.count {
                     if let _ = self.targetMate{} else {
@@ -261,7 +262,15 @@ extension EnvironmentHandler {
            }
        }()
         let animalName = self.selectedAnimal?.node.name
-       let text = SCNText(string: animalName! + " – " + priorityString, extrusionDepth: 0.1)
+        let sexSTR:String = {
+            if self.selectedAnimal?.sex == .Male {
+                return " ♂"
+            }else {
+                return " ♀"
+            }
+        }()
+        
+       let text = SCNText(string: animalName! + sexSTR + " – " + priorityString, extrusionDepth: 0.1)
        text.font = NSFont.systemFont(ofSize: 0.5)
         self.statsNode.geometry = text
 //        let color: NSColor = #colorLiteral(red: 1, green: 0, blue: 0.9662935138, alpha: 1)

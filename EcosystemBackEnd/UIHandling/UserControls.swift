@@ -53,7 +53,14 @@ class UserControls: NSViewController {
         }
         self.Manager.gameController?.handler.selectionIndex = self.animalIndex!
         if let _ = self.Manager.gameController?.handler.selectedAnimal {
-            self.Name.string = "Name: " + (self.Manager.gameController?.handler.selectedAnimal!.node.name)!
+            let sexSTR:String = {
+                if self.Manager.gameController?.handler.selectedAnimal?.sex == .Male {
+                    return " ♂"
+                }else {
+                    return " ♀"
+                }
+            }()
+            self.Name.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
         }else {
             self.Name.string = "No Animal Selected"
         }
@@ -69,7 +76,14 @@ class UserControls: NSViewController {
             animalIndex = 0
         }
         self.Manager.gameController?.handler.selectionIndex = self.animalIndex!
-        self.Name.string = "Name: " + (self.Manager.gameController?.handler.selectedAnimal!.node.name)!
+        let sexSTR:String = {
+            if self.Manager.gameController?.handler.selectedAnimal?.sex == .Male {
+                return " ♂"
+            }else {
+                return " ♀"
+            }
+        }()
+        self.Name.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
     }
     
     var dataCollectionButton: NSButton = {
@@ -101,16 +115,15 @@ class UserControls: NSViewController {
 	func createCSV() {
 		let currentDate = Date()
 		let fileName = "\(currentDate)-EcosystemData.csv"
-		let path = FileManager.default.homeDirectoryForCurrentUser
+//		let path = FileManager.default.homeDirectoryForCurrentUser
         
         let name = fileName
        let fileManager = FileManager.default
        let documentDirectory = try! fileManager.url(for: .desktopDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
        let fileURL = documentDirectory.appendingPathComponent(name)
         
-		var notTime: Int = 0
 		
-		var csvText = "Not Time, Animals, Plants\n"
+		var csvText = "Time, Animals, Plants\n"
         
         for index in 0..<self.Manager.gameController!.handler.animalDataStorage.count {
             csvText.append(String(index)+","+String(self.Manager.gameController!.handler.animalDataStorage[index])+","+String(self.Manager.gameController!.handler.foodDataStorage[index])+"\n")

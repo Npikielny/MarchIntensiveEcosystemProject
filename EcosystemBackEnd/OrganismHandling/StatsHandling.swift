@@ -15,6 +15,7 @@ extension Animal {
             if self.hunger > 0 {
                 if (self.inProcess == true && self.priority == .Food) == false {
                     self.hunger = Float(CGFloat(self.hunger)-((self.velocity.getMagnitude()) * 0.008))
+                    self.hunger -= 0.0001
                 }
             }else {
                 self.hunger = 0
@@ -23,6 +24,7 @@ extension Animal {
             if self.thirst > 0 {
                 if (self.inProcess == true && self.priority == .Water) == false {
                     self.thirst = Float(CGFloat(self.thirst)-((self.velocity.getMagnitude()) * 0.012))
+                    self.thirst -= 0.0001
                 }
             }else {
                 self.thirst = 0
