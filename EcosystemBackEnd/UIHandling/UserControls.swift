@@ -79,16 +79,54 @@ class UserControls: NSViewController {
     }()
     
     @objc func printData() {
-        print("Animals")
-        for i in (self.Manager.gameController?.handler.animalDataStorage)! {
-            print(i)
-        }
-        print("Plants")
-        for i in (self.Manager.gameController?.handler.foodDataStorage)!{
-            print(i)
-        }
+		
+//        print("Animals")
+//        for i in (self.Manager.gameController?.handler.animalDataStorage)! {
+//            print(i)
+//        }
+//        print("Plants")
+//        for i in (self.Manager.gameController?.handler.foodDataStorage)!{
+//            print(i)
+//        }
+		
+		createCSV()
+		
     }
     
+	func getDocumentsDirectory() -> URL {
+		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+		return paths[0]
+	}
+	
+	func createCSV() {
+		let currentDate = Date()
+		let fileName = "\(currentDate)-EcosystemData.csv"
+		let path = FileManager.default.homeDirectoryForCurrentUser
+		let filePath = path.appendingPathComponent("Documents/\(fileName)")
+		var notTime: Int = 0
+		var newLine = ""
+		
+		var csvText = "Not Time, Animals, Plants\n"
+		for animal in (self.Manager.gameController?.handler.animalDataStorage)! {
+			notTime += 1
+			for plant in (self.Manager.gameController?.handler.foodDataStorage)! {
+				newLine = "\(notTime),\(animal),\(plant)\n"
+			}
+			csvText.append(newLine)
+		}
+		
+		do {
+			try csvText.write(to: filePath, atomically: true, encoding: .utf8)
+			print("Created CSV named \(fileName)")
+		} catch {
+			print("Could not save CSV")
+			print(error)
+		}
+		
+		
+		
+	}
+	
     func setupViews() {
         view.addSubview(Name)
         
