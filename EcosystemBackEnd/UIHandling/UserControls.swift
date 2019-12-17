@@ -102,7 +102,12 @@ class UserControls: NSViewController {
 		let currentDate = Date()
 		let fileName = "\(currentDate)-EcosystemData.csv"
 		let path = FileManager.default.homeDirectoryForCurrentUser
-		let filePath = path.appendingPathComponent("Documents/\(fileName)")
+        
+        let name = fileName
+       let fileManager = FileManager.default
+       let documentDirectory = try! fileManager.url(for: .desktopDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+       let fileURL = documentDirectory.appendingPathComponent(name)
+        
 		var notTime: Int = 0
 		var newLine = ""
 		
@@ -116,8 +121,8 @@ class UserControls: NSViewController {
 		}
 		
 		do {
-			try csvText.write(to: filePath, atomically: true, encoding: .utf8)
-			print("Created CSV named \(fileName)")
+			try csvText.write(to: fileURL, atomically: true, encoding: .utf8)
+			print("Created CSV named \(fileURL)")
 		} catch {
 			print("Could not save CSV")
 			print(error)
