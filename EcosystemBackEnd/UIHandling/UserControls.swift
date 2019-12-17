@@ -109,16 +109,12 @@ class UserControls: NSViewController {
        let fileURL = documentDirectory.appendingPathComponent(name)
         
 		var notTime: Int = 0
-		var newLine = ""
 		
 		var csvText = "Not Time, Animals, Plants\n"
-		for animal in (self.Manager.gameController?.handler.animalDataStorage)! {
-			notTime += 1
-			for plant in (self.Manager.gameController?.handler.foodDataStorage)! {
-				newLine = "\(notTime),\(animal),\(plant)\n"
-			}
-			csvText.append(newLine)
-		}
+        
+        for index in 0..<self.Manager.gameController!.handler.animalDataStorage.count {
+            csvText.append(String(index)+","+String(self.Manager.gameController!.handler.animalDataStorage[index])+","+String(self.Manager.gameController!.handler.foodDataStorage[index])+"\n")
+        }
 		
 		do {
 			try csvText.write(to: fileURL, atomically: true, encoding: .utf8)

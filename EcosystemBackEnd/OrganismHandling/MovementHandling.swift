@@ -200,7 +200,7 @@ extension EnvironmentHandler {
                 i.movementHandler()
             }
             for _ in foods {
-                if Int.random(in: 0..<200*30*50*40) == 0 {
+                if Int.random(in: 0..<30*50*40) == 0 {
                     _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
                 }
             }
