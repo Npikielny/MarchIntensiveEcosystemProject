@@ -14,19 +14,12 @@ var building: Bool = false
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-//        let debugWindow = NSWindow(contentViewController: DebugWindow())
         
-//        debugWindow.makeKeyAndOrderFront(self)
-        let splashCont = SplashController()
-        let splashScreen = NSWindow(contentViewController: splashCont)
-        splashScreen.makeKeyAndOrderFront(self)
-        Manager = WindowManager(SplashScreen: splashScreen, splashController: splashCont)
-        let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(startGame), userInfo: nil, repeats: false)
+        // Insert code here to initialize your application
+        let controller = FrontHolder()
+        let window = NSWindow(contentViewController: controller)
+        controller.window = window
+        window.makeKeyAndOrderFront(self)
     }
-    
-    @objc func startGame() {
-        Manager.loadGame()
-    }
-    
+        
 }

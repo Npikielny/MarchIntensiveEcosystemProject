@@ -82,7 +82,7 @@ extension Animal {
     }
     
     func birth() {
-        for _ in 0...3 {
+        for _ in 0...5 {
             if Int.random(in: 0...1) == 0 {
                 _ = Rabbit(Position: self.node.worldPosition, Handler: self.handler)
             }
