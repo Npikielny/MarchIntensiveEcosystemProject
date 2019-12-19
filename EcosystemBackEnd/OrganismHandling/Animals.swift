@@ -60,9 +60,10 @@ class Animal: Matter {
         self.node.name = Handler.Names.randomElement()
         additionalSetup()
         self.node.worldPosition = Position
-        self.handler.animals.append(self)
-        self.handler.Scene.rootNode.addChildNode(self.node)
-        
+        if self.handler.purpose == .Simulator {
+            self.handler.animals.append(self)
+            self.handler.Scene.rootNode.addChildNode(self.node)
+        }
     }
     
     init(DebugInit: EnvironmentHandler) {

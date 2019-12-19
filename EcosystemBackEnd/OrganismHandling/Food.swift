@@ -21,10 +21,11 @@ class Food: Matter {
         
 //        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: self.node, options: [:]))
 //        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
-        
         self.node.worldPosition = Position
-        self.handler.foods.append(self)
-        self.handler.Scene.rootNode.addChildNode(self.node)
+        if self.handler.purpose == .Simulator {
+            self.handler.foods.append(self)
+            self.handler.Scene.rootNode.addChildNode(self.node)
+        }
     }
     
 //    func addPhysicsBody() {

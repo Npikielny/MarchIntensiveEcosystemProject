@@ -52,8 +52,12 @@ class EnvironmentHandler {
     lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
     var setupFunctionIndex: Int = 0
     var initialized: Bool = false // Necessary to keep animals from moving before startup
+    
+    var purpose: RunType
+    
     init(_ FileNamed: String) {
         self.Scene = SCNScene(named: FileNamed)!
+        self.purpose = .Simulator
         
         setupFunctions.append(({}, "Setting Up SCNScene"))
         setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
@@ -67,6 +71,20 @@ class EnvironmentHandler {
 //        setupFunctions.append((debugPoints,"Adding Debugging Points"))
         setupFunctions.append((commenceEngine, "Starting Physics Engine"))
     }
+    
+    init(_ FileNamed: String, DataCollection: Bool = true) {
+            self.Scene = SCNScene(named: FileNamed)!
+            self.purpose = .DataCollection
+            
+            setupFunctions.append((setupTerrrain, "Adding Terrain"))
+//            setupFunctions.append((setupTrees, "Adding Trees"))
+            setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
+            setupFunctions.append((getNames, "Finding Animal Names"))
+            setupFunctions.append((addAnimals, "Adding Animals"))
+            setupFunctions.append((addFood, "Adding Food"))
+    //        setupFunctions.append((debugPoints,"Adding Debugging Points"))
+            setupFunctions.append((commenceEngine, "Starting Physics Engine"))
+        }
     
     var Names: [String]!
     
@@ -124,10 +142,13 @@ class EnvironmentHandler {
         
         terrain = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
         terrain.node.name = "Terrain"
-        Scene.rootNode.addChildNode(terrain.node)
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
-        
+        switch self.purpose {
+        case .DataCollection: break
+        case .Simulator:
+            Scene.rootNode.addChildNode(terrain.node)
+            self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
+            self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+        }
     }
     
     func setupWater() {
@@ -158,7 +179,6 @@ class EnvironmentHandler {
         let Diego = Rabbit(Position: SCNVector3(0,10,0), Handler: self)
         Diego.node.name = "Diego"
         Diego.sex = .Male
-        
         let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         secondRabbit.sex = .Female
 //        for _ in 0..<2-1 {
@@ -271,4 +291,9 @@ class EnvironmentHandler {
         }
     }
     
+}
+
+enum RunType {
+    case Simulator
+    case DataCollection
 }
