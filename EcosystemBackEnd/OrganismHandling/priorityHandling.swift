@@ -11,11 +11,19 @@ import SceneKit
 extension Animal {
     
     func checkPriority () {
-        let priority = self.priorities().sorted(by: {$0.1<$1.1}).first!
-        if priority.1 > 50 {
+        let priority = self.priorities().sorted(by: {$0.1<$1.1})
+        if priority.first!.1 > 50 {
             self.priority = .Idle
         }else {
-            self.priority = priority.0
+            if priority.first!.0 == .Breed {
+                if priority[1].1 < 30 {//Making sure food/water is prioritized over breeding
+                    self.priority = priority[1].0
+                }else {
+                    self.priority = priority.first!.0
+                }
+            }else {
+                self.priority = priority.first!.0
+            }
         }
     }
     
