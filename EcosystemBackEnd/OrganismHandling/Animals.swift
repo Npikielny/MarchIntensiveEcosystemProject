@@ -13,7 +13,7 @@ class Animal: Matter {
     
     //Species Traits
     var lookType: LookType
-    var handler: EnvironmentHandler
+    var handler: SimulationBase
     //Priority Handling
     var hunger: Float = 100
     var thirst: Float = 100
@@ -42,6 +42,7 @@ class Animal: Matter {
     var target: SCNVector3 = SCNVector3().zero()
     func getHeight() -> CGFloat {return self.node.worldPosition.y-(self.node.boundingBox.min.y)/2}
     var targetMate: Animal?
+    var targetFood: Food?
     //Individual Traits
     var Speed: CGFloat = 2
     
@@ -50,7 +51,7 @@ class Animal: Matter {
     lazy var priorities: () -> [(Priority,Float)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     
     
-    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: EnvironmentHandler) {
+    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: SimulationBase) {
         let model = getPrefab(Species+".scn", Shaders: nil)
         self.height = model.boundingBox.max.y-model.boundingBox.min.y
         self.lookType = lookType
@@ -60,10 +61,7 @@ class Animal: Matter {
         self.node.name = Handler.Names.randomElement()
         additionalSetup()
         self.node.worldPosition = Position
-        if self.handler.purpose == .Simulator {
-            self.handler.animals.append(self)
-            self.handler.Scene.rootNode.addChildNode(self.node)
-        }
+        self.handler.animals.append(self)
     }
     
     init(DebugInit: EnvironmentHandler) {
@@ -109,7 +107,7 @@ class Animal: Matter {
     }
     
     func breedRequest(_ Partner: Animal) {
-        if self.hunger > 60 && self.thirst > 60 {
+        if self.hunger > 30 && self.thirst > 30 {
             if let _ = self.targetMate {
             }else {
                 self.targetMate = Partner
@@ -126,7 +124,7 @@ class Animal: Matter {
 }
 
 class Rabbit: Animal {
-    init(Position: SCNVector3, Handler: EnvironmentHandler) {
+    init(Position: SCNVector3, Handler: SimulationBase) {
         super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
         self.target = self.node.worldPosition
     }
@@ -138,11 +136,11 @@ class Rabbit: Animal {
                 if distance < 1.2 {
                     self.node.worldPosition = self.target
                 }else {
-                    let velocity = pow(abs(self.handler.Scene.physicsWorld.gravity.y)*distance,0.5)
+                    let velocity = pow(abs(1)*distance,0.5)
                     self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
                 }
             }else {
-                let velocity = pow(abs(self.handler.Scene.physicsWorld.gravity.y)*self.Speed,0.5)
+                let velocity = pow(abs(1)*self.Speed,0.5)
                 self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
             }
         }

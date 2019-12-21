@@ -28,6 +28,7 @@ class UserControls: NSViewController {
         text.font = NSFont.systemFont(ofSize: 20)
         text.string = "Name: "
         text.alignment = .center
+        text.textColor = NSColor.white
         
         text.backgroundColor = NSColor.clear
         
@@ -60,6 +61,7 @@ class UserControls: NSViewController {
                     return " ♀"
                 }
             }()
+            self.Name.font = NSFont.systemFont(ofSize: 20)
             self.Name.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
         }else {
             self.Name.string = "No Animal Selected"

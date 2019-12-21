@@ -48,6 +48,10 @@
 		30B47A5A23AC0EE5008324FF /* FrontHolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30B47A5823AC0EE5008324FF /* FrontHolder.xib */; };
 		30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5A5F32380920B001F4524 /* SkyHandler.swift */; };
 		30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* RenderHandler.swift */; };
+		30FE8E2223AEB484001D3EC6 /* SimulationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */; };
+		30FE8E2623AEB4D9001D3EC6 /* SimulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */; };
+		30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */; };
+		30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +122,10 @@
 		30B47A5823AC0EE5008324FF /* FrontHolder.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FrontHolder.xib; sourceTree = "<group>"; };
 		30E5A5F32380920B001F4524 /* SkyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyHandler.swift; sourceTree = "<group>"; };
 		30F83892237DC04A0019A12E /* RenderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderHandler.swift; sourceTree = "<group>"; };
+		30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationHandler.swift; sourceTree = "<group>"; };
+		30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationController.swift; sourceTree = "<group>"; };
+		30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimulationController.xib; sourceTree = "<group>"; };
+		30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationBase.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				300DBEC5238D62B100B7F363 /* MetalHandler.swift */,
-				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
 			);
 			path = "PhysicsHandling(Metal)";
 			sourceTree = "<group>";
@@ -243,6 +250,7 @@
 				30B47A5823AC0EE5008324FF /* FrontHolder.xib */,
 				30A27F1D238F0D110092DAF3 /* UIHandling */,
 				305700BB23787997006696D9 /* art.scnassets */,
+				30FE8E2323AEB48B001D3EC6 /* SimulationMode */,
 				303ECA232384424E0013503C /* SceneHandling */,
 				303ECA24238442620013503C /* OrganismHandling */,
 				303ECA25238442720013503C /* Helpers */,
@@ -286,8 +294,20 @@
 				30A27F14238EE7FA0092DAF3 /* GameController.xib */,
 				30A30DD02390360900AD3BAB /* UserControls.swift */,
 				30A30DD12390360900AD3BAB /* UserControls.xib */,
+				30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */,
+				30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */,
 			);
 			path = UIHandling;
+			sourceTree = "<group>";
+		};
+		30FE8E2323AEB48B001D3EC6 /* SimulationMode */ = {
+			isa = PBXGroup;
+			children = (
+				30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */,
+				30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */,
+				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
+			);
+			path = SimulationMode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,7 +373,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Noah Pikielny";
 				TargetAttributes = {
 					305700B323787997006696D9 = {
@@ -409,6 +429,7 @@
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3059C82D2380769000C7289C /* genericShader.shader in Resources */,
 				301E8FD823908ADA001B8727 /* PetNames.csv in Resources */,
+				30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
 				30A30DD32390360900AD3BAB /* UserControls.xib in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
@@ -441,6 +462,8 @@
 				30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */,
 				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
 				30A30DD22390360900AD3BAB /* UserControls.swift in Sources */,
+				30FE8E2623AEB4D9001D3EC6 /* SimulationController.swift in Sources */,
+				30FE8E2223AEB484001D3EC6 /* SimulationHandler.swift in Sources */,
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
@@ -459,6 +482,7 @@
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
 				300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */,
 				30B47A5923AC0EE5008324FF /* FrontHolder.swift in Sources */,
+				30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EcosystemBackEnd/EcosystemBackEnd.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 597PF7552F;
@@ -647,6 +672,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EcosystemBackEnd/EcosystemBackEnd.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 597PF7552F;

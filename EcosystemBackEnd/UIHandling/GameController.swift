@@ -20,7 +20,7 @@ class GameController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        handler = EnvironmentHandler("art.scnassets/GameScene.scn")
+        handler = EnvironmentHandler("art.scnassets/GameScene.scn", InitialNumberOfBunnies: 2)
         handler.View = GameView
        let scene = handler.Scene
        

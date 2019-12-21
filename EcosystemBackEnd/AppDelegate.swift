@@ -23,3 +23,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
         
 }
+
+struct Fonts {
+    static let sourceSansPro = "SourceSansPro-Regular"
+    static let sourceSansProSemiBold = "SourceSansPro-SemiBold"
+    static let sourceSansProBold = "SourceSansPro-Bold"
+    static let sourceSansProLight = "SourceSansPro-Light"
+    static let sourceSansProExtraLight = "SourceSansPro-ExtraLight"
+}
+

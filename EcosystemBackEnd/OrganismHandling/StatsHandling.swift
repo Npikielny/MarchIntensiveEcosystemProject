@@ -11,27 +11,34 @@ import SceneKit
 extension Animal {
     
     func handleStats() {
+        self.age += 0.001
+        self.Speed = CGFloat(3/(1 + pow(2.18,0.1*(self.age-15))))
+        let ageMultiplier: Float = 1 + pow(2.18,-0.3*(self.age-6))
         if self.inProcess == false {
             if self.hunger > 0 {
                 if (self.inProcess == true && self.priority == .Food) == false {
-                    self.hunger = Float(CGFloat(self.hunger)-((self.velocity.getMagnitude()) * 0.008))
+                    self.hunger = Float(CGFloat(self.hunger)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0012))
                     self.hunger -= 0.0001
                 }
             }else {
                 self.hunger = 0
-                self.health -= 0.01
+                self.health -= ageMultiplier * 0.025
             }
             if self.thirst > 0 {
                 if (self.inProcess == true && self.priority == .Water) == false {
-                    self.thirst = Float(CGFloat(self.thirst)-((self.velocity.getMagnitude()) * 0.012))
+                    self.thirst = Float(CGFloat(self.thirst)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018))
                     self.thirst -= 0.0001
                 }
             }else {
                 self.thirst = 0
-                self.health -= 0.01
+                self.health -= ageMultiplier * 0.025
             }
             if self.breedingUrge > 0 {
-                self.breedingUrge -= Float.random(in: 0.002...0.02)
+                if self.age >= 3 {
+//                    self.breedingUrge -= cos((self.age-6)*Float.pi/12)*Float.pi/12*0.03
+                    self.breedingUrge -= Float.random(in: 0.004...0.04)
+//                    self.breedingUrge = 0
+                }
             }else {
                 self.breedingUrge = 0
             }
@@ -48,13 +55,12 @@ extension Animal {
         }
     }
     
-    func eat(Item: Food) {
+    func eat(Item: inout Food) {
         if Item.foodValue <= 0 {
             Item.eaten()
             self.inProcess = false
             self.checkPriority()
         }else if self.hunger >= 100 {
-            self.hunger = 100
             self.inProcess = false
             self.checkPriority()
         }else {
@@ -70,21 +76,28 @@ extension Animal {
         }
         
         if self.breedingUrge >= 100 {
-            birth()
-            self.inProcess = false
+            self.breedingUrge = 100
+            self.targetMate?.breedingUrge = 100
+            if self.targetMate!.sex == .Female {
             self.targetMate!.birth()
+            }else {
+                birth()
+            }
+            self.inProcess = false
             self.targetMate!.inProcess = false
-            self.checkPriority()
-            self.targetMate?.checkPriority()
             self.targetMate?.targetMate = nil
+            self.targetMate?.checkPriority()
             self.targetMate = nil
+            self.checkPriority()
         }
     }
     
     func birth() {
-        for _ in 0...5 {
-            if Int.random(in: 0...1) == 0 {
-                _ = Rabbit(Position: self.node.worldPosition, Handler: self.handler)
+        if self.sex == .Female {
+            for _ in 0...11 {
+                if Int.random(in: 0...1) == 0 {
+                    _ = Rabbit(Position: self.node.worldPosition, Handler: self.handler)
+                }
             }
         }
     }

@@ -43,13 +43,18 @@ class FrontHolder: NSViewController {
             splashScreen.makeKeyAndOrderFront(self)
             Manager = WindowManager(SplashScreen: splashScreen, splashController: splashCont)
             let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(startGame), userInfo: nil, repeats: false)
+        self.window?.close()
     }   
         
     @objc func startGame() {
         Manager.loadGame()
     }
     @objc func dataCollection() {
-        
+        let controller = SimulationController()
+        let window = NSWindow(contentViewController: controller)
+        window.title = "Simulation Controller"
+        window.makeKeyAndOrderFront(self)
+        self.window?.close()
     }
     
 }
