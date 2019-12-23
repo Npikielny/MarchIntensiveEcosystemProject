@@ -12,7 +12,6 @@ class Food: Matter {
     var foodType: FoodType
     var foodValue: Float = 50
     var handler: SimulationBase
-    
     init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: SimulationBase) {
         self.foodType = foodType
         self.handler = Handler
@@ -35,8 +34,10 @@ class Food: Matter {
 //    }
     
     func eaten() {
-        handler.foods.removeAll(where: {$0.node == self.node})
+        print("EATEN",self.handler.foods.count)
+        handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
         self.node.removeFromParentNode()
+        print("EATENF",self.handler.foods.count)
     }
     
 }

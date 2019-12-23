@@ -26,7 +26,6 @@ class GameController: NSViewController {
        
        // set the scene to the view
        GameView.scene = scene
-       
        GameView.loops = true
        GameView.isPlaying = true
        // allows the user to manipulate the camera

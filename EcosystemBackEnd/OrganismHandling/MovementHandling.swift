@@ -16,12 +16,10 @@ extension Animal {
             if let _ = self.targetFood {}else {
                 var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
                 nearbyFoods.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
-                self.targetFood = nearbyFoods.first
-                
-                if let food = self.targetFood {
-                    self.target = food.node.worldPosition
+                if nearbyFoods.count > 0 {
+                    self.targetFood = nearbyFoods.first
+                    self.target = self.targetFood!.node.worldPosition
                 } else {
-                    checkPriority()
                     randomTarget()
                 }
             }
