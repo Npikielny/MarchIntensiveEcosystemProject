@@ -125,7 +125,7 @@ class Animal: Matter {
 
 class Rabbit: Animal {
     init(Position: SCNVector3, Handler: SimulationBase) {
-        super.init(Position: Position, Species: "rabbit", lookType: .Velocity, Handler: Handler)
+        super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
         self.target = self.node.worldPosition
     }
     
