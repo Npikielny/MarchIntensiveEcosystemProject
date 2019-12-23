@@ -34,10 +34,8 @@ class Food: Matter {
 //    }
     
     func eaten() {
-        print("EATEN",self.handler.foods.count)
         handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
         self.node.removeFromParentNode()
-        print("EATENF",self.handler.foods.count)
     }
     
 }

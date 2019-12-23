@@ -16,21 +16,21 @@ extension Animal {
         let ageMultiplier: Float = 1 + pow(2.18,-0.3*(self.age-6))
         if self.hunger > 0 {
             if (self.inProcess == true && self.priority == .Food) == false {
-                self.hunger = Float(CGFloat(self.hunger)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018*4))
+                self.hunger = Float(CGFloat(self.hunger)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018*2))
                 self.hunger -= 0.0001
             }
         }else {
             self.hunger = 0
-            self.health -= ageMultiplier * 0.005
+            self.health -= ageMultiplier * 0.025 * self.age/6
         }
         if self.thirst > 0 {
             if (self.inProcess == true && self.priority == .Water) == false {
-                self.thirst = Float(CGFloat(self.thirst)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0027))
+                self.thirst = Float(CGFloat(self.thirst)-((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0027*2))
                 self.thirst -= 0.0001
             }
         }else {
             self.thirst = 0
-            self.health -= ageMultiplier * 0.005
+            self.health -= ageMultiplier * 0.025 * self.age/6
         }
         if self.breedingUrge > 0 {
             if self.age >= 3 {
@@ -53,17 +53,20 @@ extension Animal {
         }
     }
     
-    func eat(Item: inout Food) {
+    func eat(Item: inout Food) -> Bool {
         if Item.foodValue <= 0 {
             Item.eaten()
             self.inProcess = false
             self.checkPriority()
+            return true
         }else if self.hunger >= 100 {
             self.inProcess = false
             self.checkPriority()
+            return true
         }else {
             self.hunger += 0.1
             Item.foodValue -= 0.1
+            return false
         }
     }
     

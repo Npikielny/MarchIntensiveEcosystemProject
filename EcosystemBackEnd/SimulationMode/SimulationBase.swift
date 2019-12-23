@@ -89,7 +89,7 @@ class SimulationBase {
     }
     
     func addFood() {
-        for _ in 0..<4 {
+        for _ in 0..<25 {
             _ = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
 //            apple.addPhysicsBody()
         }

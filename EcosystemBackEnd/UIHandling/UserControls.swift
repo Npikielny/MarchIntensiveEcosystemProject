@@ -78,14 +78,16 @@ class UserControls: NSViewController {
             animalIndex = 0
         }
         self.Manager.gameController?.handler.selectionIndex = self.animalIndex!
-        let sexSTR:String = {
-            if self.Manager.gameController?.handler.selectedAnimal?.sex == .Male {
-                return " ♂"
-            }else {
-                return " ♀"
-            }
-        }()
-        self.Name.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
+        if let animal = self.Manager.gameController?.handler.selectedAnimal {
+            let sexSTR:String = {
+                if animal.sex == .Male {
+                    return " ♂"
+                }else {
+                    return " ♀"
+                }
+            }()
+            self.Name.string = (animal.node.name)! + sexSTR
+        }
     }
     
     var dataCollectionButton: NSButton = {
