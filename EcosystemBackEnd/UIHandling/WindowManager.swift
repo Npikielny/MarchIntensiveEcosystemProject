@@ -32,7 +32,8 @@ class WindowManager {
 		self.splitController = MainSplitController()
         self.gameController = GameController()
 		self.userControls = UserControls()
-		
+		self.userControls?.Manager = self
+        
 		let gameView = NSSplitViewItem(contentListWithViewController: gameController!)
 		let userView = NSSplitViewItem(sidebarWithViewController: userControls!)
 		
