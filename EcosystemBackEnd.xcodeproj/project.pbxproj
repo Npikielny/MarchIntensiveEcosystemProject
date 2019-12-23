@@ -53,6 +53,7 @@
 		30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */; };
 		30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
+		50FC4E1823B0634E001BEF3B /* MainSplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FC4E1723B0634E001BEF3B /* MainSplitController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +128,7 @@
 		30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimulationController.xib; sourceTree = "<group>"; };
 		30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationBase.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
+		50FC4E1723B0634E001BEF3B /* MainSplitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				30A27F17238F097F0092DAF3 /* WindowManager.swift */,
+				50FC4E1723B0634E001BEF3B /* MainSplitController.swift */,
 				30A27F19238F0D0B0092DAF3 /* SplashController.swift */,
 				30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */,
 				30A27F13238EE7FA0092DAF3 /* GameController.swift */,
@@ -467,6 +470,7 @@
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
+				50FC4E1823B0634E001BEF3B /* MainSplitController.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
 				30545AB023A544AE00006313 /* Matter.swift in Sources */,

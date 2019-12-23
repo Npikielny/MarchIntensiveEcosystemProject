@@ -11,26 +11,34 @@ import Cocoa
 class WindowManager {
     
     var GameWindow: NSWindow!
+	
+	var splitController: MainSplitController?
     var gameController: GameController?
+	var userControls: UserControls?
     var splashScreen: NSWindow
     var splashController: SplashController
-    var UserInputWindow: (NSWindow,UserControls)
+//	var gameView: NSSplitViewItem?
+//	var userView: NSSplitViewItem?
+    
     init(SplashScreen: NSWindow, splashController: SplashController) {
-        
-        let userController = UserControls()
-        let userInputWindow = NSWindow(contentViewController: userController)
-        self.UserInputWindow = (userInputWindow,userController)
         
         self.splashScreen = SplashScreen
         self.splashController = splashController
         SplashScreen.title = ""
-        Manager = self
-        self.UserInputWindow.1.Manager = self
+        
     }
     
     func loadGame() {
+		self.splitController = MainSplitController()
         self.gameController = GameController()
-        self.GameWindow = NSWindow(contentViewController: gameController!)
+		self.userControls = UserControls()
+		
+		let gameView = NSSplitViewItem(contentListWithViewController: gameController!)
+		let userView = NSSplitViewItem(sidebarWithViewController: userControls!)
+		
+		[gameView, userView].forEach { splitController?.addSplitViewItem($0) }
+		
+        self.GameWindow = NSWindow(contentViewController: splitController!)
         self.GameWindow.title = "Life"
         setupGame()
     }
@@ -47,13 +55,13 @@ class WindowManager {
     }
     
     func showGame() {
+		
+		
         GameWindow.makeKeyAndOrderFront(self)
         gameDidLoad()
         let size = NSScreen.main?.frame.size
         GameWindow.setFrame(NSRect(x: 0, y: size!.height*0.05, width: size!.width*0.8, height: size!.height*0.95), display: true)
         
-        UserInputWindow.0.makeKeyAndOrderFront(self)
-        UserInputWindow.0.setFrame(NSRect(x: size!.width*0.8, y: size!.height*0.05, width: size!.width*0.2, height: size!.height*0.95), display: true)
     }
     
     func gameDidLoad() {
