@@ -12,7 +12,7 @@ class WindowManager {
     
     var GameWindow: NSWindow!
 	
-	var splitController: MainSplitController?
+	var splitController: NSSplitViewController?
     var gameController: GameController?
 	var userControls: UserControls?
     var splashScreen: NSWindow
@@ -29,7 +29,9 @@ class WindowManager {
     }
     
     func loadGame() {
-		self.splitController = MainSplitController()
+		self.splitController = NSSplitViewController()
+		splitController?.splitView.dividerStyle = .thick
+		
         self.gameController = GameController()
 		self.userControls = UserControls()
 		self.userControls?.Manager = self
@@ -57,11 +59,10 @@ class WindowManager {
     
     func showGame() {
 		
-		
         GameWindow.makeKeyAndOrderFront(self)
         gameDidLoad()
         let size = NSScreen.main?.frame.size
-        GameWindow.setFrame(NSRect(x: 0, y: size!.height*0.05, width: size!.width*0.8, height: size!.height*0.95), display: true)
+        GameWindow.setFrame(NSRect(x: 0, y: Int(size!.height), width: Int(size!.width), height: Int(size!.height)), display: true)
         
     }
     
