@@ -86,14 +86,15 @@ class SimulationHandler: SimulationBase {
         for i in 0..<animals.count {
             syntheticMovementHandler(animal: &animals[i])
         }
-        for _ in foods {
-            if Int.random(in: 0..<30*50*40/32) == 0 {
-                _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-            }
-        }
-        if Int.random(in: 0..<30*50*40/4/8) == 0 {
-            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-        }
+//        for _ in foods {
+//            if Int.random(in: 0..<30*50*40/32) == 0 {
+//                _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+//            }
+//        }
+//        if Int.random(in: 0..<30*10) == 0 {
+//            NSLog("New Apple")
+//            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+//        }
     }
     
     func syntheticMovementHandler(animal: inout Animal) {

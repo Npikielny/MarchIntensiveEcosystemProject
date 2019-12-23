@@ -107,9 +107,8 @@ class Animal: Matter {
     }
     
     func breedRequest(_ Partner: Animal) {
-        if self.hunger > 30 && self.thirst > 30 {
-            if let _ = self.targetMate {
-            }else {
+        if self.hunger > 30 && self.thirst > 30 && self.breedingUrge < 70 {
+            if let _ = self.targetMate {}else {
                 self.targetMate = Partner
                 Partner.targetMate = self
                 self.priority = .Breed
