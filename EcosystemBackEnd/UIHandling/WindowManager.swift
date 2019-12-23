@@ -19,7 +19,7 @@ class WindowManager {
     var splashController: SplashController
 //	var gameView: NSSplitViewItem?
 //	var userView: NSSplitViewItem?
-    
+	
     init(SplashScreen: NSWindow, splashController: SplashController) {
         
         self.splashScreen = SplashScreen
