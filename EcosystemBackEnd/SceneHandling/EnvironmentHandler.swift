@@ -249,12 +249,15 @@ class EnvironmentHandler: SimulationBase {
             for i in animals {
                 i.movementHandler()
             }
-            for _ in foods {
-                if Int.random(in: 0..<30*50*40) == 0 {
-                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-                }
+//            for _ in foods {
+//                if Int.random(in: 0..<30*50*40) == 0 {
+//                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+//                }
+//            }
+            if Int.random(in: 0..<30*50) == 0 {
+                NSLog("New Apple")
+                _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
             }
-            
             if let _ = self.terrain {
                 if let individual = self.selectedAnimal {
                     self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
