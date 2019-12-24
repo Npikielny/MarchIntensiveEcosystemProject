@@ -209,7 +209,7 @@ class UserControls: NSViewController {
     }()
     
     @objc func printData() {
-		
+		print("ATTEMPTING CSV")
 		createCSV()
 		
     }
@@ -220,6 +220,7 @@ class UserControls: NSViewController {
 	}
 	
 	func createCSV() {
+        print("Threaded Properly")
 		let currentDate = Date()
 		let fileName = "\(currentDate)-EcosystemData.csv"
         
@@ -234,7 +235,7 @@ class UserControls: NSViewController {
         for index in 0..<self.Manager.gameController!.handler.animalDataStorage.count {
             csvText.append(String(index)+","+String(self.Manager.gameController!.handler.animalDataStorage[index])+","+String(self.Manager.gameController!.handler.foodDataStorage[index])+"\n")
         }
-		
+		print("MADE CSV")
 		do {
 			try csvText.write(to: fileURL, atomically: true, encoding: .utf8)
 			print("Created CSV named \(fileURL)")
@@ -242,6 +243,7 @@ class UserControls: NSViewController {
 			print("Could not save CSV")
 			print(error)
 		}
+        print("Leaving Function")
 		
 	}
 	
@@ -326,6 +328,8 @@ class UserControls: NSViewController {
 		
         view.addSubview(dataCollectionButton)
         dataCollectionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        dataCollectionButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        dataCollectionButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
         
         
