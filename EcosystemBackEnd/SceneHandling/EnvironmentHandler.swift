@@ -255,7 +255,6 @@ class EnvironmentHandler: SimulationBase {
 //                }
 //            }
             if Int.random(in: 0..<30*50) == 0 {
-                NSLog("New Apple")
                 _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
             }
             if let _ = self.terrain {
