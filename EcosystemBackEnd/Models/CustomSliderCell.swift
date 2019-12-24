@@ -28,6 +28,10 @@ class CustomSliderCell: NSSliderCell {
 		activeColor.setFill()
         active.fill()
 	}
+    
+    override func drawKnob() {
+        
+    }
 	
 	
 

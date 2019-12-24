@@ -47,6 +47,7 @@ class UserControls: NSViewController {
 		let text = NSText()
 		text.font = NSFont.systemFont(ofSize: 12)
 		text.string = "Thirst:  "
+        text.backgroundColor = NSColor.clear
 		text.alignment = .center
 		text.textColor = .white
 		text.isSelectable = false
@@ -59,10 +60,12 @@ class UserControls: NSViewController {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
 		cell.activeColor = .blue
+        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
 		slider.maxValue = 100
+        slider.floatValue = 50
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -71,6 +74,7 @@ class UserControls: NSViewController {
 		let text = NSText()
 		text.font = NSFont.systemFont(ofSize: 12)
 		text.string = "Hunger:  "
+        text.backgroundColor = NSColor.clear
 		text.alignment = .center
 		text.textColor = .white
 		text.isSelectable = false
@@ -82,11 +86,13 @@ class UserControls: NSViewController {
 	var hungerSlider: NSSlider = {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
-		cell.activeColor = .systemRed
+		cell.activeColor = .systemOrange
+        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
 		slider.maxValue = 100
+        slider.floatValue = 50
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -95,6 +101,7 @@ class UserControls: NSViewController {
 		let text = NSText()
 		text.font = NSFont.systemFont(ofSize: 12)
 		text.string = "Health:  "
+        text.backgroundColor = NSColor.clear
 		text.alignment = .center
 		text.textColor = .white
 		text.isSelectable = false
@@ -106,11 +113,13 @@ class UserControls: NSViewController {
 	var healthSlider: NSSlider = {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
-		cell.activeColor = .red
+		cell.activeColor = .systemGreen
+        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
 		slider.maxValue = 100
+        slider.floatValue = 50
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -119,6 +128,7 @@ class UserControls: NSViewController {
 		let text = NSText()
 		text.font = NSFont.systemFont(ofSize: 12)
 		text.string = "Breeding Urge:  "
+        text.backgroundColor = NSColor.clear
 		text.alignment = .center
 		text.textColor = .white
 		text.isSelectable = false
@@ -130,12 +140,13 @@ class UserControls: NSViewController {
 	var breedingSlider: NSSlider = {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
-		cell.bgColor = .magenta
-		cell.activeColor = .systemGray
+		cell.bgColor = .systemGray
+		cell.activeColor = .magenta
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
 		slider.maxValue = 100
+        slider.floatValue = 50
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -243,7 +254,7 @@ class UserControls: NSViewController {
 			self.thirstSlider.doubleValue = Double(animal.thirst)
 			self.hungerSlider.doubleValue = Double(animal.hunger)
 			self.healthSlider.doubleValue = Double(animal.health)
-			self.breedingSlider.doubleValue = Double(animal.breedingUrge)
+			self.breedingSlider.doubleValue = 100-Double(animal.breedingUrge)
         }
 	}
 	
