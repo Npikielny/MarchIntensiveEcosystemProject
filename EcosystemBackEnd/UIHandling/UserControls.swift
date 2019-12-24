@@ -12,6 +12,8 @@ class UserControls: NSViewController {
 
     var Manager: WindowManager!
     
+	var updateSliders = Timer()
+	
     convenience init() {
         self.init(nibName: "UserControls", bundle: nil)
     }
@@ -21,9 +23,11 @@ class UserControls: NSViewController {
         // Do view setup here.
         
         setupViews()
+		startTimer()
+		
     }
     
-    var Name: NSText = {
+    var nameText: NSText = {
         let text = NSText()
         text.font = NSFont.systemFont(ofSize: 20)
         text.string = "Name: "
@@ -38,7 +42,104 @@ class UserControls: NSViewController {
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
     }()
-    
+	
+	var thirstText: NSText = {
+		let text = NSText()
+		text.font = NSFont.systemFont(ofSize: 12)
+		text.string = "Thirst:  "
+		text.alignment = .center
+		text.textColor = .white
+		text.isSelectable = false
+		text.isEditable = false
+		text.translatesAutoresizingMaskIntoConstraints = false
+		return text
+	}()
+	
+	var thirstSlider: NSSlider = {
+		let slider = NSSlider()
+		let cell = CustomSliderCell()
+		cell.activeColor = .blue
+		slider.cell = cell
+		slider.sliderType = .linear
+		slider.minValue = 0
+		slider.maxValue = 100
+		slider.translatesAutoresizingMaskIntoConstraints = false
+		return slider
+	}()
+	
+	var hungerText: NSText = {
+		let text = NSText()
+		text.font = NSFont.systemFont(ofSize: 12)
+		text.string = "Hunger:  "
+		text.alignment = .center
+		text.textColor = .white
+		text.isSelectable = false
+		text.isEditable = false
+		text.translatesAutoresizingMaskIntoConstraints = false
+		return text
+	}()
+	
+	var hungerSlider: NSSlider = {
+		let slider = NSSlider()
+		let cell = CustomSliderCell()
+		cell.activeColor = .systemRed
+		slider.cell = cell
+		slider.sliderType = .linear
+		slider.minValue = 0
+		slider.maxValue = 100
+		slider.translatesAutoresizingMaskIntoConstraints = false
+		return slider
+	}()
+	
+	var healthText: NSText = {
+		let text = NSText()
+		text.font = NSFont.systemFont(ofSize: 12)
+		text.string = "Health:  "
+		text.alignment = .center
+		text.textColor = .white
+		text.isSelectable = false
+		text.isEditable = false
+		text.translatesAutoresizingMaskIntoConstraints = false
+		return text
+	}()
+	
+	var healthSlider: NSSlider = {
+		let slider = NSSlider()
+		let cell = CustomSliderCell()
+		cell.activeColor = .red
+		slider.cell = cell
+		slider.sliderType = .linear
+		slider.minValue = 0
+		slider.maxValue = 100
+		slider.translatesAutoresizingMaskIntoConstraints = false
+		return slider
+	}()
+	
+	var breedingText: NSText = {
+		let text = NSText()
+		text.font = NSFont.systemFont(ofSize: 12)
+		text.string = "Breeding Urge:  "
+		text.alignment = .center
+		text.textColor = .white
+		text.isSelectable = false
+		text.isEditable = false
+		text.translatesAutoresizingMaskIntoConstraints = false
+		return text
+	}()
+	
+	var breedingSlider: NSSlider = {
+		let slider = NSSlider()
+		let cell = CustomSliderCell()
+		cell.bgColor = .magenta
+		cell.activeColor = .systemGray
+		slider.cell = cell
+		slider.sliderType = .linear
+		slider.minValue = 0
+		slider.maxValue = 100
+		slider.translatesAutoresizingMaskIntoConstraints = false
+		return slider
+	}()
+	
     lazy var nextButton = NSButton(image: NSImage(named: NSImage.goRightTemplateName)!, target: self, action: #selector(nextAnimal))
     lazy var previousButton = NSButton(image: NSImage(named: NSImage.goLeftTemplateName)!, target: self, action: #selector(previousAnimal))
     
@@ -61,10 +162,10 @@ class UserControls: NSViewController {
                     return " ♀"
                 }
             }()
-            self.Name.font = NSFont.systemFont(ofSize: 20)
-            self.Name.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
+            self.nameText.font = NSFont.systemFont(ofSize: 20)
+            self.nameText.string = (self.Manager.gameController?.handler.selectedAnimal!.node.name)! + sexSTR
         }else {
-            self.Name.string = "No Animal Selected"
+            self.nameText.string = "No Animal Selected"
         }
     }
     
@@ -86,7 +187,7 @@ class UserControls: NSViewController {
                     return " ♀"
                 }
             }()
-            self.Name.string = (animal.node.name)! + sexSTR
+            self.nameText.string = (animal.node.name)! + sexSTR
         }
     }
     
@@ -97,15 +198,6 @@ class UserControls: NSViewController {
     }()
     
     @objc func printData() {
-		
-//        print("Animals")
-//        for i in (self.Manager.gameController?.handler.animalDataStorage)! {
-//            print(i)
-//        }
-//        print("Plants")
-//        for i in (self.Manager.gameController?.handler.foodDataStorage)!{
-//            print(i)
-//        }
 		
 		createCSV()
 		
@@ -119,7 +211,6 @@ class UserControls: NSViewController {
 	func createCSV() {
 		let currentDate = Date()
 		let fileName = "\(currentDate)-EcosystemData.csv"
-//		let path = FileManager.default.homeDirectoryForCurrentUser
         
         let name = fileName
        let fileManager = FileManager.default
@@ -141,34 +232,87 @@ class UserControls: NSViewController {
 			print(error)
 		}
 		
-		
-		
+	}
+	
+	private func startTimer() {
+		updateSliders = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(updateStats), userInfo: nil, repeats: true)
+	}
+	
+	@objc func updateStats() {
+        if let animal = self.Manager.gameController?.handler.selectedAnimal {
+			self.thirstSlider.doubleValue = Double(animal.thirst)
+			self.hungerSlider.doubleValue = Double(animal.hunger)
+			self.healthSlider.doubleValue = Double(animal.health)
+			self.breedingSlider.doubleValue = Double(animal.breedingUrge)
+        }
 	}
 	
     func setupViews() {
-        view.addSubview(Name)
+        view.addSubview(nameText)
         
-        Name.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
-        Name.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        Name.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.8).isActive = true
-        Name.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        nameText.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        nameText.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        nameText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.8).isActive = true
+        nameText.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nextButton)
         
         nextButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: Name.rightAnchor, constant: 5).isActive = true
-        nextButton.topAnchor.constraint(equalTo: Name.topAnchor).isActive = true
-        nextButton.heightAnchor.constraint(equalTo: Name.heightAnchor, multiplier: 1).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: nameText.rightAnchor, constant: 5).isActive = true
+        nextButton.topAnchor.constraint(equalTo: nameText.topAnchor).isActive = true
+        nextButton.heightAnchor.constraint(equalTo: nameText.heightAnchor, multiplier: 1).isActive = true
         
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(previousButton)
         
         previousButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        previousButton.rightAnchor.constraint(equalTo: Name.leftAnchor, constant: -5).isActive = true
-        previousButton.topAnchor.constraint(equalTo: Name.topAnchor).isActive = true
-        previousButton.heightAnchor.constraint(equalTo: Name.heightAnchor, multiplier: 1).isActive = true
+        previousButton.rightAnchor.constraint(equalTo: nameText.leftAnchor, constant: -5).isActive = true
+        previousButton.topAnchor.constraint(equalTo: nameText.topAnchor).isActive = true
+        previousButton.heightAnchor.constraint(equalTo: nameText.heightAnchor, multiplier: 1).isActive = true
         
+		[thirstText, thirstSlider, hungerText, hungerSlider, healthText, healthSlider, breedingText, breedingSlider].forEach { view.addSubview($0) }
+		
+		thirstText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		thirstText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true
+		thirstText.topAnchor.constraint(equalTo: nameText.bottomAnchor, constant: 50).isActive = true
+		thirstText.bottomAnchor.constraint(equalTo: thirstSlider.bottomAnchor).isActive = true
+		
+		thirstSlider.topAnchor.constraint(equalTo: thirstText.topAnchor).isActive = true
+		thirstSlider.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.6).isActive = true
+		thirstSlider.leadingAnchor.constraint(equalTo: thirstText.trailingAnchor, constant: 40).isActive = true
+		thirstSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+		
+		hungerText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		hungerText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true
+		hungerText.topAnchor.constraint(equalTo: thirstText.bottomAnchor, constant: 25).isActive = true
+		hungerText.bottomAnchor.constraint(equalTo: hungerSlider.bottomAnchor).isActive = true
+		
+		hungerSlider.topAnchor.constraint(equalTo: hungerText.topAnchor).isActive = true
+		hungerSlider.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.6).isActive = true
+		hungerSlider.leadingAnchor.constraint(equalTo: hungerText.trailingAnchor, constant: 40).isActive = true
+		hungerSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+		
+		healthText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		healthText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true
+		healthText.topAnchor.constraint(equalTo: hungerText.bottomAnchor, constant: 25).isActive = true
+		healthText.bottomAnchor.constraint(equalTo: healthSlider.bottomAnchor).isActive = true
+		
+		healthSlider.topAnchor.constraint(equalTo: healthText.topAnchor).isActive = true
+		healthSlider.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.6).isActive = true
+		healthSlider.leadingAnchor.constraint(equalTo: healthText.trailingAnchor, constant: 40).isActive = true
+		healthSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+		
+		breedingText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		breedingText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true
+		breedingText.topAnchor.constraint(equalTo: healthText.bottomAnchor, constant: 25).isActive = true
+		breedingText.bottomAnchor.constraint(equalTo: breedingSlider.bottomAnchor).isActive = true
+		
+		breedingSlider.topAnchor.constraint(equalTo: breedingText.topAnchor).isActive = true
+		breedingSlider.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.6).isActive = true
+		breedingSlider.leadingAnchor.constraint(equalTo: breedingText.trailingAnchor, constant: 40).isActive = true
+		breedingSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+		
         view.addSubview(dataCollectionButton)
         dataCollectionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
         dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true

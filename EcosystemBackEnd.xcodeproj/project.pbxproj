@@ -52,6 +52,7 @@
 		30FE8E2623AEB4D9001D3EC6 /* SimulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */; };
 		30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */; };
 		30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */; };
+		507A89C723B188F8001C7B68 /* CustomSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A89C623B188F8001C7B68 /* CustomSliderCell.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +127,7 @@
 		30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationController.swift; sourceTree = "<group>"; };
 		30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimulationController.xib; sourceTree = "<group>"; };
 		30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationBase.swift; sourceTree = "<group>"; };
+		507A89C623B188F8001C7B68 /* CustomSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderCell.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,6 +252,7 @@
 				30B47A5823AC0EE5008324FF /* FrontHolder.xib */,
 				30A27F1D238F0D110092DAF3 /* UIHandling */,
 				305700BB23787997006696D9 /* art.scnassets */,
+				507A89C523B188E2001C7B68 /* Models */,
 				30FE8E2323AEB48B001D3EC6 /* SimulationMode */,
 				303ECA232384424E0013503C /* SceneHandling */,
 				303ECA24238442620013503C /* OrganismHandling */,
@@ -308,6 +311,14 @@
 				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
 			);
 			path = SimulationMode;
+			sourceTree = "<group>";
+		};
+		507A89C523B188E2001C7B68 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				507A89C623B188F8001C7B68 /* CustomSliderCell.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -473,6 +484,7 @@
 				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
+				507A89C723B188F8001C7B68 /* CustomSliderCell.swift in Sources */,
 				300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
@@ -651,7 +663,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 597PF7552F;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = EcosystemBackEnd/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -675,7 +687,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 597PF7552F;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = EcosystemBackEnd/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
