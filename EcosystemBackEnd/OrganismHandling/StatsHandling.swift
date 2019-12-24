@@ -33,9 +33,11 @@ extension Animal {
             self.health -= ageMultiplier * 0.025 * self.age/6
         }
         if self.breedingUrge > 0 {
-            if (self.age >= 3) && (self.age <= 21) {
+            if (self.age >= 6) && (self.age <= 18) {
                 if (self.hunger > 40) && (self.thirst > 40) {
-                    self.breedingUrge -= Float.random(in: 0.004...0.04)
+                    if self.inProcess == false {
+                        self.breedingUrge -= Float.random(in: 0.01...0.1)
+                    }
                 }
             }else {
                 self.breedingUrge = 100

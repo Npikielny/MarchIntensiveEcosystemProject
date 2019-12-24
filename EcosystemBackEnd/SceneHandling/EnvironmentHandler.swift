@@ -157,7 +157,7 @@ class EnvironmentHandler: SimulationBase {
 
     var thirstNode: SCNNode = {
         let geo = SCNCapsule(capRadius: 0.2, height: 3)
-        geo.heightSegmentCount = 30
+        geo.heightSegmentCount = 60
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "waterStatShader")]
@@ -167,7 +167,7 @@ class EnvironmentHandler: SimulationBase {
 
     var hungerNode: SCNNode = {
         let geo = SCNCapsule(capRadius: 0.2, height: 3)
-        geo.heightSegmentCount = 30
+        geo.heightSegmentCount = 60
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "hungerStatShader")]
@@ -177,7 +177,7 @@ class EnvironmentHandler: SimulationBase {
 
     var healthNode: SCNNode = {
         let geo = SCNCapsule(capRadius: 0.2, height: 3)
-        geo.heightSegmentCount = 30
+        geo.heightSegmentCount = 60
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "healthStatShader")]
@@ -187,7 +187,7 @@ class EnvironmentHandler: SimulationBase {
     
     var breedNode: SCNNode = {
         let geo = SCNCapsule(capRadius: 0.2, height: 3)
-        geo.heightSegmentCount = 30
+        geo.heightSegmentCount = 60
         let node = SCNNode(geometry: geo)
         node.geometry?.materials.first!.setValue(Float(0), forKey: "threshold")
         node.geometry?.materials.first!.shaderModifiers = [.geometry:getShader(from: "breedingStatShader")]
