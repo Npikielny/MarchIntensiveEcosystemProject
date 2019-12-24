@@ -60,7 +60,6 @@ class UserControls: NSViewController {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
 		cell.activeColor = .blue
-        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
@@ -87,7 +86,6 @@ class UserControls: NSViewController {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
 		cell.activeColor = .systemOrange
-        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
@@ -114,7 +112,6 @@ class UserControls: NSViewController {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
 		cell.activeColor = .systemGreen
-        cell.bgColor = .systemRed
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
@@ -140,7 +137,6 @@ class UserControls: NSViewController {
 	var breedingSlider: NSSlider = {
 		let slider = NSSlider()
 		let cell = CustomSliderCell()
-		cell.bgColor = .systemGray
 		cell.activeColor = .magenta
 		slider.cell = cell
 		slider.sliderType = .linear
@@ -153,7 +149,12 @@ class UserControls: NSViewController {
 	
     lazy var nextButton = NSButton(image: NSImage(named: NSImage.goRightTemplateName)!, target: self, action: #selector(nextAnimal))
     lazy var previousButton = NSButton(image: NSImage(named: NSImage.goLeftTemplateName)!, target: self, action: #selector(previousAnimal))
-    
+	lazy var dataCollectionButton: NSButton = {
+		let button = NSButton(title: "Collect Data", target: self, action: #selector(createCSV))
+		button.translatesAutoresizingMaskIntoConstraints = false
+		return button
+	}()
+
     var animalIndex: Int?
     @objc func nextAnimal() {
         if let _ = animalIndex {
@@ -202,32 +203,22 @@ class UserControls: NSViewController {
         }
     }
     
-    var dataCollectionButton: NSButton = {
-        let button = NSButton(title: "Collect Data", target: self, action: #selector(printData))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
     
-    @objc func printData() {
-		print("ATTEMPTING CSV")
-		createCSV()
-		
-    }
     
 	func getDocumentsDirectory() -> URL {
 		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return paths[0]
 	}
 	
-	func createCSV() {
-        print("Threaded Properly")
+	@objc func createCSV() {
+		
 		let currentDate = Date()
 		let fileName = "\(currentDate)-EcosystemData.csv"
         
         let name = fileName
-       let fileManager = FileManager.default
-       let documentDirectory = try! fileManager.url(for: .desktopDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-       let fileURL = documentDirectory.appendingPathComponent(name)
+		let fileManager = FileManager.default
+		let documentDirectory = try! fileManager.url(for: .desktopDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+		let fileURL = documentDirectory.appendingPathComponent(name)
         
 		
 		var csvText = "Time, Animals, Plants\n"
@@ -235,7 +226,7 @@ class UserControls: NSViewController {
         for index in 0..<self.Manager.gameController!.handler.animalDataStorage.count {
             csvText.append(String(index)+","+String(self.Manager.gameController!.handler.animalDataStorage[index])+","+String(self.Manager.gameController!.handler.foodDataStorage[index])+"\n")
         }
-		print("MADE CSV")
+		
 		do {
 			try csvText.write(to: fileURL, atomically: true, encoding: .utf8)
 			print("Created CSV named \(fileURL)")
@@ -243,7 +234,6 @@ class UserControls: NSViewController {
 			print("Could not save CSV")
 			print(error)
 		}
-        print("Leaving Function")
 		
 	}
 	
@@ -261,7 +251,8 @@ class UserControls: NSViewController {
 	}
 	
     func setupViews() {
-        view.addSubview(nameText)
+		
+		[nameText, nextButton, previousButton, dataCollectionButton, thirstText, thirstSlider, hungerText, hungerSlider, healthText, healthSlider, breedingText, breedingSlider].forEach { view.addSubview($0) }
         
         nameText.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
         nameText.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -269,22 +260,21 @@ class UserControls: NSViewController {
         nameText.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         nextButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nextButton)
-        
         nextButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         nextButton.leftAnchor.constraint(equalTo: nameText.rightAnchor, constant: 5).isActive = true
         nextButton.topAnchor.constraint(equalTo: nameText.topAnchor).isActive = true
         nextButton.heightAnchor.constraint(equalTo: nameText.heightAnchor, multiplier: 1).isActive = true
         
         previousButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(previousButton)
-        
         previousButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         previousButton.rightAnchor.constraint(equalTo: nameText.leftAnchor, constant: -5).isActive = true
         previousButton.topAnchor.constraint(equalTo: nameText.topAnchor).isActive = true
         previousButton.heightAnchor.constraint(equalTo: nameText.heightAnchor, multiplier: 1).isActive = true
-        
-		[thirstText, thirstSlider, hungerText, hungerSlider, healthText, healthSlider, breedingText, breedingSlider].forEach { view.addSubview($0) }
+		
+		dataCollectionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        dataCollectionButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        dataCollectionButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
 		
 		thirstText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
 		thirstText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true
@@ -325,13 +315,6 @@ class UserControls: NSViewController {
 		breedingSlider.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.6).isActive = true
 		breedingSlider.leadingAnchor.constraint(equalTo: breedingText.trailingAnchor, constant: 40).isActive = true
 		breedingSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-		
-        view.addSubview(dataCollectionButton)
-        dataCollectionButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        dataCollectionButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        dataCollectionButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
-        
         
     }
     
