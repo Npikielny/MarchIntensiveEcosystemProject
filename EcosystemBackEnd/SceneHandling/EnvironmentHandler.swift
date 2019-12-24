@@ -75,7 +75,7 @@ class EnvironmentHandler: SimulationBase {
         setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
         setupFunctions.append((getNames, "Finding Animal Names"))
         setupFunctions.append((addAnimals, "Adding Animals"))
-        setupFunctions.append((addFood, "Adding Food"))
+//        setupFunctions.append((addFood, "Adding Food"))
 //        setupFunctions.append((debugPoints,"Adding Debugging Points"))
         setupFunctions.append((commenceEngine, "Starting Physics Engine"))
     }
@@ -254,7 +254,7 @@ class EnvironmentHandler: SimulationBase {
 //                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
 //                }
 //            }
-            if Int.random(in: 0..<30*50) == 0 {
+            if Int.random(in: 0..<30*25) == 0 {
                 _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
             }
             if let _ = self.terrain {
