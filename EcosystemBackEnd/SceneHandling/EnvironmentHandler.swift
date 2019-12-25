@@ -39,7 +39,7 @@ class EnvironmentHandler: SimulationBase {
                 if let _ = foods[i].node.parent {}else {
                     self.Scene.rootNode.addChildNode(foods[i].node)
                 }
-                if movableFoods.contains(where: {$0.node == foods[i].node && foods[i].foodType != .Plant}) == false {
+                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && foods[i].foodType != .Plant {
                     movableFoods.append(foods[i])
                 }
             }
