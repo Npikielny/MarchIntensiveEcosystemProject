@@ -263,6 +263,16 @@ class EnvironmentHandler: SimulationBase {
             if Int.random(in: 0..<30*25) == 0 {
                 _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
             }
+            
+            if Int.random(in: 0..<30*25*4) == 0 {
+                _ = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+            }
+            
+            if Int.random(in: 0..<30*25*4) == 0 {
+                _ = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+            }
+            
+            
             if let _ = self.terrain {
                 if let individual = self.selectedAnimal {
                     self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")

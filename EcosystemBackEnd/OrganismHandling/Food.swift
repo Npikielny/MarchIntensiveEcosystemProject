@@ -57,12 +57,12 @@ class Apple: Food {
 class Plant: Food {
     init(Position: SCNVector3, Handler: SimulationBase, Species: String) {
         super.init(Position: Position, Species: Species, foodType: .Plant, Handler: Handler)
+        let height = self.node.boundingBox.min.y
+        self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2 - height)
     }
     
     func reproductionChance() {}
     func setYPosition(plant: Plant) {
-        let height = plant.node.boundingBox.min.y
-        plant.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2 - height)
         if plant.node.worldPosition == self.node.worldPosition {
             plant.node.worldPosition = self.handler.viableVerticies.randomElement()!.vector
         }else {
