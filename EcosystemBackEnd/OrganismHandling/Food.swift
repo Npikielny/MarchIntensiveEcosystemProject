@@ -15,13 +15,19 @@ class Food: Matter {
     init(Position: SCNVector3, Species: String, foodType: FoodType, Handler: SimulationBase) {
         self.foodType = foodType
         self.handler = Handler
-        super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(Species+".scn", Shaders: nil))
+        if foodType == .Plant {
+            super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(Species+".scn", Shaders: "tree"))
+        }else {
+            super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(Species+".scn", Shaders: nil))
+        }
         self.node.name = Species
+        self.node.eulerAngles = SCNVector3(0,CGFloat.random(in: 0...CGFloat.pi*2),0)
         
 //        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: self.node, options: [:]))
 //        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
         self.node.worldPosition = Position
         self.handler.foods.append(self)
+        
     }
     
 //    func addPhysicsBody() {
@@ -44,6 +50,15 @@ class Apple: Food {
     init(Position: SCNVector3, Handler: SimulationBase) {
         super.init(Position: Position, Species: "apple", foodType: .Fruit, Handler: Handler)
         self.node.scale = SCNVector3(0.5,0.5,0.5)
+        
+    }
+}
+
+class Daisy: Food {
+    init(Position: SCNVector3, Handler: SimulationBase) {
+        super.init(Position: Position, Species: "daisy", foodType: .Plant, Handler: Handler)
+        self.node.scale = SCNVector3(0.5,0.5,0.5)
+        self.foodValue = 10
         
     }
 }

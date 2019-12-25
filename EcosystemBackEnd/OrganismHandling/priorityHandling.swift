@@ -41,5 +41,6 @@ enum Priority {
 enum FoodType {
     case Meat
     case Fruit
+    case Plant
 }
 

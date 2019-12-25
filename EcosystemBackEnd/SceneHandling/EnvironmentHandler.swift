@@ -39,6 +39,9 @@ class EnvironmentHandler: SimulationBase {
                 if let _ = foods[i].node.parent {}else {
                     self.Scene.rootNode.addChildNode(foods[i].node)
                 }
+                if movableFoods.contains(where: {$0.node == foods[i].node && foods[i].foodType != .Plant}) == false {
+                    movableFoods.append(foods[i])
+                }
             }
         }
     }
@@ -75,7 +78,7 @@ class EnvironmentHandler: SimulationBase {
         setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
         setupFunctions.append((getNames, "Finding Animal Names"))
         setupFunctions.append((addAnimals, "Adding Animals"))
-//        setupFunctions.append((addFood, "Adding Food"))
+        setupFunctions.append((addFood, "Adding Food"))
 //        setupFunctions.append((debugPoints,"Adding Debugging Points"))
         setupFunctions.append((commenceEngine, "Starting Physics Engine"))
     }
@@ -205,7 +208,8 @@ class EnvironmentHandler: SimulationBase {
     override func Physics() {
         if self.initialized {
             let difference = Float(1)/Float(10)
-            for item in animals+foods {
+            
+            for item in animals+movableFoods {
                 item.acceleration = SCNVector3().zero()
                 if bottom(item) > 2 {
                     item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
@@ -249,11 +253,21 @@ class EnvironmentHandler: SimulationBase {
             for i in animals {
                 i.movementHandler()
             }
-//            for _ in foods {
-//                if Int.random(in: 0..<30*50*40) == 0 {
-//                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-//                }
-//            }
+            
+            for i in foods {
+                if i.foodType == .Plant && foods.count < 100 {
+                    if Int.random(in: 0..<30*50*10) == 0 {
+                        let k = Daisy(Position: i.node.worldPosition+SCNVector3().random().toMagnitude(2), Handler: self)
+                        let height = k.node.boundingBox.min.y
+                        k.node.worldPosition = i.node.worldPosition.setValue(Component: .y, Value: 2 - height)
+                        if k.node.worldPosition == i.node.worldPosition {
+                            k.node.worldPosition = self.viableVerticies.randomElement()!.vector
+                        }else {
+                            k.node.eulerAngles = i.node.eulerAngles
+                        }
+                    }
+                }
+            }
             if Int.random(in: 0..<30*25) == 0 {
                 _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
             }

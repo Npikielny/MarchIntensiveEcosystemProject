@@ -89,17 +89,21 @@ class SimulationBase {
     }
     
     func addFood() {
-        for _ in 0..<5 {
-            _ = Apple(Position: (self.viableVerticies.randomElement()?.vector.setValue(Component: .y, Value: 10))!, Handler: self)
-//            apple.addPhysicsBody()
+        for _ in 0..<10 {
+            let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+            let height = i.node.boundingBox.min.y
+            i.node.worldPosition = i.node.worldPosition.setValue(Component: .y, Value: 2 - height)
         }
     }
     
     var animals = [Animal]()
     var foods = [Food]()
+    var movableFoods = [Food]()
     
     var lastTime: Float = 0
     func Physics() {
+        var foodList = foods
+        foodList.removeAll(where: {$0.foodType == .Plant})
         if self.initialized {
             let difference = Float(1)/Float(10)
             for item in animals+foods {
@@ -127,16 +131,20 @@ class SimulationBase {
             self.collectData()
         }
         self.frameNumber += 1
-        if self.initialized {
-            for i in animals {
-                i.movementHandler()
-            }
-            for _ in foods {
-                if Int.random(in: 0..<30*50*40) == 0 {
-                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-                }
-            }
-        }
+//        if self.initialized {
+//            for i in animals {
+//                i.movementHandler()
+//            }
+//            for i in foods {
+//                if i.foodType == .Plant {
+//                    if Int.random(in: 0..<30*50) == 0 {
+//                        let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+//                        let height = i.node.boundingBox.min.y
+//                        i.node.worldPosition = i.node.worldPosition.setValue(Component: .y, Value: 2 - height)
+//                    }
+//                }
+//            }
+//        }
     }
     
     func collectData() {
