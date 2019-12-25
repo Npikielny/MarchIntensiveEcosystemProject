@@ -54,11 +54,49 @@ class Apple: Food {
     }
 }
 
-class Daisy: Food {
+class Plant: Food {
+    init(Position: SCNVector3, Handler: SimulationBase, Species: String) {
+        super.init(Position: Position, Species: Species, foodType: .Plant, Handler: Handler)
+    }
+    
+    func reproductionChance() {}
+    func setYPosition(plant: Plant) {
+        let height = plant.node.boundingBox.min.y
+        plant.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2 - height)
+        if plant.node.worldPosition == self.node.worldPosition {
+            plant.node.worldPosition = self.handler.viableVerticies.randomElement()!.vector
+        }else {
+            plant.node.eulerAngles = self.node.eulerAngles
+        }
+    }
+}
+
+class Daisy: Plant {
     init(Position: SCNVector3, Handler: SimulationBase) {
-        super.init(Position: Position, Species: "daisy", foodType: .Plant, Handler: Handler)
+        super.init(Position: Position, Handler: Handler, Species: "daisy")
         self.node.scale = SCNVector3(0.5,0.5,0.5)
-        self.foodValue = 10
+        self.foodValue = 5
         
+    }
+    
+    override func reproductionChance() {
+        if Int.random(in: 0..<30*50*30) == 0 {
+            let k = Daisy(Position: self.node.worldPosition+SCNVector3().random().toMagnitude(CGFloat.random(in: 2...6)), Handler: self.handler)
+            setYPosition(plant: k)
+        }
+    }
+}
+
+class Grass: Plant {
+    init(Position: SCNVector3, Handler: SimulationBase) {
+        super.init(Position: Position, Handler: Handler, Species: "grass")
+        self.foodValue = 10
+    }
+    
+    override func reproductionChance() {
+        if Int.random(in: 0..<30*50*10) == 0 {
+            let k = Grass(Position: self.node.worldPosition+SCNVector3().random().toMagnitude(CGFloat.random(in: 4...10)), Handler: self.handler)
+            setYPosition(plant: k)
+        }
     }
 }

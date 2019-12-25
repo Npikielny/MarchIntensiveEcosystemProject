@@ -255,17 +255,9 @@ class EnvironmentHandler: SimulationBase {
             }
             
             for i in foods {
-                if i.foodType == .Plant && foods.count < 100 {
-                    if Int.random(in: 0..<30*50*10) == 0 {
-                        let k = Daisy(Position: i.node.worldPosition+SCNVector3().random().toMagnitude(2), Handler: self)
-                        let height = k.node.boundingBox.min.y
-                        k.node.worldPosition = i.node.worldPosition.setValue(Component: .y, Value: 2 - height)
-                        if k.node.worldPosition == i.node.worldPosition {
-                            k.node.worldPosition = self.viableVerticies.randomElement()!.vector
-                        }else {
-                            k.node.eulerAngles = i.node.eulerAngles
-                        }
-                    }
+                if i.foodType == .Plant && foods.count < 150 {
+                    let plant = i as! Plant
+                    plant.reproductionChance()
                 }
             }
             if Int.random(in: 0..<30*25) == 0 {
