@@ -126,6 +126,7 @@ class Rabbit: Animal {
     init(Position: SCNVector3, Handler: SimulationBase) {
         super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
         self.target = self.node.worldPosition
+        self.Speed = 2
     }
     
     override func move() {
@@ -186,6 +187,53 @@ class debugger: Animal {
     }
     
 }
+
+class Fox: Animal {
+    init(Position: SCNVector3, Handler: SimulationBase) {
+        super.init(Position: Position, Species: "fox", lookType: .Forward, Handler: Handler)
+        self.target = self.node.worldPosition
+        self.Speed = 5
+    }
+    
+    override func move() {
+        if (self.velocity.zero(.y)).getMagnitude() <= 0.01 {
+            let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
+            if distance <= self.Speed {
+                if distance < 1.2 {
+                    self.node.worldPosition = self.target
+                }else {
+                    let velocity = pow(abs(1)*distance,0.5)
+                    self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                }
+            }else {
+                let velocity = pow(abs(1)*self.Speed,0.5)
+                self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+            }
+        }
+    }
+    
+    var targetNode: SCNNode = {
+        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
+        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+        return node
+    }()
+    
+    var isSelected: Bool = false
+    
+    override func additionalPhysics() {
+    }
+    
+    override func additionalSetup() {
+//        self.node.physicsBody?.friction = 1
+//        self.handler.Scene.rootNode.addChildNode(self.targetNode)
+//        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
+//        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
+//        self.handler.Scene.rootNode.addChildNode(self.healthNode)
+//        self.handler.Scene.rootNode.addChildNode(self.statsNode)
+    }
+    
+}
+
 
 enum Sex {
     case Male
