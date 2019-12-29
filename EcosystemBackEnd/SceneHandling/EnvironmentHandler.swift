@@ -71,6 +71,7 @@ class EnvironmentHandler: SimulationBase {
         self.Scene = SCNScene(named: FileNamed)!
         super.init(Handler: true)
         setupFunctions.append(({}, "Setting Up SCNScene"))
+        setupFunctions.append((setupCamera, "Setting Up Camera"))
         setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
         setupFunctions.append((setupWater, "Adding Water"))
@@ -149,6 +150,11 @@ class EnvironmentHandler: SimulationBase {
             node.worldPosition = i.vector
         }
     }
+    
+    var camera: Camera!
+    func setupCamera() {
+        self.camera =  Camera(Position: SCNVector3(x: 10, y: 10, z: 10), Target: SCNVector3().zero(), SceneRootNode: self.Scene.rootNode)
+    }
 
     var statsNode: SCNNode = {
         let text = SCNText(string: "Diego", extrusionDepth: 1)
@@ -206,25 +212,23 @@ class EnvironmentHandler: SimulationBase {
     }()
     
     override func Physics() {
-        if self.initialized {
-            let difference = Float(1)/Float(10)
-            
-            for item in animals+movableFoods {
-                item.acceleration = SCNVector3().zero()
-                if bottom(item) > 2 {
-                    item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
-                }else if bottom(item) < 2 {
-                    item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y)
-                }
-                if bottom(item) - 2 < 0.005 && item.velocity.y < 0 {
-                    item.velocity = SCNVector3().zero()
-                }
-                item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
-                item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+        let difference = Float(1)/Float(10)
+        
+        for item in animals+movableFoods {
+            item.acceleration = SCNVector3().zero()
+            if bottom(item) > 2 {
+                item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
+            }else if bottom(item) < 2 {
+                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y)
             }
-            
-            lastTime = self.time
+            if bottom(item) - 2 < 0.005 && item.velocity.y < 0 {
+                item.velocity = SCNVector3().zero()
+            }
+            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
         }
+        
+        lastTime = self.time
     }
     
     override func commenceEngine() {
@@ -294,6 +298,13 @@ class EnvironmentHandler: SimulationBase {
                     self.breedNode.isHidden = true
                     self.targetNode.isHidden = true
                 }
+            }
+        }
+        
+        if self.camera.cameraType == .following {
+            if let animal = self.selectedAnimal {
+                self.camera.node.position = (animal.node.worldPosition - animal.velocity).setValue(Component: .y, Value: 10) + (SCNVector3(x: 5, y: 0, z: 5))
+                self.camera.node.look(at: animal.node.worldPosition)
             }
         }
     }

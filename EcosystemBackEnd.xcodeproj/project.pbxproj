@@ -46,6 +46,7 @@
 		30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB492385842D001FEECE /* priorityHandling.swift */; };
 		30B47A5923AC0EE5008324FF /* FrontHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B47A5723AC0EE5008324FF /* FrontHolder.swift */; };
 		30B47A5A23AC0EE5008324FF /* FrontHolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30B47A5823AC0EE5008324FF /* FrontHolder.xib */; };
+		30E0480D23B7BC920078571B /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E0480C23B7BC920078571B /* CameraController.swift */; };
 		30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5A5F32380920B001F4524 /* SkyHandler.swift */; };
 		30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* RenderHandler.swift */; };
 		30FE8E2223AEB484001D3EC6 /* SimulationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */; };
@@ -121,6 +122,7 @@
 		30ADAB492385842D001FEECE /* priorityHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = priorityHandling.swift; sourceTree = "<group>"; };
 		30B47A5723AC0EE5008324FF /* FrontHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontHolder.swift; sourceTree = "<group>"; };
 		30B47A5823AC0EE5008324FF /* FrontHolder.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FrontHolder.xib; sourceTree = "<group>"; };
+		30E0480C23B7BC920078571B /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		30E5A5F32380920B001F4524 /* SkyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyHandler.swift; sourceTree = "<group>"; };
 		30F83892237DC04A0019A12E /* RenderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderHandler.swift; sourceTree = "<group>"; };
 		30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationHandler.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
 				30E5A5F32380920B001F4524 /* SkyHandler.swift */,
 				309C9305237B195C007AF60F /* TreeHandling.swift */,
+				30E0480C23B7BC920078571B /* CameraController.swift */,
 			);
 			path = SceneHandling;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 			files = (
 				30A27F1B238F0D0B0092DAF3 /* SplashController.swift in Sources */,
 				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
+				30E0480D23B7BC920078571B /* CameraController.swift in Sources */,
 				30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */,
 				30ADAB4823858407001FEECE /* LookHandling.swift in Sources */,
 				30A30DD22390360900AD3BAB /* UserControls.swift in Sources */,

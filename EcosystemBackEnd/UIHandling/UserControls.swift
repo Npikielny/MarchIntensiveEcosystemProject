@@ -203,7 +203,16 @@ class UserControls: NSViewController {
         }
     }
     
+    lazy var followCamButton: NSButton = {
+        let button = NSButton(checkboxWithTitle: "Follow Cam", target: self, action: #selector(followCam))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.allowsMixedState = false
+        return button
+    }()
     
+    @objc func followCam() {
+        self.Manager.gameController?.handler.camera.cameraType = .following
+    }
     
 	func getDocumentsDirectory() -> URL {
 		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -316,6 +325,9 @@ class UserControls: NSViewController {
 		breedingSlider.leadingAnchor.constraint(equalTo: breedingText.trailingAnchor, constant: 40).isActive = true
 		breedingSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
         
+        view.addSubview(followCamButton)
+        followCamButton.leftAnchor.constraint(equalTo: breedingText.leftAnchor).isActive = true
+        followCamButton.topAnchor.constraint(equalTo: breedingText.bottomAnchor, constant: 10).isActive = true
     }
     
     

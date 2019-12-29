@@ -16,15 +16,19 @@ class EnvironmentScene: SCNScene {
 extension GameController: SCNSceneRendererDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        self.handler.process()
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
-        self.handler.Physics()
+        if self.handler.initialized {
+            self.handler.Physics()
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
-        self.handler.updateTime()
+        if self.handler.initialized {
+            self.handler.process()
+            self.handler.updateTime()
+        }
     }
     
 }
