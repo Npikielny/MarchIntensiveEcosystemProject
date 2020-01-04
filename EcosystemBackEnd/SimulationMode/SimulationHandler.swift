@@ -65,13 +65,14 @@ class SimulationHandler: SimulationBase {
         }
     }
     func syncIndividual(animal: inout Animal, data: animalData) {
-        animal.node.worldPosition = data.position
+        animal.node.worldPosition = SCNVector3(data.position)
         animal.hunger = data.hunger
         animal.thirst = data.thirst
         animal.breedingUrge = data.breedingUrge
-        animal.velocity = data.velocity
+        animal.velocity = SCNVector3(data.velocity)
         animal.age = data.age
-        print("position:",animal.node.worldPosition,"velocity:",animal.velocity,"target:",animal.target,"age:",animal.age,"hunger:",animal.hunger,"thirst:",animal.thirst,"health:",animal.health,"breedingUrge:",animal.breedingUrge,"id:",animal.Id)
+//    print("position:",animal.node.worldPosition,"velocity:",animal.velocity,"target:",animal.target)
+        //"age:",animal.age,"hunger:",animal.hunger,"thirst:",animal.thirst,"health:",animal.health,"breedingUrge:",animal.breedingUrge,"id:",animal.Id
     }
     
     override func Physics() {
@@ -91,20 +92,16 @@ class SimulationHandler: SimulationBase {
         }
         self.frameNumber += 1
         for i in 0..<animals.count {
-            syntheticMovementHandler(animal: &animals[i])
+            syntheticMovementHandler(item: &animals[i])
         }
-    }
-    
-    func syntheticMovementHandler(animal: inout Animal) {
-        
     }
     
 }
 
 struct animalData {
-    var position: SCNVector3
-    var velocity: SCNVector3
-    var target: SCNVector3
+    var position: SIMD3<Float>
+    var velocity: SIMD3<Float>
+    var target: SIMD3<Float>
     var age: Float
     var hunger: Float
     var thirst: Float
@@ -113,9 +110,9 @@ struct animalData {
     var id: Int32
     static let size = MemoryLayout<animalData>.stride
     init(_ AnimalData: Animal) {
-        self.position = AnimalData.node.worldPosition
-        self.velocity = AnimalData.velocity
-        self.target = AnimalData.target
+        self.position = SIMD3(AnimalData.node.worldPosition)
+        self.velocity = SIMD3(AnimalData.velocity)
+        self.target = SIMD3(AnimalData.target)
         self.age = AnimalData.age
         self.hunger = AnimalData.hunger
         self.thirst = AnimalData.thirst

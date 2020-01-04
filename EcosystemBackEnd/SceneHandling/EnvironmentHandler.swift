@@ -20,8 +20,8 @@ class EnvironmentHandler: SimulationBase {
     var treeGen: TreeGenerator!
     
     var sky: MDLSkyCubeTexture!
-        var time: Float = 0
-        var azimuth: Float = 0
+    var time: Float = 0
+    var azimuth: Float = 0
     
     override var animals: [Animal] {
         didSet {

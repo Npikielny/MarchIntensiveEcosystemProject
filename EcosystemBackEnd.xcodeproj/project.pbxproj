@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3003C27323C14005009A4E46 /* syntheticMovementHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */; };
 		300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */; };
-		300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC5238D62B100B7F363 /* MetalHandler.swift */; };
 		301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */; };
 		301E8FD823908ADA001B8727 /* PetNames.csv in Resources */ = {isa = PBXBuildFile; fileRef = 301E8FD723908ADA001B8727 /* PetNames.csv */; };
 		302908A8238A1DA300D4396D /* hungerStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A7238A1DA300D4396D /* hungerStatShader.shader */; };
@@ -75,8 +75,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = syntheticMovementHandler.swift; sourceTree = "<group>"; };
 		300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhysicsHandler.metal; sourceTree = "<group>"; };
-		300DBEC5238D62B100B7F363 /* MetalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalHandler.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentHandler.swift; sourceTree = "<group>"; };
 		301E8FD723908ADA001B8727 /* PetNames.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PetNames.csv; sourceTree = "<group>"; };
 		302908A7238A1DA300D4396D /* hungerStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = hungerStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
@@ -158,14 +158,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		300DBEC4238D629800B7F363 /* PhysicsHandling(Metal) */ = {
-			isa = PBXGroup;
-			children = (
-				300DBEC5238D62B100B7F363 /* MetalHandler.swift */,
-			);
-			path = "PhysicsHandling(Metal)";
-			sourceTree = "<group>";
-		};
 		303314472379ED9900C856F6 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +254,6 @@
 				303ECA25238442720013503C /* Helpers */,
 				303314472379ED9900C856F6 /* Shaders */,
 				303ECA26238442790013503C /* Debugging */,
-				300DBEC4238D629800B7F363 /* PhysicsHandling(Metal) */,
 				305700BD23787999006696D9 /* Assets.xcassets */,
 				305700BF23787999006696D9 /* Main.storyboard */,
 				305700C223787999006696D9 /* Info.plist */,
@@ -310,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */,
+				3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */,
 				30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */,
 				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
 			);
@@ -482,6 +474,7 @@
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
+				3003C27323C14005009A4E46 /* syntheticMovementHandler.swift in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
 				30545AB023A544AE00006313 /* Matter.swift in Sources */,
@@ -489,7 +482,6 @@
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,
 				507A89C723B188F8001C7B68 /* CustomSliderCell.swift in Sources */,
-				300DBEC6238D62B100B7F363 /* MetalHandler.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
 				30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */,

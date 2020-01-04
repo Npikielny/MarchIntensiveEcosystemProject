@@ -79,11 +79,10 @@ class SimulationBase {
     }
     
     func addAnimals() {
-        let Diego = Rabbit(Position: SCNVector3(1,20,300), Handler: self)
+        let Diego = Rabbit(Position: SCNVector3(0,0,0), Handler: self)
         Diego.node.name = "Diego"
         Diego.sex = .Male
-//        let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
-        let secondRabbit = Rabbit(Position: SCNVector3(x: 4, y: 50, z: 600), Handler: self)
+        let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         secondRabbit.sex = .Female
         
 //        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
@@ -143,20 +142,6 @@ class SimulationBase {
             self.collectData()
         }
         self.frameNumber += 1
-//        if self.initialized {
-//            for i in animals {
-//                i.movementHandler()
-//            }
-//            for i in foods {
-//                if i.foodType == .Plant {
-//                    if Int.random(in: 0..<30*50) == 0 {
-//                        let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
-//                        let height = i.node.boundingBox.min.y
-//                        i.node.worldPosition = i.node.worldPosition.setValue(Component: .y, Value: 2 - height)
-//                    }
-//                }
-//            }
-//        }
     }
     
     func collectData() {

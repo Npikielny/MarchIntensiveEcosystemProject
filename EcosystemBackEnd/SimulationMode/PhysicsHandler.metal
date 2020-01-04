@@ -22,11 +22,6 @@ struct animal {
 };
 
 
-//float3 distance(float3 vector1, float3 vector2)
-//{
-//    return pow((vector1.x-vector2.x)*(vector1.x-vector2.x) + (vector1.y-vector2.y)*(vector1.y-vector2.y) + (vector1.z-vector2.z)*(vector1.z-vector2.z),0.5);
-//}
-
 kernel void calculatePhysics(device animal *buffer,
                         uint index [[thread_position_in_grid]])
 {
@@ -63,22 +58,18 @@ kernel void calculatePhysics(device animal *buffer,
 
     float difference = 0.1;
     if (buffer[index].position.y > 0) {
-        buffer[index].velocity.y = 1;
+        buffer[index].velocity.y += -9.807*difference;
 
     }
-//    buffer[index].position += float3(buffer[index].velocity.x*difference,buffer[index].velocity.y*difference,buffer[index].velocity.z*difference);
-//    if (buffer[index].position.y <= 0) {
-//        if (distance(buffer[index].position, buffer[index].target) < maxSpeed/3) {
-//            buffer[index].position = buffer[index].target;
-//            buffer[index].velocity = float3(0,0,0);
-//
-//        }else {
-////            buffer[index].position = float3(buffer[index].position.x,0,buffer[index].position.z);
-////
-//        }
-//
-//        buffer[index].velocity = float3(0,0,0);
-//
-//    }
+    buffer[index].position += buffer[index].velocity*difference;
+    if (buffer[index].position.y <= 0) {
+        buffer[index].velocity = float3(0,0,0);
+        buffer[index].position.y = 0;
+        if (distance(buffer[index].position, buffer[index].target) < maxSpeed/3) {
+            buffer[index].position = buffer[index].target;
+        }else {
+            buffer[index].position = float3(buffer[index].position.x,0,buffer[index].position.z);
+        }
+    }
     
 }

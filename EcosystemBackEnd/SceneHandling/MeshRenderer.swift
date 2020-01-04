@@ -371,5 +371,3 @@ func getShader(from filename: String) -> String {
     print("shader \(filename) not found")
     return ""
 }
-
-

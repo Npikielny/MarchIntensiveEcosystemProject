@@ -47,11 +47,15 @@ class SimulationController: NSViewController {
     var simulation = SimulationHandler(NumberOfStartingBunnies: 2, MapSideLength: 400)
     
     @objc func runSimulation() {
-        simulation.runSimulation()
-        print("Finished Metal")
-        for i in simulation.animals {
-            print(i.node.worldPosition)
-        }
+//        for i in 0...4 {
+////            print(i+1)
+//            for _ in 0..<15 {
+                simulation.runSimulation()
+//            }
+            for i in simulation.animals {
+                print(i.velocity,i.node.worldPosition)
+            }
+//        }
     }
     
     override func viewDidLoad() {

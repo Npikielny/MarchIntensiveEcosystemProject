@@ -210,9 +210,5 @@ extension EnvironmentHandler {
        let text = SCNText(string: animalName! + sexSTR + " – " + priorityString + " (" + ageSTR + ")", extrusionDepth: 0.1)
        text.font = NSFont.systemFont(ofSize: 0.5)
         self.statsNode.geometry = text
-//        let color: NSColor = #colorLiteral(red: 1, green: 0, blue: 0.9662935138, alpha: 1)
     }
-    
 }
-
-
