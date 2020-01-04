@@ -117,6 +117,13 @@ class EnvironmentHandler: SimulationBase {
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
     }
     
+    override func classifyVerticies() {
+        viableVerticies = terrain.vertices
+        viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
+        drinkableVertices = terrain.vertices
+        drinkableVertices.removeAll(where: {$0.status != .NearWater})
+    }
+    
     func setupWater() {
         water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
         water.node.name = "Water"

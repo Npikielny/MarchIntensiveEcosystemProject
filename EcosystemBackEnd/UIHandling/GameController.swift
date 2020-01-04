@@ -29,7 +29,7 @@ class GameController: NSViewController {
        GameView.loops = true
        GameView.isPlaying = true
        // allows the user to manipulate the camera
-       GameView.allowsCameraControl = false
+       GameView.allowsCameraControl = true
         GameView.scene?.isPaused = false
         
        // show statistics such as fps and timing information

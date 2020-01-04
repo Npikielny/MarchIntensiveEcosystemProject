@@ -21,11 +21,12 @@ class SimulationHandler: SimulationBase {
     
     
     
-    
     func handleMetal() {
-        var data = [animalData]()
+        var bufferData: [animalData]!
+        bufferData = [animalData]()
         for i in self.animals {
-            data.append(animalData(AnimalData: i))
+            i.target = i.node.worldPosition
+            bufferData.append(animalData(i))
         }
         
         var pipeline: MTLComputePipelineState!
@@ -34,7 +35,7 @@ class SimulationHandler: SimulationBase {
         let commandQueue = device.makeCommandQueue()
         let commandBuffer = commandQueue?.makeCommandBuffer()
 
-        let buffer = device.makeBuffer(bytes: data, length: animalData.size*data.count, options: [])!
+        let buffer = device.makeBuffer(bytes: bufferData, length: animalData.size*bufferData.count, options: [])!
 
         let commandEncoder = (commandBuffer?.makeComputeCommandEncoder())!
         let function = library?.makeFunction(name: "calculatePhysics")!
@@ -46,7 +47,7 @@ class SimulationHandler: SimulationBase {
         
         let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
 
-        commandEncoder.dispatchThreadgroups(MTLSize(width: data.count, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
+        commandEncoder.dispatchThreadgroups(MTLSize(width: bufferData.count, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
         commandEncoder.endEncoding()
         commandBuffer!.commit()
         commandBuffer!.waitUntilCompleted()
@@ -56,15 +57,21 @@ class SimulationHandler: SimulationBase {
     
     func syncData(Buffer: UnsafeMutablePointer<animalData>) {
         for i in 0..<animals.count {
-            let data = Buffer[i]
-            let index = animals.firstIndex(where: {$0.Id == data.id})
+            let dt = Buffer[i]
+            let index = animals.firstIndex(where: {$0.Id == dt.id})
             if let indexFound = index {
-                syncIndividual(animal: &animals[indexFound], data: data)
+                syncIndividual(animal: &animals[indexFound], data: dt)
             }
         }
     }
     func syncIndividual(animal: inout Animal, data: animalData) {
         animal.node.worldPosition = data.position
+        animal.hunger = data.hunger
+        animal.thirst = data.thirst
+        animal.breedingUrge = data.breedingUrge
+        animal.velocity = data.velocity
+        animal.age = data.age
+        print("position:",animal.node.worldPosition,"velocity:",animal.velocity,"target:",animal.target,"age:",animal.age,"hunger:",animal.hunger,"thirst:",animal.thirst,"health:",animal.health,"breedingUrge:",animal.breedingUrge,"id:",animal.Id)
     }
     
     override func Physics() {
@@ -86,15 +93,6 @@ class SimulationHandler: SimulationBase {
         for i in 0..<animals.count {
             syntheticMovementHandler(animal: &animals[i])
         }
-//        for _ in foods {
-//            if Int.random(in: 0..<30*50*40/32) == 0 {
-//                _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-//            }
-//        }
-//        if Int.random(in: 0..<30*10) == 0 {
-//            NSLog("New Apple")
-//            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-//        }
     }
     
     func syntheticMovementHandler(animal: inout Animal) {
@@ -105,30 +103,25 @@ class SimulationHandler: SimulationBase {
 
 struct animalData {
     var position: SCNVector3
+    var velocity: SCNVector3
     var target: SCNVector3
     var age: Float
-    var maxSpeed: Float
     var hunger: Float
     var thirst: Float
     var health: Float
     var breedingUrge: Float
-    var waiting: Bool
-    var id: Int
+    var id: Int32
     static let size = MemoryLayout<animalData>.stride
-    init(AnimalData: Animal) {
+    init(_ AnimalData: Animal) {
         self.position = AnimalData.node.worldPosition
+        self.velocity = AnimalData.velocity
         self.target = AnimalData.target
         self.age = AnimalData.age
-        self.maxSpeed = Float(AnimalData.Speed)
         self.hunger = AnimalData.hunger
         self.thirst = AnimalData.thirst
         self.health = AnimalData.health
         self.breedingUrge = AnimalData.breedingUrge
-        if AnimalData.inProcess {
-            self.waiting = true
-        }else {
-            self.waiting = false
-        }
-        self.id = Int(AnimalData.Id)
+        self.id = AnimalData.Id
     }
 }
+

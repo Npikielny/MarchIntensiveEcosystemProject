@@ -20,17 +20,18 @@ class Camera {
     var root: SCNNode
     
     init(Position: SCNVector3, Target: SCNVector3, SceneRootNode: SCNNode) {
-         self.node = SCNNode()
-            self.camera = SCNCamera()
-            self.camera.zNear = 0
-            self.node.camera = self.camera
-            self.node.geometry = SCNSphere(radius: 0.2)
-            self.node.look(at: SCNVector3().zero())
-            self.root = SceneRootNode
-            self.root.addChildNode(self.node)
-            self.node.position = Position
-            self.targetPoint = Target
-            self.cameraType = .targeted
+        self.node = SCNNode()
+        self.camera = SCNCamera()
+        self.camera.zNear = 0
+        self.node.camera = self.camera
+//        self.node.geometry = SCNSphere(radius: 0.2)
+        self.node.look(at: SCNVector3().zero())
+        self.root = SceneRootNode
+        self.root.addChildNode(self.node)
+        self.node.position = Position
+        self.targetPoint = Target
+        self.cameraType = .targeted
+        self.camera.zFar = 600
     }
     
     init(Position: SCNVector3, SceneRootNode: SCNNode) {
@@ -43,6 +44,7 @@ class Camera {
          self.node.position = Position
          self.targetPoint = SCNVector3().zero()
          self.cameraType = .positionDependent
+        self.camera.zFar = 600
     }
     
     func look() {

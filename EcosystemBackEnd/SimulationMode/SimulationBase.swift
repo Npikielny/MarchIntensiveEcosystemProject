@@ -31,6 +31,7 @@ class SimulationBase {
             setupFunctions.append((addAnimals, "Adding Animals"))
             setupFunctions.append((addFood, "Adding Food"))
             setupFunctions.append((commenceEngine, "Starting Physics Engine"))
+            setupFunctions.append((debugAnimals,"Reading Initial Conditions"))
         }
     }
     
@@ -70,6 +71,7 @@ class SimulationBase {
     }
     
     func classifyVerticies() {
+        terrain.vertices = terrain.vertices.map({SpaciallyAwareVector(vector: $0.vector.zero(.y), status: $0.status)})
         viableVerticies = terrain.vertices
         viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
         drinkableVertices = terrain.vertices
@@ -77,13 +79,14 @@ class SimulationBase {
     }
     
     func addAnimals() {
-        let Diego = Rabbit(Position: SCNVector3(0,10,0), Handler: self)
+        let Diego = Rabbit(Position: SCNVector3(1,20,300), Handler: self)
         Diego.node.name = "Diego"
         Diego.sex = .Male
-        let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+//        let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+        let secondRabbit = Rabbit(Position: SCNVector3(x: 4, y: 50, z: 600), Handler: self)
         secondRabbit.sex = .Female
         
-        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+//        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
 //        for _ in 0..<2-1 {
 //            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
 //        }
@@ -96,6 +99,12 @@ class SimulationBase {
         }
         for _ in 0..<10 {
             let i = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+        }
+    }
+    
+    func debugAnimals() {
+        for i in self.animals {
+            print(i.node.worldPosition)
         }
     }
     
