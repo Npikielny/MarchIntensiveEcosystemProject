@@ -143,9 +143,6 @@ extension Animal {
             additionalPhysics() // overridable function
             look() // handles looking
             handleStats()
-            if self.health <= 0 {
-                self.die()
-            }
 //            if max(abs(self.node.worldPosition.x),abs(self.node.worldPosition.z)) > 200 {
 //                reset()
 //                print("E")

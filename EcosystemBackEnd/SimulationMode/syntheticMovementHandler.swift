@@ -63,9 +63,6 @@ extension SimulationHandler {
 //            look() // handles looking
 //            handleStats()
             item.Speed = CGFloat(3/(1 + pow(2.18,0.1*(item.age-15))))
-            if item.health <= 0 {
-                item.die()
-            }
             if (item.node.worldPosition.zero(.y) - item.target.zero(.y)).getMagnitude() <= 0.5 {
                 item.node.worldPosition = item.target.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y+0.1)
                 item.velocity = SCNVector3().zero()

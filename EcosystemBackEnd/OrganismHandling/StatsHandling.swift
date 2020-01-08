@@ -16,6 +16,7 @@ extension Animal {
             let value = (self.age+6)/12
             self.node.scale = SCNVector3(value,value,value)
         }
+        self.health -= self.age*100/288/60/4/2
         self.Speed = CGFloat(3/(1 + pow(2.18,0.1*(self.age-15))))
         let ageMultiplier: Float = 1 + pow(2.18,-0.3*(self.age-6))
         if self.hunger > 0 {
@@ -25,7 +26,7 @@ extension Animal {
             }
         }else {
             self.hunger = 0
-            self.health -= ageMultiplier * 0.025 * self.age/6
+//            self.health -= ageMultiplier * 0.025 * self.age/6
         }
         if self.thirst > 0 {
             if (self.inProcess == true && self.priority == .Water) == false {
@@ -34,7 +35,7 @@ extension Animal {
             }
         }else {
             self.thirst = 0
-            self.health -= ageMultiplier * 0.025 * self.age/6
+//            self.health -= ageMultiplier * 0.025 * self.age/6
         }
         if self.breedingUrge > 0 {
             if (self.age >= 6) && (self.age <= 18) {
