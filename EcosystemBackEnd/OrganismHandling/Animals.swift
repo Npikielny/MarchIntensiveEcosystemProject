@@ -47,7 +47,6 @@ class Animal: Matter {
     var Speed: CGFloat = 2
     
     
-    
     lazy var priorities: () -> [(Priority,Float)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     
     
@@ -91,7 +90,6 @@ class Animal: Matter {
                 self.handler.animals.removeAll(where: {$0.node == self.node})
                 self.node.removeFromParentNode()
             })
-            print(self.age)
         }
         
     }
@@ -111,7 +109,9 @@ class Animal: Matter {
     
     func breedRequest(_ Partner: Animal) {
         if self.hunger > 30 && self.thirst > 30 && self.breedingUrge < 70 {
-            if let _ = self.targetMate {}else {
+            if let _ = self.targetMate {
+                Partner.targetMate = nil
+            }else {
                 self.targetMate = Partner
                 Partner.targetMate = self
                 self.priority = .Breed
@@ -120,6 +120,8 @@ class Animal: Matter {
                 Partner.target = target
             }
         }else {
+            self.targetMate = nil
+            Partner.targetMate = nil
         }
     }
     

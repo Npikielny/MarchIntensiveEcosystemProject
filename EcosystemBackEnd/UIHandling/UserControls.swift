@@ -230,10 +230,16 @@ class UserControls: NSViewController {
 		let fileURL = documentDirectory.appendingPathComponent(name)
         
 		
-		var csvText = "Time, Animals, Plants\n"
+		var csvText = "Frames, Animals, Plants\n"
         
-        for index in 0..<self.Manager.gameController!.handler.animalDataStorage.count {
-            csvText.append(String(index)+","+String(self.Manager.gameController!.handler.animalDataStorage[index])+","+String(self.Manager.gameController!.handler.foodDataStorage[index])+"\n")
+        for index in self.Manager.gameController!.handler.dataStorage {
+            let str: String = {
+                let p1: String = String(index.FrameNumber)
+                let p2: String = String(index.AnimalCount)
+                let p3: String = String(index.FoodCount)
+                return p1+","+p2+","+p3+"\n"
+            }() //For compile time
+            csvText.append(str)
         }
 		
 		do {

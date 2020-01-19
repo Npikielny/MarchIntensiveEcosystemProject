@@ -14,8 +14,7 @@ class SimulationBase {
     
     var terrain: Ground!
     
-    var animalDataStorage = [Int]()
-    var foodDataStorage = [Int]()
+    var dataStorage = [DataPoint]()
     
     lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
     var setupFunctionIndex: Int = 0
@@ -145,8 +144,15 @@ class SimulationBase {
     }
     
     func collectData() {
-        self.animalDataStorage.append(self.animals.count)
-        self.foodDataStorage.append(self.foods.count)
+//        self.animalDataStorage.append(self.animals.count)
+//        self.foodDataStorage.append(self.foods.count)
+        self.dataStorage.append(DataPoint(FoodCount: Int(self.foods.count), AnimalCount: self.animals.count, FrameNumber: self.frameNumber))
     }
     
+}
+
+struct DataPoint {
+    var FoodCount: Int
+    var AnimalCount: Int
+    var FrameNumber: Int
 }
