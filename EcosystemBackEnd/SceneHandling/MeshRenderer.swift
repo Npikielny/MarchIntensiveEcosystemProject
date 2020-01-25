@@ -158,11 +158,11 @@ class Ground: Mesh {
     var noiseMap: GKNoiseMap
     var vertices = [SpaciallyAwareVector]()
     init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int) {
-        
+
         noiseMap = {
             let source = GKPerlinNoiseSource()
             source.persistence = 0.9
-            
+
 //            source.seed = Int32.random(in: 0...100)
 
             let noise = GKNoise(source)
@@ -171,9 +171,9 @@ class Ground: Mesh {
             let sampleCount = vector2(Int32(widthCount), Int32(heightCount))
             return GKNoiseMap(noise, size: size, origin: origin, sampleCount: sampleCount, seamless: true)
         }()
-            
-        
-        
+
+
+
         for w in 0..<widthCount {
             for h in 0..<heightCount {
                 let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount)-width/2, y: 1-CGFloat(noiseMap.interpolatedValue(at: vector_float2(Float(w),Float(h)))), z: height*CGFloat(h)/CGFloat(heightCount)-height/2)
@@ -225,26 +225,170 @@ class Ground: Mesh {
                 }
             }
         }
-        
+
         super.init(Verticies: vertices.map({$0.vector}), Indices: indices)
 //        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
-        
+
     }
-    
+
     override func customizeMesh() {
         let _: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         let _: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
         let _: NSColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-               
+
         self.node.geometry?.materials.first?.roughness.contents = 1
         self.node.geometry?.materials.first!.setValue(Float(0), forKey: "x")
         self.node.geometry?.materials.first!.setValue(Float(0), forKey: "z")
         self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
             getShader(from: "groundShader")
         ]
-        
+
 //        self.node.categoryBitMask = 1
     }
+}
+
+//
+//class Ground: Mesh {
+//    var verts = [SCNVector3]()
+//    var vertices = [SpaciallyAwareVector]()
+//    init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int) {
+//        for z in 0..<widthCount {
+//            for x in 0..<heightCount {
+//                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
+//            }
+//        }
+//        var heightMap = verts.map({heightMapValue($0)})
+//
+//        for i in 2...8 {
+//            var pipeline: MTLComputePipelineState!
+//            let device:MTLDevice = MTLCreateSystemDefaultDevice()!
+//            let library = device.makeDefaultLibrary()
+//            let commandQueue = device.makeCommandQueue()
+//            let commandBuffer = commandQueue?.makeCommandBuffer()
+//
+//            let byteCount = heightMapValue.size*heightMap.count
+//
+//            let buffer = device.makeBuffer(bytes: heightMap, length: byteCount, options: [])!
+//
+//            let commandEncoder = (commandBuffer?.makeComputeCommandEncoder())!
+//
+//            let metalConstant = MTLFunctionConstantValues()
+//                    metalConstant.setConstantValue([Int32(widthCount)], type: MTLDataType.int, index: 0)
+//                    metalConstant.setConstantValue([Int32(heightCount)], type: MTLDataType.int, index: 1)
+//                    metalConstant.setConstantValue([Int32(64 / pow(2,Float(i)))], type: MTLDataType.int, index: 2)
+//
+////            let function = try! library?.makeFunction(name: {if i == 0 || i == 2 {return "perlinNoiseX"}else {return "perlinNoiseZ"}}(),constantValues: metalConstant)
+//            let function = try! library?.makeFunction(name: "recursiveNoise",constantValues: metalConstant)
+//            pipeline = try! device.makeComputePipelineState(function: function!)
+//            commandEncoder.setComputePipelineState(pipeline)
+//            commandEncoder.setBuffer(buffer, offset: 0, index: 0)
+//
+//            let w = pipeline.threadExecutionWidth
+//            let h = pipeline.maxTotalThreadsPerThreadgroup / w
+//            let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
+//
+//            commandEncoder.dispatchThreadgroups(MTLSize(width: byteCount, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
+//            commandEncoder.endEncoding()
+//            commandBuffer!.commit()
+//            commandBuffer!.waitUntilCompleted()
+//
+//            let Output = (buffer.contents().bindMemory(to: heightMapValue.self, capacity: byteCount))
+//            heightMap = [heightMapValue]()
+//            for i in 0..<widthCount*heightCount {
+//                heightMap.append(heightMapValue(SCNVector3(Output[i].position),SCNVector3(Output[i].storedPosition)))
+//            }
+//        }
+//        verts = heightMap.map({SCNVector3($0.position)})
+//
+//        let determinant: (SCNVector3) -> pointTypes = {
+//            if $0.y > 0 + 1 {
+//                return .Normal
+//            }else if $0.y > 0 {
+//                return .NearWater
+//            }else {
+//                return .Water
+//            }
+//        }
+//
+//        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: determinant($0))})
+//        var indices = [UInt16]()
+//
+//        let index: (Int,Int) -> Int = {return $0 * heightCount + $1}
+//
+//        for w in 0..<widthCount-1 {
+//            for h in 0..<heightCount-1 {
+//                var squareVerticies = [UInt16]()
+//                squareVerticies.append(UInt16(index(w,h)))
+//                squareVerticies.append(UInt16(index(w,h+1)))
+//                squareVerticies.append(UInt16(index(w+1,h)))
+//                squareVerticies.append(UInt16(index(w+1,h+1)))
+//                indices.append(squareVerticies[0])
+//                indices.append(squareVerticies[1])
+//                indices.append(squareVerticies[3])
+//
+//                indices.append(squareVerticies[0])
+//                indices.append(squareVerticies[3])
+//                indices.append(squareVerticies[2])
+//
+//                indices.append(squareVerticies[0])
+//                indices.append(squareVerticies[3])
+//                indices.append(squareVerticies[1])
+//
+//                indices.append(squareVerticies[0])
+//                indices.append(squareVerticies[2])
+//                indices.append(squareVerticies[3])
+////                var found: Bool = false
+////                for i in squareVerticies {
+////                    if self.vertices[Int(i)].y == 0 {
+////                        found = true
+////                    }
+////                }
+////                if found == true {
+////                    for i in squareVerticies {
+////                        if self.vertices[Int(i)].y != 0 {
+////                            self.vertices[Int(i)].status = .NearWater
+////                        }else {
+////                            self.vertices[Int(i)].status = .Water
+////                        }
+////                    }
+////                }
+//            }
+//        }
+//
+//        super.init(Verticies: verts, Indices: indices)
+////        self.node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: SCNGeometry(sources: [source()], elements: [element()]), options: [:]))
+//
+//    }
+//
+//    override func customizeMesh() {
+//        let _: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+//        let _: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
+//        let _: NSColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+//
+//        self.node.geometry?.materials.first?.roughness.contents = 1
+//        self.node.geometry?.materials.first!.setValue(Float(0), forKey: "x")
+//        self.node.geometry?.materials.first!.setValue(Float(0), forKey: "z")
+//        self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
+//            getShader(from: "groundShader")
+//        ]
+//
+////        self.node.categoryBitMask = 1
+//    }
+//}
+
+struct heightMapValue {
+    var position: SIMD3<Float>
+    var storedPosition: SIMD3<Float>
+    init(_ Vector: SCNVector3) {
+        self.storedPosition = SIMD3(Vector)
+        self.position = SIMD3(Vector.zero(.y))
+    }
+    
+    init(_ Position: SCNVector3, _ StoredPosition: SCNVector3) {
+        self.storedPosition = SIMD3(StoredPosition)
+        self.position = SIMD3(Position)
+    }
+    static let size = MemoryLayout<heightMapValue>.stride
 }
 
 class SurfaceWaterMesh: Mesh {

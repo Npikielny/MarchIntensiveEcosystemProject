@@ -19,12 +19,14 @@ class Camera {
     var cameraType: CameraType
     var root: SCNNode
     
+    var toggleNode: SCNNode = SCNNode()
+    var Radius: CGFloat = 5
+    
     init(Position: SCNVector3, Target: SCNVector3, SceneRootNode: SCNNode) {
         self.node = SCNNode()
         self.camera = SCNCamera()
         self.camera.zNear = 0
         self.node.camera = self.camera
-//        self.node.geometry = SCNSphere(radius: 0.2)
         self.node.look(at: SCNVector3().zero())
         self.root = SceneRootNode
         self.root.addChildNode(self.node)
@@ -52,6 +54,12 @@ class Camera {
             self.node.look(at: targetPoint)
         }
     }
+        
+    func setRadius(radius: CGFloat) {
+        self.Radius = radius
+        toggleNode.geometry = SCNSphere(radius: self.Radius)
+    }
+    
     
 }
 
