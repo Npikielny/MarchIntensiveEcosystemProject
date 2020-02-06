@@ -258,12 +258,21 @@ class UserControls: NSViewController {
 		
 	}
     
+    var grapherWindow: SizeableWindow?
+    
     @objc func createGraph() {
-        let controller = GraphController()
-        let window = SizeableWindow(contentViewController: controller)
-        window.controller = controller
-        window.makeKeyAndOrderFront(self)
-        controller.setData(self.Manager.gameController!.handler!.dataStorage)
+        if let _ = grapherWindow {
+            let cont = grapherWindow?.controller as! GraphController
+            cont.setData(self.Manager.gameController!.handler!.dataStorage)
+            self.grapherWindow!.makeKeyAndOrderFront(self)
+        }else {
+            let controller = GraphController()
+            let window = SizeableWindow(contentViewController: controller)
+            window.controller = controller
+            window.makeKeyAndOrderFront(self)
+            controller.setData(self.Manager.gameController!.handler!.dataStorage)
+            grapherWindow = window
+        }
     }
 	
 	private func startTimer() {
