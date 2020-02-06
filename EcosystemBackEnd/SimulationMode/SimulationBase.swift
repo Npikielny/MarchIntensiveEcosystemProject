@@ -63,7 +63,7 @@ class SimulationBase {
     var viableVerticies: [SpaciallyAwareVector]!
     var drinkableVertices: [SpaciallyAwareVector]!
     func setupTerrrain() {
-        terrain = Ground(width: 400, height: 400, widthCount: 100, heightCount: 100)
+        terrain = Ground(width: 400, height: 400, widthCount: 400, heightCount: 400)
         terrain.node.name = "Terrain"
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
@@ -83,6 +83,10 @@ class SimulationBase {
         Diego.sex = .Male
         let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         secondRabbit.sex = .Female
+        print(self.animals.count)
+        
+        let fox = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+        
         
 //        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
 //        for _ in 0..<2-1 {

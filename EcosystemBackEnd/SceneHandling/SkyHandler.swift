@@ -25,7 +25,7 @@ extension EnvironmentHandler {
     }
     
     func updateTime() {
-        time += Float.pi/90000
+        time += Float.pi/90000*10
 //        if building == true {
 //            time = Float.pi/4
 //        }
@@ -46,14 +46,14 @@ extension EnvironmentHandler {
 //
         if Int((time/Float.pi)*90000) % 2500 == 0 && building == false {
             self.skyIndex += 1
-//            self.skyIndex -= Float(Int(self.skyIndex) % 36)
+
             if self.skyIndex >= 36 {
                 self.skyIndex = 0
             }
             self.setSky(Index: self.skyIndex)
         }
         if let _ = lightSource {
-            lightSource.worldPosition = SCNVector3(0,sin(time),cos(time)).toMagnitude(500)
+            lightSource.worldPosition = SCNVector3(0,sin(2*time),cos(2*time)).toMagnitude(500)
             lightSource.look(at: SCNVector3().zero())
         }
     }

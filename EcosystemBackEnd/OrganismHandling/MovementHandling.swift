@@ -138,7 +138,7 @@ extension Animal {
                     setTarget()
                 }
             }else {
-                move()
+                self.move(self)
             }
             additionalPhysics() // overridable function
             look() // handles looking

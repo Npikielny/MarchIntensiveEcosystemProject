@@ -9,22 +9,44 @@
 import SceneKit
 
 class Animal: Matter {
-    var height: CGFloat
     
+    var height: CGFloat
     //Species Traits
     var lookType: LookType
     var handler: SimulationBase
     //Priority Handling
-    var hunger: Float = 100
-    var thirst: Float = 100
-    var health: Float = 100 {
+    var hunger: Float
+    var thirst: Float
+    var health: Float {
         didSet {
             if self.health <= 0 {
                 self.die()
             }
         }
     }
-    var breedingUrge: Float = 100
+    var breedingUrge: Float
+    
+    var maxhunger: Float {
+        didSet {
+            self.hunger = maxhunger
+        }
+    }
+    var maxthirst: Float {
+        didSet {
+            self.thirst = maxthirst
+        }
+    }
+    var maxhealth: Float {
+        didSet {
+            self.health = maxhealth
+        }
+    }
+    var maxbreedingUrge: Float {
+        didSet {
+            self.breedingUrge = maxbreedingUrge
+        }
+    }
+    
     var priority: Priority = .Idle
     //Life Handling
     var age: Float = 0
@@ -49,33 +71,64 @@ class Animal: Matter {
     
     lazy var priorities: () -> [(Priority,Float)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
     
+//
+//    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: SimulationBase) {
+//        let model = getPrefab(Species+".scn", Shaders: nil)
+//        self.height = model.boundingBox.max.y-model.boundingBox.min.y
+//        self.lookType = lookType
+//        self.handler = Handler
+//        self.Id = Int32(handler.animals.count)
+//        super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: model)
+//        self.node.name = Handler.Names.randomElement()
+//        additionalSetup()
+//        self.node.worldPosition = Position
+//        self.handler.animals.append(self)
+//    }
+//
+    var move: (Animal) -> ()
     
-    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: SimulationBase) {
-        let model = getPrefab(Species+".scn", Shaders: nil)
+    init(SpeciesStats: AnimalClass.Type, Position: SCNVector3, Handler: SimulationBase) {
+        self.hunger = 100
+        self.thirst = 100
+        self.breedingUrge = 100
+        self.health = 100
+        
+        let model = getPrefab(SpeciesStats.name+".scn", Shaders: nil)
         self.height = model.boundingBox.max.y-model.boundingBox.min.y
-        self.lookType = lookType
+        self.lookType = SpeciesStats.lookType
         self.handler = Handler
         self.Id = Int32(handler.animals.count)
+        
+        self.maxhunger = SpeciesStats.maxHunger
+        self.maxthirst = SpeciesStats.maxThirst
+        self.maxhealth = SpeciesStats.maxHealth
+        self.maxbreedingUrge = SpeciesStats.maxBreedingUrge
+        
+        self.move = SpeciesStats.movementFunction
+        
         super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: model)
         self.node.name = Handler.Names.randomElement()
         additionalSetup()
         self.node.worldPosition = Position
         self.handler.animals.append(self)
-    }
-    
-    init(DebugInit: EnvironmentHandler) {
-        self.height = 0.2
-        self.lookType = .Velocity
-        self.handler = DebugInit
-//        self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
-//        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
-        self.Id = Int32(DebugInit.animals.count)
-        super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: SCNNode(geometry: SCNSphere(radius: 0.1)))
-        additionalSetup()
-        self.node.worldPosition = SCNVector3().initOfComponent(Component: .y, Value: 10)
-        self.handler.animals.append(self)
+        
+        self.target = self.node.worldPosition
         
     }
+//
+//    init(DebugInit: EnvironmentHandler) {
+//        self.height = 0.2
+//        self.lookType = .Velocity
+//        self.handler = DebugInit
+////        self.node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: self.node, options: [:]))
+////        self.node.physicsBody?.angularVelocityFactor = SCNVector3().zero()
+//        self.Id = Int32(DebugInit.animals.count)
+//        super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: SCNNode(geometry: SCNSphere(radius: 0.1)))
+//        additionalSetup()
+//        self.node.worldPosition = SCNVector3().initOfComponent(Component: .y, Value: 10)
+//        self.handler.animals.append(self)
+//
+//    }
     
     func die() {
         if dead == false {
@@ -102,11 +155,6 @@ class Animal: Matter {
         
     }
     
-    func move() {
-//        self.node.physicsBody?.velocity += ((self.target-self.node.worldPosition).unitVector()-self.node.physicsBody!.velocity.unitVector()).toMagnitude(self.Speed/16)
-//        self.node.physicsBody?.velocity = (self.node.physicsBody?.velocity.clampPartialMagnitude(Excluding: .y, Min: 0, Max: self.Speed))!
-    }
-    
     func breedRequest(_ Partner: Animal) {
         if self.hunger > 30 && self.thirst > 30 && self.breedingUrge < 70 {
             if let _ = self.targetMate {
@@ -127,118 +175,204 @@ class Animal: Matter {
     
 }
 
-class Rabbit: Animal {
-    init(Position: SCNVector3, Handler: SimulationBase) {
-        super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
-        self.target = self.node.worldPosition
-        self.Speed = 2
-    }
-    
-    override func move() {
-        if (self.velocity.zero(.y)).getMagnitude() <= 0.01 {
-            let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
-            if distance <= self.Speed {
+
+protocol AnimalClass {
+    static var lookType: LookType {get}
+    static var maxHunger: Float {get}
+    static var maxThirst: Float {get}
+    static var maxHealth: Float {get}
+    static var maxBreedingUrge: Float {get}
+    static var Speed: CGFloat {get}
+    static var species: Species {get}
+    static var foodType: FoodType {get}
+    static var name: String {get}
+    static var movementFunction : (Animal) -> () {get}
+}
+
+struct rabbit: AnimalClass {
+    static var lookType: LookType = .Forward
+    static var maxHunger: Float = 100
+    static var maxThirst: Float = 100
+    static var maxHealth: Float = 100
+    static var maxBreedingUrge: Float = 100
+    static var Speed: CGFloat = 2
+    static var species: Species = .Rabbit
+    static var foodType: FoodType = .Vegetarian
+    static var name: String = "rabbit"
+    static var movementFunction: (Animal) -> () = {
+        if ($0.velocity.zero(.y)).getMagnitude() <= 0.01 {
+            let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
+            if distance <= $0.Speed {
                 if distance < 1.2 {
-                    self.node.worldPosition = self.target
+                    $0.node.worldPosition = $0.target
                 }else {
                     let velocity = pow(abs(1)*distance,0.5)
-                    self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                    $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
                 }
             }else {
-                let velocity = pow(abs(1)*self.Speed,0.5)
-                self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                let velocity = pow(abs(1)*$0.Speed,0.5)
+                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
             }
         }
     }
-    
-    var targetNode: SCNNode = {
-        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
-        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
-        return node
-    }()
-    
-    var isSelected: Bool = false
-    
-    override func additionalPhysics() {
-    }
-    
-    override func additionalSetup() {
-//        self.node.physicsBody?.friction = 1
-//        self.handler.Scene.rootNode.addChildNode(self.targetNode)
-//        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
-//        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
-//        self.handler.Scene.rootNode.addChildNode(self.healthNode)
-//        self.handler.Scene.rootNode.addChildNode(self.statsNode)
-    }
-    
 }
 
-class debugger: Animal {
-    
-    init(Handler: EnvironmentHandler) {
-        super.init(DebugInit: Handler)
-        Handler.Scene.rootNode.addChildNode(self.targetNode)
-        
-    }
-    
-    var targetNode: SCNNode = {
-        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
-        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
-        return node
-    }()
-    
-    override func additionalPhysics() {
-        self.targetNode.worldPosition = self.target
-    }
-    
-}
-
-class Fox: Animal {
-    init(Position: SCNVector3, Handler: SimulationBase) {
-        super.init(Position: Position, Species: "fox", lookType: .Forward, Handler: Handler)
-        self.target = self.node.worldPosition
-        self.Speed = 5
-    }
-    
-    override func move() {
-        if (self.velocity.zero(.y)).getMagnitude() <= 0.01 {
-            let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
-            if distance <= self.Speed {
+struct fox: AnimalClass {
+    static var lookType: LookType = .Forward
+    static var maxHunger: Float = 500
+    static var maxThirst: Float = 500
+    static var maxHealth: Float = 500
+    static var maxBreedingUrge: Float = 500
+    static var Speed: CGFloat = 2
+    static var species: Species = .Fox
+    static var foodType: FoodType = .Meat
+    static var name: String = "fox"
+    static var movementFunction: (Animal) -> () = {
+        if ($0.velocity.zero(.y)).getMagnitude() <= 0.01 {
+            let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
+            if distance <= $0.Speed {
                 if distance < 1.2 {
-                    self.node.worldPosition = self.target
+                    $0.node.worldPosition = $0.target
                 }else {
                     let velocity = pow(abs(1)*distance,0.5)
-                    self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                    $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
                 }
             }else {
-                let velocity = pow(abs(1)*self.Speed,0.5)
-                self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                let velocity = pow(abs(1)*$0.Speed,0.5)
+                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
             }
         }
     }
-    
-    var targetNode: SCNNode = {
-        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
-        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
-        return node
-    }()
-    
-    var isSelected: Bool = false
-    
-    override func additionalPhysics() {
-    }
-    
-    override func additionalSetup() {
-//        self.node.physicsBody?.friction = 1
-//        self.handler.Scene.rootNode.addChildNode(self.targetNode)
-//        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
-//        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
-//        self.handler.Scene.rootNode.addChildNode(self.healthNode)
-//        self.handler.Scene.rootNode.addChildNode(self.statsNode)
-    }
-    
 }
 
+func Rabbit(Position: SCNVector3, Handler: SimulationBase) -> Animal {
+    return Animal(SpeciesStats: rabbit.self, Position: Position, Handler: Handler)
+}
+
+func Fox(Position: SCNVector3, Handler: SimulationBase) -> Animal {
+    return Animal(SpeciesStats: fox.self, Position: Position, Handler: Handler)
+}
+
+
+
+
+//
+//class Rabbit: Animal {
+//    init(Position: SCNVector3, Handler: SimulationBase) {
+//        super.init(Position: Position, Species: "rabbit", lookType: .Forward, Handler: Handler)
+//        self.target = self.node.worldPosition
+//        self.Speed = 2
+//    }
+//
+//    override func move() {
+//        if (self.velocity.zero(.y)).getMagnitude() <= 0.01 {
+//            let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
+//            if distance <= self.Speed {
+//                if distance < 1.2 {
+//                    self.node.worldPosition = self.target
+//                }else {
+//                    let velocity = pow(abs(1)*distance,0.5)
+//                    self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+//                }
+//            }else {
+//                let velocity = pow(abs(1)*self.Speed,0.5)
+//                self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+//            }
+//        }
+//    }
+//
+//    var targetNode: SCNNode = {
+//        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
+//        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+//        return node
+//    }()
+//
+//    var isSelected: Bool = false
+//
+//    override func additionalPhysics() {
+//    }
+//
+//    override func additionalSetup() {
+////        self.node.physicsBody?.friction = 1
+////        self.handler.Scene.rootNode.addChildNode(self.targetNode)
+////        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
+////        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
+////        self.handler.Scene.rootNode.addChildNode(self.healthNode)
+////        self.handler.Scene.rootNode.addChildNode(self.statsNode)
+//    }
+//
+//}
+//
+//class debugger: Animal {
+//
+//    init(Handler: EnvironmentHandler) {
+//        super.init(DebugInit: Handler)
+//        Handler.Scene.rootNode.addChildNode(self.targetNode)
+//
+//    }
+//
+//    var targetNode: SCNNode = {
+//        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
+//        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+//        return node
+//    }()
+//
+//    override func additionalPhysics() {
+//        self.targetNode.worldPosition = self.target
+//    }
+//
+//}
+//
+//class Fox: Animal {
+//    init(Position: SCNVector3, Handler: SimulationBase) {
+//        super.init(Position: Position, Species: "fox", lookType: .Forward, Handler: Handler)
+//        self.target = self.node.worldPosition
+//        self.Speed = 5
+//    }
+//
+//    override func move() {
+//        if (self.velocity.zero(.y)).getMagnitude() <= 0.01 {
+//            let distance = (self.target - self.node.worldPosition).zero(.y).getMagnitude()
+//            if distance <= self.Speed {
+//                if distance < 1.2 {
+//                    self.node.worldPosition = self.target
+//                }else {
+//                    let velocity = pow(abs(1)*distance,0.5)
+//                    self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+//                }
+//            }else {
+//                let velocity = pow(abs(1)*self.Speed,0.5)
+//                self.velocity = (self.target - self.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+//            }
+//        }
+//    }
+//
+//    var targetNode: SCNNode = {
+//        let node = SCNNode(geometry: SCNSphere(radius: 0.1))
+//        node.geometry?.materials.first?.diffuse.contents = NSColor.cyan
+//        return node
+//    }()
+//
+//    var isSelected: Bool = false
+//
+//    override func additionalPhysics() {
+//    }
+//
+//    override func additionalSetup() {
+////        self.node.physicsBody?.friction = 1
+////        self.handler.Scene.rootNode.addChildNode(self.targetNode)
+////        self.handler.Scene.rootNode.addChildNode(self.thirstNode)
+////        self.handler.Scene.rootNode.addChildNode(self.hungerNode)
+////        self.handler.Scene.rootNode.addChildNode(self.healthNode)
+////        self.handler.Scene.rootNode.addChildNode(self.statsNode)
+//    }
+//
+//}
+
+enum Species {
+    case Rabbit
+    case Fox
+}
 
 enum Sex {
     case Male

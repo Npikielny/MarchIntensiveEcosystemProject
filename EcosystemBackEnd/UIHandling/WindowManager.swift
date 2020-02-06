@@ -54,7 +54,12 @@ class WindowManager {
         }else {
             showGame()
         }
-        
+//        while self.gameController!.handler.setupFunctionIndex < self.gameController!.handler.setupFunctions.count {
+//            self.gameController!.handler.runSetupFunction()
+//            increment()
+//        }
+//        showGame()
+//        
     }
     
     func showGame() {

@@ -154,6 +154,12 @@ class UserControls: NSViewController {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
 	}()
+    
+    lazy var graphButton: NSButton = {
+        let button = NSButton(title: "Graph Data", target: self, action: #selector(createGraph))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     var animalIndex: Int?
     @objc func nextAnimal() {
@@ -251,6 +257,14 @@ class UserControls: NSViewController {
 		}
 		
 	}
+    
+    @objc func createGraph() {
+        let controller = GraphController()
+        let window = SizeableWindow(contentViewController: controller)
+        window.controller = controller
+        window.makeKeyAndOrderFront(self)
+        controller.setData(self.Manager.gameController!.handler!.dataStorage)
+    }
 	
 	private func startTimer() {
 		updateSliders = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(updateStats), userInfo: nil, repeats: true)
@@ -267,7 +281,7 @@ class UserControls: NSViewController {
 	
     func setupViews() {
 		
-		[nameText, nextButton, previousButton, dataCollectionButton, thirstText, thirstSlider, hungerText, hungerSlider, healthText, healthSlider, breedingText, breedingSlider].forEach { view.addSubview($0) }
+		[nameText, nextButton, previousButton, dataCollectionButton, thirstText, thirstSlider, hungerText, hungerSlider, healthText, healthSlider, breedingText, breedingSlider,graphButton].forEach { view.addSubview($0) }
         
         nameText.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
         nameText.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -290,6 +304,11 @@ class UserControls: NSViewController {
         dataCollectionButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         dataCollectionButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         dataCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        
+        graphButton.rightAnchor.constraint(equalTo: dataCollectionButton.leftAnchor, constant: -10).isActive = true
+        graphButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        graphButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        graphButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
 		
 		thirstText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
 		thirstText.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.4).isActive = true

@@ -12,7 +12,7 @@ import SceneKit
 class TreeGenerator {
     var trees = [Tree]()
     var fails: Int = 0
-    init(NumberOfPines: Int, Points: inout [SpaciallyAwareVector]) {
+    init(NumberOfPines: Int, Points: inout [SCNVector3]) {
         let getDistance: (SCNVector3, SCNVector3) -> CGFloat = {
             let xDistance = $1.x - $0.x
             let zDistance = $1.z - $0.z
@@ -20,14 +20,14 @@ class TreeGenerator {
         }
         var iterant: Int = 0
         var points = Points
-        points.removeAll(where: {$0.status == .Water})
-        while (trees.count < NumberOfPines) && (fails <= 100) {
+        points.removeAll(where: {$0.y < 2})
+        while (trees.count < NumberOfPines) && (fails <= 100) && (trees.count < points.count/100) {
             iterant += 1
-            let attempt = points.randomElement()!.vector
+            let attempt = points.randomElement()!
             if trees.map({getDistance(attempt,$0.position)}).contains(where: {$0<=2}) == false{
                     trees.append(Acacia(Position: attempt))
 //                print(Points.firstIndex(where: {$0.vector == attempt})!, Points[Points.firstIndex(where: {$0.vector == attempt})!].vector, attempt)
-                Points[Points.firstIndex(where: {$0.vector == attempt})!].status = .Tree
+//                Points[Points.firstIndex(where: {$0.vector == attempt})!].status = .Tree
              }else {fails += 1}
             
         }

@@ -46,7 +46,18 @@ class GameController: NSViewController {
         GameView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         GameView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 //        Manager!.gameDidLoad()
-        
+//        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleClick(_:)))
+//        var gestureRecognizers = GameView.gestureRecognizers
+//        gestureRecognizers.insert(clickGesture, at: 0)
+//        GameView.gestureRecognizers = gestureRecognizers
+    }
+    
+    @objc
+    func handleClick(_ gestureRecognizer: NSGestureRecognizer) {
+        handler.skyIndex += 1
+        handler.setSky(Index: handler.skyIndex)
+        self.handler.time += Float.pi/90000 * 2500
+        self.handler.updateTime()
     }
     
 }
