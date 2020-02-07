@@ -96,12 +96,12 @@ class SimulationBase {
     }
     
     func addFood() {
-//        for _ in 0..<4 {
-//            let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
-//        }
-//        for _ in 0..<10 {
-//            let i = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
-//        }
+        for _ in 0..<4 {
+            let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+        }
+        for _ in 0..<10 {
+            let i = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+        }
     }
     
     func debugAnimals() {
