@@ -110,7 +110,7 @@ class EnvironmentHandler: SimulationBase {
     
     override func setupTerrrain() {
         
-        terrain = Ground(width: 400, height: 400, widthCount: 256, heightCount: 256) // max rated at 256x256
+        terrain = Ground(width: 400, height: 400, widthCount: 128, heightCount: 128) // max rated at 256x256
         terrain.node.name = "Terrain"
         Scene.rootNode.addChildNode(terrain.node)
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")

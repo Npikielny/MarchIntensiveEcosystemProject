@@ -253,53 +253,56 @@ class Ground: Mesh {
     var verts = [SCNVector3]()
     var vertices = [SpaciallyAwareVector]()
     init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int) {
+        let gen = generator()
         for z in 0..<widthCount {
             for x in 0..<heightCount {
-                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
+//                print(gen.valueFor(x: Int32(x), y: Int32(z))/255+0.5)
+//                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
+                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat(gen.valueFor(x: Int32(x), y: Int32(z)))/255*5-0.5, z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
             }
         }
         var heightMap = verts.map({heightMapValue($0)})
-
-        var pipeline: MTLComputePipelineState!
-        let device:MTLDevice = MTLCreateSystemDefaultDevice()!
-        let library = device.makeDefaultLibrary()
-        let commandQueue = device.makeCommandQueue()
-        let commandBuffer = commandQueue?.makeCommandBuffer()
-
-        let byteCount = heightMapValue.size*heightMap.count
-
-        let buffer = device.makeBuffer(bytes: heightMap, length: byteCount, options: [])!
-
-        let commandEncoder = (commandBuffer?.makeComputeCommandEncoder())!
-
-        let metalConstant = MTLFunctionConstantValues()
-                metalConstant.setConstantValue([Int32(widthCount)], type: MTLDataType.int, index: 0)
-                metalConstant.setConstantValue([Int32(heightCount)], type: MTLDataType.int, index: 1)
-
-//            let function = try! library?.makeFunction(name: {if i == 0 || i == 2 {return "perlinNoiseX"}else {return "perlinNoiseZ"}}(),constantValues: metalConstant)
-        let function = try! library?.makeFunction(name: "perlin",constantValues: metalConstant)
-        pipeline = try! device.makeComputePipelineState(function: function!)
-        commandEncoder.setComputePipelineState(pipeline)
-        commandEncoder.setBuffer(buffer, offset: 0, index: 0)
-
-        let w = pipeline.threadExecutionWidth
-        let h = pipeline.maxTotalThreadsPerThreadgroup / w
-        let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
-
-        commandEncoder.dispatchThreadgroups(MTLSize(width: byteCount, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
-        commandEncoder.endEncoding()
-        commandBuffer!.commit()
-        commandBuffer!.waitUntilCompleted()
-
-        let Output = (buffer.contents().bindMemory(to: heightMapValue.self, capacity: byteCount))
-        heightMap = [heightMapValue]()
-        for i in 0..<widthCount*heightCount {
-            heightMap.append(heightMapValue(SCNVector3(Output[i].position),SCNVector3(Output[i].storedPosition)))
-        }
-        verts = heightMap.map({SCNVector3($0.position)})
+//
+//        var pipeline: MTLComputePipelineState!
+//        let device:MTLDevice = MTLCreateSystemDefaultDevice()!
+//        let library = device.makeDefaultLibrary()
+//        let commandQueue = device.makeCommandQueue()
+//        let commandBuffer = commandQueue?.makeCommandBuffer()
+//
+//        let byteCount = heightMapValue.size*heightMap.count
+//
+//        let buffer = device.makeBuffer(bytes: heightMap, length: byteCount, options: [])!
+//
+//        let commandEncoder = (commandBuffer?.makeComputeCommandEncoder())!
+//
+//        let metalConstant = MTLFunctionConstantValues()
+//                metalConstant.setConstantValue([Int32(widthCount)], type: MTLDataType.int, index: 0)
+//                metalConstant.setConstantValue([Int32(heightCount)], type: MTLDataType.int, index: 1)
+//
+////            let function = try! library?.makeFunction(name: {if i == 0 || i == 2 {return "perlinNoiseX"}else {return "perlinNoiseZ"}}(),constantValues: metalConstant)
+//        let function = try! library?.makeFunction(name: "perlin",constantValues: metalConstant)
+//        pipeline = try! device.makeComputePipelineState(function: function!)
+//        commandEncoder.setComputePipelineState(pipeline)
+//        commandEncoder.setBuffer(buffer, offset: 0, index: 0)
+//
+//        let w = pipeline.threadExecutionWidth
+//        let h = pipeline.maxTotalThreadsPerThreadgroup / w
+//        let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
+//
+//        commandEncoder.dispatchThreadgroups(MTLSize(width: byteCount, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
+//        commandEncoder.endEncoding()
+//        commandBuffer!.commit()
+//        commandBuffer!.waitUntilCompleted()
+//
+//        let Output = (buffer.contents().bindMemory(to: heightMapValue.self, capacity: byteCount))
+//        heightMap = [heightMapValue]()
+//        for i in 0..<widthCount*heightCount {
+//            heightMap.append(heightMapValue(SCNVector3(Output[i].position),SCNVector3(Output[i].storedPosition)))
+//        }
+        verts = heightMap.map({SCNVector3($0.storedPosition)})
 
         let determinant: (SCNVector3) -> pointTypes = {
-            if $0.y > 0 + 1 {
+            if $0.y > 1 {
                 return .Normal
             }else if $0.y > 0 {
                 return .NearWater

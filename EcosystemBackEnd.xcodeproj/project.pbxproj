@@ -47,6 +47,7 @@
 		30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A5237EF3EF00BA29D4 /* Food.swift */; };
 		30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A444A7237EF66200BA29D4 /* DebugWindow.swift */; };
 		30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A444A8237EF66200BA29D4 /* DebugWindow.xib */; };
+		30A9272223EE1BE500A89EBD /* PerlinCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9272123EE1BE500A89EBD /* PerlinCPU.swift */; };
 		30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB45238583E4001FEECE /* MovementHandling.swift */; };
 		30ADAB4823858407001FEECE /* LookHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB4723858407001FEECE /* LookHandling.swift */; };
 		30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ADAB492385842D001FEECE /* priorityHandling.swift */; };
@@ -129,6 +130,7 @@
 		30A444A5237EF3EF00BA29D4 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		30A444A7237EF66200BA29D4 /* DebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugWindow.swift; sourceTree = "<group>"; };
 		30A444A8237EF66200BA29D4 /* DebugWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugWindow.xib; sourceTree = "<group>"; };
+		30A9272123EE1BE500A89EBD /* PerlinCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerlinCPU.swift; sourceTree = "<group>"; };
 		30ADAB45238583E4001FEECE /* MovementHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementHandling.swift; sourceTree = "<group>"; };
 		30ADAB4723858407001FEECE /* LookHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookHandling.swift; sourceTree = "<group>"; };
 		30ADAB492385842D001FEECE /* priorityHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = priorityHandling.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				305700E523787A96006696D9 /* MeshRenderer.swift */,
+				30A9272123EE1BE500A89EBD /* PerlinCPU.swift */,
 				3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */,
 				30F83892237DC04A0019A12E /* RenderHandler.swift */,
 				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
@@ -524,6 +527,7 @@
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
 				30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */,
+				30A9272223EE1BE500A89EBD /* PerlinCPU.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
 				30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */,
 				309B72C423EC8914001EE378 /* ResizeableController.swift in Sources */,
