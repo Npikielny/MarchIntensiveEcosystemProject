@@ -150,7 +150,11 @@ class SimulationBase {
     func collectData() {
 //        self.animalDataStorage.append(self.animals.count)
 //        self.foodDataStorage.append(self.foods.count)
-        self.dataStorage.append(DataPoint(FoodCount: Int(self.foods.count), AnimalCount: self.animals.count, FrameNumber: self.frameNumber))
+        var foodPoints: Float = 0
+        for i in self.foods {
+            foodPoints += (i.foodValue) / 100
+        }
+        self.dataStorage.append(DataPoint(FoodCount: Int(foodPoints), AnimalCount: self.animals.count, FrameNumber: self.frameNumber))
     }
     
 }

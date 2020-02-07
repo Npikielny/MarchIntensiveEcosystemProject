@@ -19,14 +19,79 @@ class GraphController: ResizeableController {
         return view
     }()
     
+    let maxY: NSTextView = {
+        let tv = NSTextView()
+        tv.backgroundColor = NSColor.clear
+        tv.isEditable = false
+        tv.isSelectable = false
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.alignment = .center
+        tv.textColor = NSColor.white
+        return tv
+    }()
+    
+    let minY: NSTextView = {
+        let tv = NSTextView()
+        tv.string = "0"
+        tv.backgroundColor = NSColor.clear
+        tv.isEditable = false
+        tv.isSelectable = false
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.alignment = .center
+        tv.textColor = NSColor.white
+        return tv
+    }()
+    
+    let maxX: NSTextView = {
+        let tv = NSTextView()
+        tv.backgroundColor = NSColor.clear
+        tv.isEditable = false
+        tv.isSelectable = false
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.alignment = .center
+        tv.textColor = NSColor.white
+        return tv
+    }()
+    
+    let minX: NSTextView = {
+        let tv = NSTextView()
+        tv.string = "0"
+        tv.backgroundColor = NSColor.clear
+        tv.isEditable = false
+        tv.isSelectable = false
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.alignment = .center
+        tv.textColor = NSColor.white
+        return tv
+    }()
+    
+    
+    let margin: CGFloat = 50
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        view.addSubview(bg)
-        bg.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        [bg,minX,minY,maxX,maxY].forEach({view.addSubview($0)})
+        
+        bg.leftAnchor.constraint(equalTo: view.leftAnchor, constant: margin).isActive = true
         bg.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         bg.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bg.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        bg.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -1*margin).isActive = true
+        
+        [minY,maxY].forEach({
+            $0.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            $0.rightAnchor.constraint(equalTo: bg.leftAnchor).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        })
+        minY.centerYAnchor.constraint(equalTo: bg.bottomAnchor).isActive = true
+        maxY.topAnchor.constraint(equalTo: bg.topAnchor).isActive = true
+        
+        [minX,maxX].forEach({
+            $0.topAnchor.constraint(equalTo: bg.bottomAnchor).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 20).isActive = true
+            $0.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        })
+        minX.centerXAnchor.constraint(equalTo: bg.leftAnchor).isActive = true
+        maxX.rightAnchor.constraint(equalTo: bg.rightAnchor).isActive = true
     }
     
     
@@ -75,7 +140,9 @@ class GraphController: ResizeableController {
               return CGFloat(0.9 * Size.height / CGFloat(max))
             }
         }()
-        let xCoef = CGFloat(Size.width / CGFloat(dt.count))
+        self.maxY.string = String(Int(Float(max) / 0.8))
+        self.maxX.string = String(dt.last!.FrameNumber)
+        let xCoef = CGFloat((Size.width - 1) / CGFloat(dt.count-1))
         for (index,i) in Types.enumerated() {
             makeGraph(dt: dt, Type: i, Color: (colorDicionary[index % colorDicionary.count]!), xCoef: xCoef, yCoef: yCoef)
         }
