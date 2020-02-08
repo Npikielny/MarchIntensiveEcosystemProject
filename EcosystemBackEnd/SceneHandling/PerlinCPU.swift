@@ -74,8 +74,11 @@ class generator {
         else if (value < 0) {
             value = 0
         }
-        
-        return value
+        if (value/255 * 5 - 0.5) <= 1.6 {
+            return (value/255 * 5 - 0.5) - 2
+        }else {
+            return value/255 * 5 - 0.5
+        }
     }
 
 }

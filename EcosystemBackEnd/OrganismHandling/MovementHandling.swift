@@ -77,7 +77,9 @@ extension Animal {
     }
     
     func randomTarget() {
-        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20))).setValue(Component: .y, Value: 2)
+        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20)))
+        let bm = CGFloat(self.handler.gen.valueFor(x: Int32(target.x / 400 * 128), y: Int32(target.z / 400 * 128)))
+        self.target.setValue(Component: .y, Value: bm)
     }
     
     func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 {
@@ -149,7 +151,8 @@ extension Animal {
 //            }
             
             if (self.node.worldPosition.zero(.y) - self.target.zero(.y)).getMagnitude() <= 0.5 {
-                self.node.worldPosition = self.target.setValue(Component: .y, Value: 2-self.node.boundingBox.min.y+0.1)
+                let bm = CGFloat(self.handler.gen.valueFor(x: Int32(target.x / 400 * 128), y: Int32(target.z / 400 * 128)))
+                self.node.worldPosition = self.target.setValue(Component: .y, Value: bm-self.node.boundingBox.min.y)
                 self.velocity = SCNVector3().zero()
             }
         }

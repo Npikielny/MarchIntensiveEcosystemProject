@@ -111,8 +111,8 @@ class EnvironmentHandler: SimulationBase {
     }
     
     override func setupTerrrain() {
-        
-        terrain = Ground(width: 400, height: 400, widthCount: 128, heightCount: 128) // max rated at 256x256
+        gen = generator()
+        terrain = Ground(width: 400, height: 400, widthCount: 128, heightCount: 128, Gen: gen) // max rated at 256x256
         terrain.node.name = "Terrain"
         Scene.rootNode.addChildNode(terrain.node)
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
@@ -225,12 +225,13 @@ class EnvironmentHandler: SimulationBase {
         
         for item in animals+movableFoods {
             item.acceleration = SCNVector3().zero()
-            if bottom(item) > 2 {
+            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400 * 128), y: Int32(item.node.worldPosition.z / 400 * 128)))
+            if bottom(item) > bm {
                 item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
-            }else if bottom(item) < 2 {
-                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y)
+            }else if bottom(item) < bm {
+                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: bm - item.node.boundingBox.min.y)
             }
-            if bottom(item) - 2 < 0.005 && item.velocity.y < 0 {
+            if bottom(item) - bm < 0.005 && item.velocity.y < 0 {
                 item.velocity = SCNVector3().zero()
             }
             item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))

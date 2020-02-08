@@ -252,14 +252,13 @@ enum pointTypes {
 class Ground: Mesh {
     var verts = [SCNVector3]()
     var vertices = [SpaciallyAwareVector]()
-    init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int) {
-        let gen = generator()
+    init(width: CGFloat, height: CGFloat, widthCount: Int, heightCount: Int, Gen: generator) {
         for z in 0..<widthCount {
             for x in 0..<heightCount {
 //                print(gen.valueFor(x: Int32(x), y: Int32(z))/255+0.5)
 //                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
                 let Height: CGFloat = {
-                    let h = CGFloat(gen.valueFor(x: Int32(x), y: Int32(z)))/255*5-0.5
+                    let h = CGFloat(Gen.valueFor(x: Int32(x), y: Int32(z)))
                     if h <= 1.6 {
                         return h - 2
                     }else {

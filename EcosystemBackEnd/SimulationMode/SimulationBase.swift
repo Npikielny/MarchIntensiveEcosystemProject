@@ -12,6 +12,7 @@ class SimulationBase {
 
     var frameNumber: Int = 0
     
+    var gen: generator!
     var terrain: Ground!
     
     var dataStorage = [DataPoint]()
@@ -63,7 +64,8 @@ class SimulationBase {
     var viableVerticies: [SpaciallyAwareVector]!
     var drinkableVertices: [SpaciallyAwareVector]!
     func setupTerrrain() {
-        terrain = Ground(width: 400, height: 400, widthCount: 400, heightCount: 400)
+        gen = generator()
+        terrain = Ground(width: 400, height: 400, widthCount: 200, heightCount: 200, Gen: gen)
         terrain.node.name = "Terrain"
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
         self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
