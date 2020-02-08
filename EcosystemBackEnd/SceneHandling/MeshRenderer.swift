@@ -258,7 +258,15 @@ class Ground: Mesh {
             for x in 0..<heightCount {
 //                print(gen.valueFor(x: Int32(x), y: Int32(z))/255+0.5)
 //                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
-                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat(gen.valueFor(x: Int32(x), y: Int32(z)))/255*5-0.5, z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
+                let Height: CGFloat = {
+                    let h = CGFloat(gen.valueFor(x: Int32(x), y: Int32(z)))/255*5-0.5
+                    if h <= 1.6 {
+                        return h - 2
+                    }else {
+                        return h
+                    }
+                }()
+                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: Height, z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
             }
         }
         var heightMap = verts.map({heightMapValue($0)})

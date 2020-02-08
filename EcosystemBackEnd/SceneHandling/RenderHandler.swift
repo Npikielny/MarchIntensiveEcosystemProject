@@ -27,7 +27,7 @@ extension GameController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         if self.handler.initialized {
             self.handler.process()
-//            self.handler.updateTime()
+            self.handler.updateTime()
         }
     }
     

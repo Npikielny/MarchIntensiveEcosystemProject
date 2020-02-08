@@ -93,19 +93,21 @@ class EnvironmentHandler: SimulationBase {
         lightSource.light = SCNLight()
         lightSource.light?.type = .directional
         lightSource.worldPosition = SCNVector3(0,0,1).toMagnitude(500)
+        lightSource.light?.shadowMode = .forward
         self.Scene.rootNode.addChildNode(lightSource)
         lightSource.name = "LightSource"
         setupSky()
         
-        let ambientNode = SCNNode()
-        ambientNode.light = SCNLight()
-        ambientNode.light?.type = .ambient
-        ambientNode.worldPosition = SCNVector3(0, 100, 0)
-        
-        ambientNode.light?.color = NSColor.white
-        ambientNode.light?.intensity = 100
-        self.Scene.rootNode.addChildNode(ambientNode)
-        ambientNode.name = "Ambient Light"
+//        let ambientNode = SCNNode()
+//        ambientNode.light = SCNLight()
+//        ambientNode.light?.type = .ambient
+//        ambientNode.worldPosition = SCNVector3(0, 100, 0)
+//        ambientNode.light?.shadowMode = .forward
+//        
+//        ambientNode.light?.color = NSColor.white
+//        ambientNode.light?.intensity = 100
+//        self.Scene.rootNode.addChildNode(ambientNode)
+//        ambientNode.name = "Ambient Light"
     }
     
     override func setupTerrrain() {

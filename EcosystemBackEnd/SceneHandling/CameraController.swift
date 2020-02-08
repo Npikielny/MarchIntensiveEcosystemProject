@@ -33,7 +33,7 @@ class Camera {
         self.node.position = Position
         self.targetPoint = Target
         self.cameraType = .targeted
-        self.camera.zFar = 600
+        self.camera.zFar = 500
     }
     
     init(Position: SCNVector3, SceneRootNode: SCNNode) {
@@ -46,7 +46,7 @@ class Camera {
          self.node.position = Position
          self.targetPoint = SCNVector3().zero()
          self.cameraType = .positionDependent
-        self.camera.zFar = 600
+        self.camera.zFar = 400
     }
     
     func look() {

@@ -29,6 +29,7 @@ func getPrefab(_ FileName: String, Shaders: String?) -> SCNNode {
             }
             wrapperNode.addChildNode(child)
         }
+        wrapperNode.castsShadow = true
         return wrapperNode
     }()
     return createSprite
