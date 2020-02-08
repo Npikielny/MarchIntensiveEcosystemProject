@@ -53,7 +53,7 @@ extension GameController: SCNSceneRendererDelegate {
                 camera.node.position = camera.node.position + SCNVector3(0,0,CGFloat(-1)/CGFloat(5))
             }
         }
-        
+//        
     }
     
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
