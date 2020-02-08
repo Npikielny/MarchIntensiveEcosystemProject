@@ -23,6 +23,8 @@ class EnvironmentHandler: SimulationBase {
     var time: Float = 0
     var azimuth: Float = 0
     
+    var controller: GameController
+    
     override var animals: [Animal] {
         didSet {
             for i in 0..<animals.count {
@@ -67,7 +69,8 @@ class EnvironmentHandler: SimulationBase {
     var selectedAnimal: Animal?
     
     
-    init(_ FileNamed: String, InitialNumberOfBunnies: Int) {
+    init(_ FileNamed: String, InitialNumberOfBunnies: Int, Controller: GameController) {
+        self.controller = Controller
         self.Scene = SCNScene(named: FileNamed)!
         super.init(Handler: true)
         setupFunctions.append(({}, "Setting Up SCNScene"))
@@ -163,6 +166,7 @@ class EnvironmentHandler: SimulationBase {
     var camera: Camera!
     func setupCamera() {
         self.camera =  Camera(Position: SCNVector3(x: 10, y: 10, z: 10), Target: SCNVector3().zero(), SceneRootNode: self.Scene.rootNode)
+        self.controller.camera = self.camera
     }
 
     var statsNode: SCNNode = {
@@ -280,11 +284,13 @@ class EnvironmentHandler: SimulationBase {
                 }
     
                 if Int.random(in: 0..<30*25*4) == 0 {
-                    _ = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+                    let vector = self.viableVerticies.randomElement()!.vector
+                    _ = Daisy(Position: vector.setValue(Component: .y, Value: bm(vector)), Handler: self)
                 }
     
                 if Int.random(in: 0..<30*25*4) == 0 {
-                    _ = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+                    let vector = self.viableVerticies.randomElement()!.vector
+                    _ = Grass(Position: vector.setValue(Component: .y, Value: bm(vector)), Handler: self)
                 }
                 
                 

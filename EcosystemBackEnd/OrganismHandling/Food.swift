@@ -61,7 +61,8 @@ class Plant: Food {
         self.node.worldPosition = self.node.worldPosition.setValue(Component: .y, Value: 2 - height)
     }
     
-    func reproductionChance() {}
+    func reproductionChance() {} //Mark: HUH?
+    
     func setYPosition(plant: Plant) {
         if plant.node.worldPosition == self.node.worldPosition {
             plant.node.worldPosition = self.handler.viableVerticies.randomElement()!.vector

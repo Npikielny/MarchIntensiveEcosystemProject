@@ -14,6 +14,7 @@ class SimulationBase {
     
     var gen: generator!
     var terrain: Ground!
+    lazy var bm: (SCNVector3) -> (CGFloat) = {return CGFloat(self.gen.valueFor(x: Int32($0.x / 400 * 128), y: Int32($0.z / 400 * 128)))}
     
     var dataStorage = [DataPoint]()
     
@@ -99,10 +100,12 @@ class SimulationBase {
     
     func addFood() {
         for _ in 0..<4 {
-            let i = Daisy(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+            let pos = self.viableVerticies.randomElement()!.vector
+            let i = Daisy(Position: pos.setValue(Component: .y, Value: self.bm(pos)), Handler: self)
         }
         for _ in 0..<10 {
-            let i = Grass(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 2), Handler: self)
+            let pos = self.viableVerticies.randomElement()!.vector
+            let i = Grass(Position:  pos.setValue(Component: .y, Value: self.bm(pos)), Handler: self)
         }
     }
     
