@@ -77,9 +77,9 @@ class EnvironmentHandler: SimulationBase {
         setupFunctions.append((setupCamera, "Setting Up Camera"))
         setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
+        setupFunctions.append((classifyVerticies, "Analyzing Terrain"))
         setupFunctions.append((setupWater, "Adding Water"))
         setupFunctions.append((setupTrees, "Adding Trees"))
-        setupFunctions.append((classifyVerticies, "Preparing Scene For Life"))
         setupFunctions.append((getNames, "Finding Animal Names"))
         setupFunctions.append((addAnimals, "Adding Animals"))
         setupFunctions.append((addFood, "Adding Food"))
@@ -138,7 +138,7 @@ class EnvironmentHandler: SimulationBase {
     }
     
     func setupTrees() {
-        treeGen = TreeGenerator(NumberOfPines: 100, Points: &terrain!.Verticies)
+        treeGen = TreeGenerator(NumberOfPines: 100, Points: viableVerticies.map({$0.vector}))
         if building == false {
             for i in treeGen.trees {
                 Scene.rootNode.addChildNode(i.node)
@@ -275,8 +275,7 @@ class EnvironmentHandler: SimulationBase {
                 
                 for i in foods {
                     if i.foodType == .Plant && foods.count < 150 {
-                        let plant = i as! Plant
-                        plant.reproductionChance()
+                        i.reproductionChance()
                     }
                 }
                 if Int.random(in: 0..<30*25) == 0 {

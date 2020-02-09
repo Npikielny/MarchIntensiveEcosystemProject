@@ -309,16 +309,16 @@ class Ground: Mesh {
         verts = heightMap.map({SCNVector3($0.storedPosition)})
 
         let determinant: (SCNVector3) -> pointTypes = {
-            if $0.y > 1 {
+            if $0.y >= 1.6 {
                 return .Normal
-            }else if $0.y > 0 {
+            }else if $0.y > 1.5 && $0.y < 2.5 {
                 return .NearWater
             }else {
                 return .Water
             }
         }
 
-        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: determinant($0))})
+        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: .Normal)})
         var indices = [UInt16]()
 
         let index: (Int,Int) -> Int = {return $0 * heightCount + $1}
@@ -345,21 +345,21 @@ class Ground: Mesh {
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[2])
                 indices.append(squareVerticies[3])
-//                var found: Bool = false
-//                for i in squareVerticies {
-//                    if self.vertices[Int(i)].y == 0 {
-//                        found = true
-//                    }
-//                }
-//                if found == true {
-//                    for i in squareVerticies {
-//                        if self.vertices[Int(i)].y != 0 {
-//                            self.vertices[Int(i)].status = .NearWater
-//                        }else {
-//                            self.vertices[Int(i)].status = .Water
-//                        }
-//                    }
-//                }
+                var found: Bool = false
+                for i in squareVerticies {
+                    if self.vertices[Int(i)].vector.y < 1.6 {
+                        found = true
+                    }
+                }
+                if found == true {
+                    for i in squareVerticies {
+                        if self.vertices[Int(i)].vector.y >= 1.6 {
+                            self.vertices[Int(i)].status = .NearWater
+                        }else {
+                            self.vertices[Int(i)].status = .Water
+                        }
+                    }
+                }
             }
         }
 

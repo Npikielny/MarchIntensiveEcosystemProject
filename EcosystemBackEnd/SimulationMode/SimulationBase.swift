@@ -73,7 +73,7 @@ class SimulationBase {
     }
     
     func classifyVerticies() {
-        terrain.vertices = terrain.vertices.map({SpaciallyAwareVector(vector: $0.vector.zero(.y), status: $0.status)})
+        terrain.vertices = terrain.vertices.map({SpaciallyAwareVector(vector: $0.vector, status: $0.status)})
         viableVerticies = terrain.vertices
         viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
         drinkableVertices = terrain.vertices
@@ -101,11 +101,11 @@ class SimulationBase {
     func addFood() {
         for _ in 0..<4 {
             let pos = self.viableVerticies.randomElement()!.vector
-            let i = Daisy(Position: pos.setValue(Component: .y, Value: self.bm(pos)), Handler: self)
+            let i = Daisy(Position: pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
         for _ in 0..<10 {
             let pos = self.viableVerticies.randomElement()!.vector
-            let i = Grass(Position:  pos.setValue(Component: .y, Value: self.bm(pos)), Handler: self)
+            let i = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
     }
     

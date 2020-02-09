@@ -12,17 +12,14 @@ import SceneKit
 class TreeGenerator {
     var trees = [Tree]()
     var fails: Int = 0
-    init(NumberOfPines: Int, Points: inout [SCNVector3]) {
+    init(NumberOfPines: Int, Points: [SCNVector3]) {
         let getDistance: (SCNVector3, SCNVector3) -> CGFloat = {
             let xDistance = $1.x - $0.x
             let zDistance = $1.z - $0.z
             return pow(pow(xDistance,2)+pow(zDistance,2), 0.5)
         }
-        var iterant: Int = 0
         var points = Points
-        points.removeAll(where: {$0.y < 2})
-        while (trees.count < NumberOfPines) && (fails <= 100) && (trees.count < points.count/100) {
-            iterant += 1
+        while (trees.count < NumberOfPines) && (fails <= 100) {
             let attempt = points.randomElement()!
             if trees.map({getDistance(attempt,$0.position)}).contains(where: {$0<=2}) == false{
                     trees.append(Acacia(Position: attempt))

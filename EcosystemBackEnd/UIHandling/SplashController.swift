@@ -53,7 +53,7 @@ class SplashController: NSViewController {
         bg.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         let title = NSTextView()
-        title.string = "Life – Loading"
+        title.string = "Simulator – Loading"
         title.backgroundColor = NSColor.clear
         title.isEditable = false
         title.isSelectable = false

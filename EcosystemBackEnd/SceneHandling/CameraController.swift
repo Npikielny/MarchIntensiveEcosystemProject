@@ -23,7 +23,6 @@ class Camera {
         self.camera.zNear = 0
 		self.camera.zFar = 600
         self.node.camera = self.camera
-        self.node.geometry = SCNSphere(radius: 0.2)
         self.node.look(at: SCNVector3().zero())
         self.root = SceneRootNode
         self.root.addChildNode(self.node)
@@ -36,7 +35,6 @@ class Camera {
         self.node = SCNNode()
         self.camera = SCNCamera()
         self.node.camera = self.camera
-        self.node.geometry = SCNCone(topRadius: 0.1, bottomRadius: 0.4, height: 3)
         self.root = SceneRootNode
         self.root.addChildNode(self.node)
         self.node.position = Position

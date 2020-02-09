@@ -46,3 +46,5 @@ enum FoodType {
     case Vegetarian
 }
 
+var foodConversion: [FoodType:[FoodType]] = [.Meat: [.Meat], .Fruit: [.Fruit], .Plant: [.Plant], .Omnivore: [.Meat,.Fruit,.Plant], .Vegetarian: [.Fruit, .Plant]]
+
