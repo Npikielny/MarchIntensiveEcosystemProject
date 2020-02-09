@@ -21,6 +21,7 @@ class Camera {
         self.node = SCNNode()
         self.camera = SCNCamera()
         self.camera.zNear = 0
+		self.camera.zFar = 600
         self.node.camera = self.camera
         self.node.geometry = SCNSphere(radius: 0.2)
         self.node.look(at: SCNVector3().zero())

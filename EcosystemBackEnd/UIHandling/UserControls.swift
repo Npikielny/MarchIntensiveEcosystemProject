@@ -217,7 +217,7 @@ class UserControls: NSViewController {
     }()
     
     @objc func followCam() {
-        self.Manager.gameController?.handler.camera.cameraType = .following
+//        self.Manager.gameController?.handler.camera.cameraType = .following
     }
     
 	func getDocumentsDirectory() -> URL {
