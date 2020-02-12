@@ -257,14 +257,7 @@ class Ground: Mesh {
             for x in 0..<heightCount {
 //                print(gen.valueFor(x: Int32(x), y: Int32(z))/255+0.5)
 //                verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: CGFloat.random(in: 0...6), z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
-                let Height: CGFloat = {
-                    let h = CGFloat(Gen.valueFor(x: Int32(x), y: Int32(z)))
-                    if h <= 1.6 {
-                        return h - 2
-                    }else {
-                        return h
-                    }
-                }()
+                let Height: CGFloat = CGFloat(Gen.valueFor(x: Int32(x), y: Int32(z)))
                 verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: Height, z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
             }
         }
@@ -407,7 +400,7 @@ class SurfaceWaterMesh: Mesh {
         for w in 0..<widthCount {
             for h in 0..<heightCount {
                 let heightMap: CGFloat = 0
-                let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount-1)-width/2, y: CGFloat(heightMap), z: height*CGFloat(h)/CGFloat(heightCount-1)-height/2)
+                let vertex = SCNVector3(x: width*CGFloat(w)/CGFloat(widthCount)-width/2, y: CGFloat(heightMap), z: height*CGFloat(h)/CGFloat(heightCount)-height/2)
                 vertices.append(vertex)
             }
         }

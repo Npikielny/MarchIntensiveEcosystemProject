@@ -8,7 +8,7 @@
 
 import SceneKit
 
-func bottom (_ Object: Matter) -> (CGFloat) {return Object.node.worldPosition.y+Object.node.boundingBox.min.y}
+func bottom (_ Object: Matter) -> (CGFloat) {return Object.node.worldPosition.y-Object.node.boundingBox.min.y}
 
 class EnvironmentHandler: SimulationBase {
     
@@ -121,11 +121,11 @@ class EnvironmentHandler: SimulationBase {
     
     override func setupTerrrain() {
         gen = generator()
-        terrain = Ground(width: 400, height: 400, widthCount: 128, heightCount: 128, Gen: gen) // max rated at 256x256
+        terrain = Ground(width: mapDimension, height: mapDimension, widthCount: mapCountDimension, heightCount: mapCountDimension, Gen: gen) // max rated at 256x256
         terrain.node.name = "Terrain"
         Scene.rootNode.addChildNode(terrain.node)
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+        self.terrain.node.geometry?.materials.first!.setValue(Float(mapDimension + 30), forKey: "x")
+        self.terrain.node.geometry?.materials.first!.setValue(Float(mapDimension + 30), forKey: "z")
     }
     
     override func classifyVerticies() {
@@ -136,7 +136,7 @@ class EnvironmentHandler: SimulationBase {
     }
     
     func setupWater() {
-        water = SurfaceWaterMesh(width: 400, height: 400, widthCount: 25, heightCount: 25)
+        water = SurfaceWaterMesh(width: mapDimension, height: mapDimension, widthCount: mapCountDimension / 4, heightCount: mapCountDimension / 4)
         water.node.name = "Water"
         if building == false {
             Scene.rootNode.addChildNode(water.node)
@@ -172,8 +172,12 @@ class EnvironmentHandler: SimulationBase {
     func checkPoints() {
         for x in -100...100 {
             for z in -100...100 {
+                let X = Int32((CGFloat(x) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
+                let Z = Int32((CGFloat(z) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
+                
                 let node = SCNNode(geometry: SCNSphere(radius: 0.3))
-                node.worldPosition = SCNVector3(CGFloat(x*2),bm(SCNVector3(CGFloat(x*2),0,CGFloat(z*2))),CGFloat(z*2))
+                node.worldPosition = SCNVector3(CGFloat(X) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2,CGFloat(gen.valueFor(x: X, y: Z)),CGFloat(Z) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2)
+//                node.worldPosition = SCNVector3(CGFloat(X) / 128 * 400 - 200,5,CGFloat(Z) / 128 * 400 - 200)
                 Scene.rootNode.addChildNode(node)
             }
         }
@@ -181,7 +185,8 @@ class EnvironmentHandler: SimulationBase {
     
     var camera: Camera!
     func setupCamera() {
-        self.camera =  Camera(Position: SCNVector3(x: 10, y: 10, z: 10), Target: SCNVector3().zero(), SceneRootNode: self.Scene.rootNode)
+        self.camera =  Camera(Position: SCNVector3(x: 100, y: 10, z: 100), Target: SCNVector3().zero(), SceneRootNode: self.Scene.rootNode)
+        self.camera.node.look(at: SCNVector3().zero())
         self.controller.camera = self.camera
     }
 
@@ -243,19 +248,27 @@ class EnvironmentHandler: SimulationBase {
     override func Physics() {
         let difference = Float(1)/Float(10)
         
-        for item in animals+movableFoods {
+//        for item in animals+movableFoods {
+//            item.acceleration = SCNVector3().zero()
+//            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
+//            if bottom(item) > bm {
+//                item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
+//            }else if bottom(item) < bm {
+//                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: bm - item.node.boundingBox.min.y)
+//            }
+//            if bottom(item) - bm < 0.005 && item.velocity.y < 0 {
+//                item.velocity = SCNVector3().zero()
+//            }
+//            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+//            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+//        }
+        
+        for item in animals {
             item.acceleration = SCNVector3().zero()
-            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
-            if bottom(item) > bm {
-                item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
-            }else if bottom(item) < bm {
-                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: bm - item.node.boundingBox.min.y)
-            }
-            if bottom(item) - bm < 0.005 && item.velocity.y < 0 {
-                item.velocity = SCNVector3().zero()
-            }
-            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
-            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+//            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
+            let Bm = bm(item.node.worldPosition)
+            let btm = item.node.boundingBox.min.y
+            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm + item.node.boundingBox.min.y)
         }
         
         lastTime = self.time

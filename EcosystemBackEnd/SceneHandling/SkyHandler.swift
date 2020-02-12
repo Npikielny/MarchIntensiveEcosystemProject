@@ -20,8 +20,9 @@ extension EnvironmentHandler {
                                     groundAlbedo: 0.850)
         
         saveSkys()
-        updateTime()
         setSky(Index: 0)
+        updateTime()
+        self.time = 10*(time/Float.pi)/9000*2500
     }
     
     func updateTime() {

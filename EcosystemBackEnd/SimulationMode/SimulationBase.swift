@@ -12,10 +12,13 @@ class SimulationBase {
 
     var frameNumber: Int = 0
     
+    var mapDimension: CGFloat = 400
+    var mapCountDimension: Int = 100
+    
     var gen: generator!
     var terrain: Ground!
     lazy var bm: (SCNVector3) -> (CGFloat) = {
-        let h = CGFloat(self.gen.valueFor(x: Int32(($0.x + 200) / 400 * 128), y: Int32(($0.z + 200) / 400 * 128)))
+        let h = CGFloat(self.gen.valueFor(x: Int32(($0.x + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32(($0.z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
         if h < 1.6 {
             return h - 2
         }else {
@@ -72,12 +75,13 @@ class SimulationBase {
     
     var viableVerticies: [SpaciallyAwareVector]!
     var drinkableVertices: [SpaciallyAwareVector]!
+    
     func setupTerrrain() {
         gen = generator()
-        terrain = Ground(width: 400, height: 400, widthCount: 200, heightCount: 200, Gen: gen)
+        terrain = Ground(width: mapDimension, height: mapDimension, widthCount: mapCountDimension, heightCount: mapCountDimension, Gen: gen)
         terrain.node.name = "Terrain"
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
-        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+        self.terrain.node.geometry?.materials.first!.setValue(Float(mapDimension + 30), forKey: "x")
+        self.terrain.node.geometry?.materials.first!.setValue(Float(mapDimension + 30), forKey: "z")
     }
     
     func classifyVerticies() {
@@ -89,14 +93,11 @@ class SimulationBase {
     }
     
     func addAnimals() {
-        let Diego = Rabbit(Position: SCNVector3(0,0,0), Handler: self)
+        let Diego = Rabbit(Position: SCNVector3(0,30,0), Handler: self)
         Diego.node.name = "Diego"
         Diego.sex = .Male
         let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         secondRabbit.sex = .Female
-        print(self.animals.count)
-        
-        let fox = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         
         
 //        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
