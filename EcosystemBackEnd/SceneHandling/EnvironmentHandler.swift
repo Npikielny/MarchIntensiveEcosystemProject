@@ -75,15 +75,21 @@ class EnvironmentHandler: SimulationBase {
         super.init(Handler: true)
         setupFunctions.append(({}, "Setting Up SCNScene"))
         setupFunctions.append((setupCamera, "Setting Up Camera"))
-        setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
         setupFunctions.append((classifyVerticies, "Analyzing Terrain"))
-        setupFunctions.append((setupWater, "Adding Water"))
-        setupFunctions.append((setupTrees, "Adding Trees"))
-        setupFunctions.append((getNames, "Finding Animal Names"))
-        setupFunctions.append((addAnimals, "Adding Animals"))
-        setupFunctions.append((addFood, "Adding Food"))
-//        setupFunctions.append((debugPoints,"Adding Debugging Points"))
+        if building == false {
+            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
+            setupFunctions.append((setupWater, "Adding Water"))
+            setupFunctions.append((setupTrees, "Adding Trees"))
+            setupFunctions.append((getNames, "Finding Animal Names"))
+            setupFunctions.append((addAnimals, "Adding Animals"))
+            setupFunctions.append((addFood, "Adding Food"))
+        }
+        
+        else {
+//            setupFunctions.append((debugPoints,"Adding Debugging Points"))
+            setupFunctions.append((checkPoints,"Check Points"))
+        }
         setupFunctions.append((commenceEngine, "Starting Physics Engine"))
     }
     
@@ -163,6 +169,16 @@ class EnvironmentHandler: SimulationBase {
         }
     }
     
+    func checkPoints() {
+        for x in -100...100 {
+            for z in -100...100 {
+                let node = SCNNode(geometry: SCNSphere(radius: 0.3))
+                node.worldPosition = SCNVector3(CGFloat(x*2),bm(SCNVector3(CGFloat(x*2),0,CGFloat(z*2))),CGFloat(z*2))
+                Scene.rootNode.addChildNode(node)
+            }
+        }
+    }
+    
     var camera: Camera!
     func setupCamera() {
         self.camera =  Camera(Position: SCNVector3(x: 10, y: 10, z: 10), Target: SCNVector3().zero(), SceneRootNode: self.Scene.rootNode)
@@ -229,7 +245,7 @@ class EnvironmentHandler: SimulationBase {
         
         for item in animals+movableFoods {
             item.acceleration = SCNVector3().zero()
-            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400 * 128), y: Int32(item.node.worldPosition.z / 400 * 128)))
+            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
             if bottom(item) > bm {
                 item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
             }else if bottom(item) < bm {

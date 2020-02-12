@@ -190,9 +190,7 @@
 		303ECA232384424E0013503C /* SceneHandling */ = {
 			isa = PBXGroup;
 			children = (
-				305700E523787A96006696D9 /* MeshRenderer.swift */,
-				30A9272123EE1BE500A89EBD /* PerlinCPU.swift */,
-				3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */,
+				306A146B23F38DD600A6A0C6 /* Terrain */,
 				30F83892237DC04A0019A12E /* RenderHandler.swift */,
 				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
 				30E5A5F32380920B001F4524 /* SkyHandler.swift */,
@@ -294,6 +292,16 @@
 				305700D923787999006696D9 /* Info.plist */,
 			);
 			path = EcosystemBackEndUITests;
+			sourceTree = "<group>";
+		};
+		306A146B23F38DD600A6A0C6 /* Terrain */ = {
+			isa = PBXGroup;
+			children = (
+				305700E523787A96006696D9 /* MeshRenderer.swift */,
+				30A9272123EE1BE500A89EBD /* PerlinCPU.swift */,
+				3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */,
+			);
+			path = Terrain;
 			sourceTree = "<group>";
 		};
 		309B72BF23EC88C6001EE378 /* FrontEndPlaceholder */ = {
