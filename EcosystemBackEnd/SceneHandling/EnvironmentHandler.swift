@@ -78,7 +78,7 @@ class EnvironmentHandler: SimulationBase {
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
         setupFunctions.append((classifyVerticies, "Analyzing Terrain"))
         if building == false {
-            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
+//            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
             setupFunctions.append((setupWater, "Adding Water"))
             setupFunctions.append((setupTrees, "Adding Trees"))
             setupFunctions.append((getNames, "Finding Animal Names"))
@@ -172,11 +172,13 @@ class EnvironmentHandler: SimulationBase {
     func checkPoints() {
         for x in -100...100 {
             for z in -100...100 {
-                let X = Int32((CGFloat(x) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
-                let Z = Int32((CGFloat(z) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
+//                let X = Int32((CGFloat(x) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
+//                let Z = Int32((CGFloat(z) * 2 + mapDimension / 2) / mapDimension * CGFloat(mapCountDimension))
                 
                 let node = SCNNode(geometry: SCNSphere(radius: 0.3))
-                node.worldPosition = SCNVector3(CGFloat(X) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2,CGFloat(gen.valueFor(x: X, y: Z)),CGFloat(Z) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2)
+                let vector = SCNVector3(x: 2 * CGFloat(x), y: 0, z: 2 * CGFloat(z))
+                node.worldPosition = vector.setValue(Component: .y, Value: mapValueAt(vector))
+//                node.worldPosition = SCNVector3(CGFloat(X) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2,CGFloat(gen.valueFor(x: X, y: Z)),CGFloat(Z) / CGFloat(mapCountDimension) * mapDimension - mapDimension/2)
 //                node.worldPosition = SCNVector3(CGFloat(X) / 128 * 400 - 200,5,CGFloat(Z) / 128 * 400 - 200)
                 Scene.rootNode.addChildNode(node)
             }
@@ -266,9 +268,9 @@ class EnvironmentHandler: SimulationBase {
         for item in animals {
             item.acceleration = SCNVector3().zero()
 //            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
-            let Bm = bm(item.node.worldPosition)
+            let Bm = mapValueAt(item.node.worldPosition)
             let btm = item.node.boundingBox.min.y
-            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm + item.node.boundingBox.min.y)
+            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm - btm)
         }
         
         lastTime = self.time
@@ -313,12 +315,12 @@ class EnvironmentHandler: SimulationBase {
     
                 if Int.random(in: 0..<30*25*4) == 0 {
                     let vector = self.viableVerticies.randomElement()!.vector
-                    _ = Daisy(Position: vector.setValue(Component: .y, Value: bm(vector)), Handler: self)
+                    _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
                 }
     
                 if Int.random(in: 0..<30*25*4) == 0 {
                     let vector = self.viableVerticies.randomElement()!.vector
-                    _ = Grass(Position: vector.setValue(Component: .y, Value: bm(vector)), Handler: self)
+                    _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
                 }
                 
                 

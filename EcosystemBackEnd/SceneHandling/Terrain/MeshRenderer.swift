@@ -323,6 +323,7 @@ class Ground: Mesh {
                 squareVerticies.append(UInt16(index(w,h+1)))
                 squareVerticies.append(UInt16(index(w+1,h)))
                 squareVerticies.append(UInt16(index(w+1,h+1)))
+                
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[1])
                 indices.append(squareVerticies[3])
@@ -425,6 +426,7 @@ class SurfaceWaterMesh: Mesh {
                 indices.append(squareVerticies[0])
                 indices.append(squareVerticies[3])
                 indices.append(squareVerticies[2])
+                
 //
 //                indices.append(squareVerticies[0])
 //                indices.append(squareVerticies[3])
@@ -515,4 +517,28 @@ func getShader(from filename: String) -> String {
     }
     print("shader \(filename) not found")
     return ""
+}
+
+extension SimulationBase {
+    func mapValueAt (_ Vector: SCNVector3) -> (CGFloat) {
+        let h = CGFloat(self.gen.valueFor(x: Int32((Vector.x + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32((Vector.z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
+        if h < 1.6 {
+            return h - 2
+        }else {
+            return h
+        }
+        
+    }
+    
+    func mapValueAt(_ X: CGFloat,_ Z: CGFloat) -> (CGFloat) {
+        let h = CGFloat(self.gen.valueFor(x: Int32((X + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32((Z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
+        if h < 1.6 {
+            return h - 2
+        }else {
+            return h
+        }
+        
+    }
+    
+    
 }

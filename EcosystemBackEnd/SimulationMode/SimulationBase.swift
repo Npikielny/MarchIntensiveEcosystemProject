@@ -17,15 +17,6 @@ class SimulationBase {
     
     var gen: generator!
     var terrain: Ground!
-    lazy var bm: (SCNVector3) -> (CGFloat) = {
-        let h = CGFloat(self.gen.valueFor(x: Int32(($0.x + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32(($0.z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
-        if h < 1.6 {
-            return h - 2
-        }else {
-            return h
-        }
-        
-    }
     
     var dataStorage = [DataPoint]()
     
