@@ -78,7 +78,7 @@ class EnvironmentHandler: SimulationBase {
         setupFunctions.append((setupTerrrain, "Adding Terrain"))
         setupFunctions.append((classifyVerticies, "Analyzing Terrain"))
         if building == false {
-//            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
+            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
             setupFunctions.append((setupWater, "Adding Water"))
             setupFunctions.append((setupTrees, "Adding Trees"))
             setupFunctions.append((getNames, "Finding Animal Names"))
@@ -248,30 +248,51 @@ class EnvironmentHandler: SimulationBase {
     }()
     
     override func Physics() {
-        let difference = Float(1)/Float(10)
+        let difference = Float(1)/Float(30)
+        
+        for item in animals+movableFoods {
+            item.acceleration = SCNVector3(0,0,0)
+            
+            let nodeShift = item.node.boundingBox.min.y
+            
+            let heightMap = mapValueAt(item.node.worldPosition)
+            let heightInit = item.node.worldPosition.y + nodeShift
+            
+            if heightInit > heightMap {
+                item.acceleration += SCNVector3(0,-1 * 9.807,0)
+            }
+            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+            
+            let height = item.node.worldPosition.y + nodeShift
+            if height <= heightMap{
+                item.velocity = SCNVector3(0,0,0)
+                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
+            }
+        }
         
 //        for item in animals+movableFoods {
 //            item.acceleration = SCNVector3().zero()
-//            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
-//            if bottom(item) > bm {
-//                item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
-//            }else if bottom(item) < bm {
-//                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: bm - item.node.boundingBox.min.y)
+//            let heightMap = mapValueAt(item.node.worldPosition)
+//            if bottom(item) > heightMap {
+//                item.acceleration -= SCNVector3(0,CGFloat(difference * 9.807),0)
+//            }else if bottom(item) < heightMap {
+//                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - item.node.boundingBox.min.y)
 //            }
-//            if bottom(item) - bm < 0.005 && item.velocity.y < 0 {
+//            if bottom(item) - heightMap < 0.1 && item.velocity.y < 0 {
 //                item.velocity = SCNVector3().zero()
 //            }
 //            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
 //            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
 //        }
-        
-        for item in animals {
-            item.acceleration = SCNVector3().zero()
-//            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
-            let Bm = mapValueAt(item.node.worldPosition)
-            let btm = item.node.boundingBox.min.y
-            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm - btm)
-        }
+//
+//        for item in animals {
+//            item.acceleration = SCNVector3().zero()
+////            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
+//            let Bm = mapValueAt(item.node.worldPosition)
+//            let btm = item.node.boundingBox.min.y
+//            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm - btm)
+//        }
         
         lastTime = self.time
     }
@@ -305,54 +326,64 @@ class EnvironmentHandler: SimulationBase {
                 }
                 
                 for i in foods {
-                    if i.foodType == .Plant && foods.count < 150 {
+                    if i.foodType == .Plant && foods.count < 150 { //Mark: Cap – maybe want to remove later
                         i.reproductionChance()
                     }
                 }
-                if Int.random(in: 0..<30*25) == 0 {
-                    _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-                }
-    
-                if Int.random(in: 0..<30*25*4) == 0 {
-                    let vector = self.viableVerticies.randomElement()!.vector
-                    _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-                }
-    
-                if Int.random(in: 0..<30*25*4) == 0 {
-                    let vector = self.viableVerticies.randomElement()!.vector
-                    _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-                }
                 
-                
-                if let _ = self.terrain {
-                    if let individual = self.selectedAnimal {
-                        self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
-                        self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.z), forKey: "z")
-                        setStats()
-                        self.thirstNode.isHidden = false
-                        self.hungerNode.isHidden = false
-                        self.healthNode.isHidden = false
-                        self.statsNode.isHidden = false
-                        self.breedNode.isHidden = false
-                        self.targetNode.isHidden = false
-                    }else {
-                        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
-                        self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
-                        self.thirstNode.isHidden = true
-                        self.hungerNode.isHidden = true
-                        self.healthNode.isHidden = true
-                        self.statsNode.isHidden = true
-                        self.breedNode.isHidden = true
-                        self.targetNode.isHidden = true
-                    }
-                }
+                newPlants()
+                selectionhandling()
             }
-            
-            if self.camera.cameraType == .following {
-                if let animal = self.selectedAnimal {
-                    self.camera.node.position = (animal.node.worldPosition - animal.velocity).setValue(Component: .y, Value: 10) + (SCNVector3(x: 5, y: 0, z: 5))
-                    self.camera.node.look(at: animal.node.worldPosition)
-                }
+            cameraMovement()
+        }
+    }
+    
+    fileprivate func newPlants() {
+        if Int.random(in: 0..<30*25) == 0 {
+            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+        }
+        
+        if Int.random(in: 0..<30*25*4) == 0 {
+            let vector = self.viableVerticies.randomElement()!.vector
+            _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+        }
+        
+        if Int.random(in: 0..<30*25*4) == 0 {
+            let vector = self.viableVerticies.randomElement()!.vector
+            _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+        }
+    }
+    
+    fileprivate func selectionhandling() {
+        if let _ = self.terrain {
+            if let individual = self.selectedAnimal {
+                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.x), forKey: "x")
+                self.terrain.node.geometry?.materials.first!.setValue(Float(individual.node.worldPosition.z), forKey: "z")
+                setStats()
+                self.thirstNode.isHidden = false
+                self.hungerNode.isHidden = false
+                self.healthNode.isHidden = false
+                self.statsNode.isHidden = false
+                self.breedNode.isHidden = false
+                self.targetNode.isHidden = false
+            }else {
+                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "x")
+                self.terrain.node.geometry?.materials.first!.setValue(Float(430), forKey: "z")
+                self.thirstNode.isHidden = true
+                self.hungerNode.isHidden = true
+                self.healthNode.isHidden = true
+                self.statsNode.isHidden = true
+                self.breedNode.isHidden = true
+                self.targetNode.isHidden = true
+            }
+        }
+    }
+    
+    fileprivate func cameraMovement() {
+        if self.camera.cameraType == .following {
+            if let animal = self.selectedAnimal {
+                self.camera.node.position = (animal.node.worldPosition - animal.velocity).setValue(Component: .y, Value: 10) + (SCNVector3(x: 5, y: 0, z: 5))
+                self.camera.node.look(at: animal.node.worldPosition)
             }
         }
     }

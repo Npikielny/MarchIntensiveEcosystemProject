@@ -115,7 +115,7 @@ class Animal: Matter {
         self.node.worldPosition = Position
         self.handler.animals.append(self)
         
-        self.target = self.node.worldPosition
+        self.target = self.node.worldPosition.setValue(Component: .y, Value: handler.mapValueAt(self.node.worldPosition))
         
     }
 //
@@ -203,26 +203,18 @@ struct rabbit: AnimalClass {
     static var foodType: FoodType = .Vegetarian
     static var name: String = "rabbit"
     static var movementFunction: (Animal) -> () = {
-        let h = $0.handler.gen.valueFor(x: Int32($0.node.worldPosition.x / 400) * 128, y: Int32($0.node.worldPosition.z / 400) * 128)
-        if abs(CGFloat(h) - $0.node.worldPosition.y) < 0.1 || $0.node.worldPosition.y <= CGFloat(h) {
-            $0.node.worldPosition = $0.node.worldPosition.setValue(Component: .y, Value: CGFloat(h))
-            
-            if ($0.velocity.zero(.y)).getMagnitude() <= 0.01 {
-                let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
-                if distance <= $0.Speed {
-                    if distance < 1.2 {
-                        $0.node.worldPosition = $0.target
-                    }else {
-                        let velocity = pow(abs(1)*distance,0.5)
-                        $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
-                    }
-                }else {
-                    let velocity = pow(abs(1)*$0.Speed,0.5)
-                    $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
-                }
+        let h = $0.handler.mapValueAt($0.node.worldPosition)
+        if ($0.velocity.zero(.y)).getMagnitude() == 0 {
+            let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
+            if distance <= $0.Speed {
+                let velocity = pow(abs(9.807)*distance,0.5)
+                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+            }else {
+                let velocity = pow(abs(9.807)*$0.Speed,0.5)
+                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
             }
-            
         }
+        
     }
 }
 

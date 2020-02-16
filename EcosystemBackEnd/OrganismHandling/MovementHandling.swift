@@ -11,68 +11,67 @@ import SceneKit
 extension Animal {
     func setTarget() {
         switch self.priority {
-            
-        case .Food:
-            if let _ = self.targetFood {}else {
-                var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
-                nearbyFoods.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
-                if nearbyFoods.count > 0 {
-                    self.targetFood = nearbyFoods.first
-                    self.target = self.targetFood!.node.worldPosition
-                } else {
-                    randomTarget()
-                }
-            }
-            
-        case .Water:
-            var groundVerts = self.handler.drinkableVertices!
-            groundVerts.sort(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()})
-            if let position = groundVerts.first {
-                self.target = position.vector
-            }else {
-                checkPriority()
-                randomTarget()
-            }
-            
-        case .Breed:
-            if let _ = self.targetMate {
-                self.targetMate = nil
-                checkPriority()
-            } else {
-                var breedingTargets = self.handler.animals
-                breedingTargets.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
-                breedingTargets.removeAll(where: {$0.sex == self.sex})
-                breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
-                
-                for index in 0..<breedingTargets.count {
-                    if let _ = self.targetMate{} else {
-                        if let _ = breedingTargets[index].targetMate {} else {
-                            breedingTargets[index].breedRequest(self)
-                        }
+            case .Food:
+                if let _ = self.targetFood {}else {
+                    var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
+                    nearbyFoods.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+                    if nearbyFoods.count > 0 {
+                        self.targetFood = nearbyFoods.first
+                        self.target = self.targetFood!.node.worldPosition
+                    } else {
+                        randomTarget()
                     }
                 }
                 
-                if let _ = self.targetMate {} else {
+            case .Water:
+                var groundVerts = self.handler.drinkableVertices!
+                groundVerts.sort(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()})
+                if let position = groundVerts.first {
+                    self.target = position.vector
+                }else {
                     checkPriority()
                     randomTarget()
                 }
-            }
-            
-            if let _ = self.targetMate {
-                if ((self.targetMate?.node.worldPosition)! - self.node.worldPosition).getMagnitude() < 0.5 {
-                    self.inProcess = true
-                    self.targetMate?.inProcess = true
-                }else {self.target = (self.targetMate!.node.worldPosition + self.node.worldPosition).scalarMultiplication(Scalar: 0.5)}
-            }else {
-                checkPriority()
+                
+            case .Breed:
+                if let _ = self.targetMate {
+                    self.targetMate = nil
+                    checkPriority()
+                } else {
+                    var breedingTargets = self.handler.animals
+                    breedingTargets.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
+                    breedingTargets.removeAll(where: {$0.sex == self.sex})
+                    breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+                    
+                    for index in 0..<breedingTargets.count {
+                        if let _ = self.targetMate{} else {
+                            if let _ = breedingTargets[index].targetMate {} else {
+                                breedingTargets[index].breedRequest(self)
+                            }
+                        }
+                    }
+                    
+                    if let _ = self.targetMate {} else {
+                        checkPriority()
+                        randomTarget()
+                    }
+                }
+                
+                if let _ = self.targetMate {
+                    if ((self.targetMate?.node.worldPosition)! - self.node.worldPosition).getMagnitude() < 0.5 {
+                        self.inProcess = true
+                        self.targetMate?.inProcess = true
+                    }else {self.target = (self.targetMate!.node.worldPosition + self.node.worldPosition).scalarMultiplication(Scalar: 0.5)}
+                }else {
+                    checkPriority()
+                    randomTarget()
+                }
+                
+            case .Flee:
                 randomTarget()
-            }
-            
-        case .Flee:
-            randomTarget()
-            
-        default: //Idle
-            randomTarget()
+                
+            default: //Idle
+                randomTarget()
         }
     }
     
@@ -91,54 +90,11 @@ extension Animal {
         return ((self.target - self.node.worldPosition).zero(.y).getMagnitude() <= self.Speed/3)
     }
     
-    
     func movementHandler() {
         if self.dead == false {
             if isNearTarget() { // logic for setting new target
                 self.node.worldPosition = self.target
-                
-                switch self.priority {
-                case .Water:
-                    self.drink()
-                    if self.thirst >= 100 {
-                        checkPriority()
-                        setTarget()
-                    }
-                case .Food:
-                    if let _ = self.targetFood {
-                       if self.eat(Item: &self.targetFood!) {
-                           self.targetFood = nil
-                           checkPriority()
-                           setTarget()
-                       }
-                   } else {
-                       setTarget()
-                   }
-                case .Breed:
-                    let success: Bool = {
-                        if let node = self.targetMate?.targetMate?.node {
-                            if node == self.node {
-                                self.breed()
-                                return true
-                            }
-                        }
-                        return false
-                    }()
-                    self.inProcess = true
-                    if success == false {
-                        self.inProcess = false
-                        checkPriority()
-                        setTarget()
-                    }
-                    if self.breedingUrge >= 100 {
-                        self.inProcess = false
-                        checkPriority()
-                        setTarget()
-                    }
-                default:
-                    checkPriority()
-                    setTarget()
-                }
+                decisionMaking()
             }else {
                 self.move(self)
             }
@@ -158,10 +114,50 @@ extension Animal {
         }
     }
     
-    func reset() {
-        NSLog("RESET")
+    fileprivate func decisionMaking() {
+        switch self.priority {
+            case .Water:
+                self.drink()
+                if self.thirst >= 100 {
+                    checkPriority()
+                    setTarget()
+                }
+            case .Food:
+                if let _ = self.targetFood {
+                    if self.eat(Item: &self.targetFood!) {
+                        self.targetFood = nil
+                        checkPriority()
+                        setTarget()
+                    }
+                } else {
+                    setTarget()
+                }
+            case .Breed:
+                let success: Bool = {
+                    if let node = self.targetMate?.targetMate?.node {
+                        if node == self.node {
+                            self.breed()
+                            return true
+                        }
+                    }
+                    return false
+                }()
+                self.inProcess = true
+                if success == false {
+                    self.inProcess = false
+                    checkPriority()
+                    setTarget()
+                }
+                if self.breedingUrge >= 100 {
+                    self.inProcess = false
+                    checkPriority()
+                    setTarget()
+                }
+            default:
+                checkPriority()
+                setTarget()
+        }
     }
-    
 }
 
 
