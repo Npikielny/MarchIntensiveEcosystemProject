@@ -139,7 +139,8 @@ extension SimulationHandler {
     
 
     func randomTarget(item: inout Animal) {
-        item.target = (coordinateTransfer(item.node.worldPosition + SCNVector3().random().toMagnitude(20))).setValue(Component: .y, Value: 2)
+        item.target = (coordinateTransfer(item.node.worldPosition + SCNVector3().random().toMagnitude(20)))
+        item.target = item.target.setValue(Component: .y, Value: item.handler.mapValueAt(item.target))
     }
 
     func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 {
