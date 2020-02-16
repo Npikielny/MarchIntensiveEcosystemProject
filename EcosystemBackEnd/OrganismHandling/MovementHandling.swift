@@ -73,11 +73,11 @@ extension Animal {
             default: //Idle
                 randomTarget()
         }
+        self.target = self.target.setValue(Component: .y, Value: self.handler.mapValueAt(self.target))
     }
     
     func randomTarget() {
         self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20)))
-        self.target.setValue(Component: .y, Value: self.handler.mapValueAt(self.target))
     }
     
     func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 {
