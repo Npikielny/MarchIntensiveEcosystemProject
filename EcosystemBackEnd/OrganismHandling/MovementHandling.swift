@@ -105,11 +105,11 @@ extension Animal {
 //                print("E")
 //            }
             
-            if (self.node.worldPosition.zero(.y) - self.target.zero(.y)).getMagnitude() <= 0.5 {
-                let bm = self.handler.mapValueAt(self.node.worldPosition)
-                self.node.worldPosition = self.target.setValue(Component: .y, Value: bm-self.node.boundingBox.min.y)
-                self.velocity = SCNVector3().zero()
-            }
+//            if (self.node.worldPosition.zero(.y) - self.target.zero(.y)).getMagnitude() <= 0.5 {
+//                let bm = self.handler.mapValueAt(self.node.worldPosition)
+//                self.node.worldPosition = self.target.setValue(Component: .y, Value: bm-self.node.boundingBox.min.y)
+//                self.velocity = SCNVector3().zero()
+//            }
         }
     }
     

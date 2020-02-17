@@ -144,6 +144,16 @@ struct apple: FoodClass {
     static var scalingFactor: CGFloat = 0.5
 }
 
+struct cactus: FoodClass {
+    static var speciesName: String = "cactus"
+    static var foodType: FoodType = .Plant
+    static var maxFoodValue: CGFloat = 100
+    static var spawnChance: CGFloat = 0
+    static var growthRate: Int = 30 * 50 * 10 * 64 * 64
+    static var growthDistance: ClosedRange<CGFloat> = 4...10
+    static var scalingFactor: CGFloat = 1
+}
+
 class Food: Matter {
     var foodType: FoodType
     var foodValue: Float = 50
@@ -214,5 +224,7 @@ func Grass(Position: SCNVector3, Handler: SimulationBase) -> Food {
 func Daisy(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: daisy.self, Handler: Handler)
 }
-
-var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy]
+func Cactus(Position: SCNVector3, Handler: SimulationBase) -> Food {
+    return Food(Position: Position, DataStructure: cactus.self, Handler: Handler)
+}
+var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus]

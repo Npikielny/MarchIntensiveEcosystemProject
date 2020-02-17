@@ -41,7 +41,7 @@ class SplashController: NSViewController {
         let screen = NSScreen.main?.frame.size
         view.setFrameSize(screen!)
         let imageName: String = {
-            let imagesList: [String] = ["SplashScreen","SplashScreenClouds","SplashScreenOld"]
+            let imagesList: [String] = ["SplashScreen","SplashScreenClouds","SplashScreenOld","Desert"]
             return imagesList.randomElement()!
         }()
         
