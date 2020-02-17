@@ -13,7 +13,7 @@ class Cloud {
     
     var node: SCNNode
     
-    init(RadiusRange: ClosedRange<CGFloat>, Spread: ClosedRange<CGFloat>, VerticalCompressionFactor: CGFloat, CloudCount: Int) {
+    init(RadiusRange: ClosedRange<CGFloat>, Spread: ClosedRange<CGFloat>, VerticalCompressionFactor: CGFloat, CloudCount: Int, ScalingFactor: CGFloat) {
         
         node = SCNNode()
         travelRadius = CGFloat.random(in: RadiusRange)
@@ -34,6 +34,7 @@ class Cloud {
         
         for _ in 0...CloudCount {
             let x = getPrefab("ico.scn", Shaders: "cloudShader")
+            x.scale = SCNVector3(ScalingFactor,ScalingFactor,ScalingFactor)
             x.position += SCNVector3().random().toMagnitude(CGFloat.random(in: Spread))
             x.position = x.position.setValue(Component: .y, Value: x.position.y * VerticalCompressionFactor)
             

@@ -123,9 +123,9 @@ class EnvironmentHandler: SimulationBase {
     fileprivate func addClouds() {
         
         for _ in 0...Int.random(in: 20...30) {
-            let x = Cloud(RadiusRange: 50...(mapDimension / 2), Spread: 0.5...3.25, VerticalCompressionFactor: 0.3, CloudCount: Int.random(in: 15...20))
+            let x = Cloud(RadiusRange: 50...(mapDimension / 2), Spread: 0.5...3.25, VerticalCompressionFactor: 0.3, CloudCount: Int.random(in: 15...20), ScalingFactor: 1)
             self.Scene.rootNode.addChildNode(x.node)
-            x.node.worldPosition = x.node.worldPosition.setValue(Component: .y, Value: CGFloat.random(in: 25...35))
+            x.node.worldPosition = x.node.worldPosition.setValue(Component: .y, Value: CGFloat.random(in: 55...75))
         }
         
     }
