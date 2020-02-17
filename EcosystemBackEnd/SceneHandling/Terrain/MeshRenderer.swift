@@ -366,7 +366,7 @@ class Ground: Mesh {
         let _: NSColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         let _: NSColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
         let _: NSColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-
+        
         self.node.geometry?.materials.first?.roughness.contents = 1
         self.node.geometry?.materials.first!.setValue(Float(0), forKey: "x")
         self.node.geometry?.materials.first!.setValue(Float(0), forKey: "z")

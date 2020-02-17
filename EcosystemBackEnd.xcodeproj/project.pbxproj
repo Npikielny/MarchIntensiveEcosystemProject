@@ -30,6 +30,8 @@
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		3087F75F23DC001B00F8B6E8 /* MeshRendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */; };
 		30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30898E9F238858EF00427C76 /* StatsHandling.swift */; };
+		30938AD723FA404B007D8348 /* Clouds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30938AD623FA404B007D8348 /* Clouds.swift */; };
+		30938AD923FA4061007D8348 /* cloudShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 30938AD823FA4061007D8348 /* cloudShader.shader */; };
 		309B72C123EC88FA001EE378 /* SizeableWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309B72C023EC88FA001EE378 /* SizeableWindow.swift */; };
 		309B72C423EC8914001EE378 /* ResizeableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309B72C223EC8914001EE378 /* ResizeableController.swift */; };
 		309B72C523EC8914001EE378 /* ResizeableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 309B72C323EC8914001EE378 /* ResizeableController.xib */; };
@@ -113,6 +115,8 @@
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MeshRendering.metal; sourceTree = "<group>"; };
 		30898E9F238858EF00427C76 /* StatsHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHandling.swift; sourceTree = "<group>"; };
+		30938AD623FA404B007D8348 /* Clouds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clouds.swift; sourceTree = "<group>"; };
+		30938AD823FA4061007D8348 /* cloudShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cloudShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		309B72C023EC88FA001EE378 /* SizeableWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeableWindow.swift; sourceTree = "<group>"; };
 		309B72C223EC8914001EE378 /* ResizeableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeableController.swift; sourceTree = "<group>"; };
 		309B72C323EC8914001EE378 /* ResizeableController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResizeableController.xib; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 			children = (
 				303314482379EDF400C856F6 /* groundShader.shader */,
 				3033144C2379F13000C856F6 /* waterShader.shader */,
+				30938AD823FA4061007D8348 /* cloudShader.shader */,
 				3034681E237B024E00E32BF5 /* tree.shader */,
 				3059C82C2380769000C7289C /* genericShader.shader */,
 				30361B582389BAE60002B42D /* waterStatShader.shader */,
@@ -192,6 +197,7 @@
 			children = (
 				306A146B23F38DD600A6A0C6 /* Terrain */,
 				30F83892237DC04A0019A12E /* RenderHandler.swift */,
+				30938AD623FA404B007D8348 /* Clouds.swift */,
 				301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */,
 				30E5A5F32380920B001F4524 /* SkyHandler.swift */,
 				309C9305237B195C007AF60F /* TreeHandling.swift */,
@@ -475,6 +481,7 @@
 				309B72CA23EC8A59001EE378 /* GraphController.xib in Resources */,
 				305700C123787999006696D9 /* Main.storyboard in Resources */,
 				30A444AA237EF66200BA29D4 /* DebugWindow.xib in Resources */,
+				30938AD923FA4061007D8348 /* cloudShader.shader in Resources */,
 				30A27F16238EE7FA0092DAF3 /* GameController.xib in Resources */,
 				302908AA238A1DC900D4396D /* healthStatShader.shader in Resources */,
 				30B47A5A23AC0EE5008324FF /* FrontHolder.xib in Resources */,
@@ -511,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A27F1B238F0D0B0092DAF3 /* SplashController.swift in Sources */,
+				30938AD723FA404B007D8348 /* Clouds.swift in Sources */,
 				30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */,
 				30E0480D23B7BC920078571B /* CameraController.swift in Sources */,
 				30A27F15238EE7FA0092DAF3 /* GameController.swift in Sources */,

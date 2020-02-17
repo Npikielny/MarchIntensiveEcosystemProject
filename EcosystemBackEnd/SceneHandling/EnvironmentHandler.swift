@@ -84,6 +84,7 @@ class EnvironmentHandler: SimulationBase {
             setupFunctions.append((getNames, "Finding Animal Names"))
             setupFunctions.append((addAnimals, "Adding Animals"))
             setupFunctions.append((addFood, "Adding Food"))
+            setupFunctions.append((addClouds, "Creating Weather"))
         }
         
         else {
@@ -117,6 +118,16 @@ class EnvironmentHandler: SimulationBase {
 //        ambientNode.light?.intensity = 100
 //        self.Scene.rootNode.addChildNode(ambientNode)
 //        ambientNode.name = "Ambient Light"
+    }
+    
+    fileprivate func addClouds() {
+        
+        for _ in 0...Int.random(in: 20...30) {
+            let x = Cloud(RadiusRange: 50...(mapDimension / 2), Spread: 0.5...3.25, VerticalCompressionFactor: 0.3, CloudCount: Int.random(in: 15...20))
+            self.Scene.rootNode.addChildNode(x.node)
+            x.node.worldPosition = x.node.worldPosition.setValue(Component: .y, Value: CGFloat.random(in: 25...35))
+        }
+        
     }
     
     override func setupTerrrain() {
