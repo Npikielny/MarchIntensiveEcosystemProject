@@ -40,7 +40,12 @@ class SplashController: NSViewController {
         // Do view setup here.
         let screen = NSScreen.main?.frame.size
         view.setFrameSize(screen!)
-        let bg = NSImageView(image: NSImage(named: "SplashScreen")!)
+        let imageName: String = {
+            let imagesList: [String] = ["SplashScreen","SplashScreenClouds","SplashScreenOld"]
+            return imagesList.randomElement()!
+        }()
+        
+        let bg = NSImageView(image: NSImage(named: imageName)!)
         bg.translatesAutoresizingMaskIntoConstraints = false
         bg.imageScaling = .scaleProportionallyUpOrDown
         view.addSubview(bg)
