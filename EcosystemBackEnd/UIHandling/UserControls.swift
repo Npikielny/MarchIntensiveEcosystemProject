@@ -65,6 +65,7 @@ class UserControls: NSViewController {
 		slider.minValue = 0
 		slider.maxValue = 1
         slider.floatValue = 0.5
+        slider.isEnabled = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -91,6 +92,7 @@ class UserControls: NSViewController {
 		slider.minValue = 0
 		slider.maxValue = 1
         slider.floatValue = 0.5
+        slider.isEnabled = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -117,6 +119,7 @@ class UserControls: NSViewController {
 		slider.minValue = 0
 		slider.maxValue = 1
         slider.floatValue = 0.5
+        slider.isEnabled = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -143,6 +146,7 @@ class UserControls: NSViewController {
 		slider.minValue = 0
 		slider.maxValue = 1
         slider.floatValue = 0.5
+        slider.isEnabled = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
