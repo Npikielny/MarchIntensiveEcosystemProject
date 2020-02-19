@@ -85,10 +85,10 @@ extension Animal {
 //            self.velocity = SCNVector3(0,2,0)
 //        }
         
-        if self.breedingUrge >= 100 {
-            self.breedingUrge = 100
-            self.targetMate?.breedingUrge = 100
-            if self.targetMate!.sex == .Male {
+        if self.breedingUrge >= self.maxbreedingUrge {
+            self.breedingUrge = self.maxbreedingUrge
+            self.targetMate?.breedingUrge = self.targetMate!.maxbreedingUrge
+            if self.targetMate!.sex == .Female {
                 self.targetMate!.birth()
             }else {
                 birth()

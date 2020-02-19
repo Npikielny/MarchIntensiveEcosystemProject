@@ -10,6 +10,7 @@ import SceneKit
 
 extension Animal {
     func setTarget() {
+        self.targetTries = 0
         switch self.priority {
             case .Food:
                 if let _ = self.targetFood {}else {
@@ -86,16 +87,26 @@ extension Animal {
     } // Finds a nearby point on the map
     
     func isNearTarget() -> Bool {
-        return ((self.target - self.node.worldPosition).getMagnitude() <= CGFloat(self.node.boundingSphere.radius * 2))
+        return ((self.target - self.node.worldPosition).getMagnitude() <= CGFloat(self.node.boundingSphere.radius / 2) + CGFloat(self.targetTries) / 500)
     }
     
     func movementHandler() {
         if self.dead == false {
+//            if self.inProcess == false {
+                self.targetTries += 1
+//            }else {
+//                self.targetTries = 0
+//            }
+            if self.targetTries > 1575 {
+                self.decisionMaking()
+            }
+            
             if isNearTarget() { // logic for setting new target
 //                self.node.worldPosition = self.target
                 self.inProcess = true
                 decisionMaking()
             }else {
+                
                 self.move(self)
             }
             additionalPhysics() // overridable function
@@ -120,6 +131,7 @@ extension Animal {
                 if self.thirst >= 100 {
                     checkPriority()
                     setTarget()
+                    randomTarget()
                 }
             case .Food:
                 if let _ = self.targetFood {
@@ -127,6 +139,8 @@ extension Animal {
                         self.targetFood = nil
                         checkPriority()
                         setTarget()
+                        randomTarget()
+                        randomTarget()
                     }
                 } else {
                     setTarget()
@@ -147,7 +161,7 @@ extension Animal {
                     checkPriority()
                     setTarget()
                 }
-                if self.breedingUrge >= 100 {
+                if self.breedingUrge >= self.maxbreedingUrge {
                     self.inProcess = false
                     checkPriority()
                     setTarget()
@@ -170,6 +184,7 @@ extension EnvironmentHandler {
         self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
         self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
         self.targetNode.worldPosition = self.selectedAnimal!.target
+        self.targetNode.geometry = SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries) / 500 + CGFloat(self.selectedAnimal!.node.boundingSphere.radius / 2))
         
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 

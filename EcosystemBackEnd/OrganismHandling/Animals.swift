@@ -61,6 +61,9 @@ class Animal: Matter {
     var inProcess: Bool = false
     var Id: Int32
     //Movement
+    
+    var targetTries: Int = 0
+    
     var target: SCNVector3 = SCNVector3().zero()
     func getHeight() -> CGFloat {return self.node.worldPosition.y-(self.node.boundingBox.min.y)/2}
     var targetMate: Animal?
@@ -195,8 +198,21 @@ class Bird: Animal {
     }
     
     override func randomTarget() {
-        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(40)))
+        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))))
         self.target = self.target.setValue(Component: .y, Value: CGFloat.random(in: 7...15) + self.handler.mapValueAt(self.target))
+        
+        if abs(self.target.x) > self.handler.mapDimension / 2 || abs(self.target.z) > self.handler.mapDimension / 2 {
+            var i = 0
+            while abs(self.target.x) > self.handler.mapDimension / 2 || abs(self.target.z) > self.handler.mapDimension / 2 && i < 10 {
+                self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))))
+                self.target = self.target.setValue(Component: .y, Value: CGFloat.random(in: 7...15) + self.handler.mapValueAt(self.target))
+                i += 1
+            }
+            if i == 10 {
+                self.target = SCNVector3().zero()
+                self.target = self.target.setValue(Component: .y, Value: CGFloat.random(in: 7...15) + self.handler.mapValueAt(self.target))
+            }
+        }
     }
 }
 
@@ -291,7 +307,13 @@ struct sparrow: AnimalClass {
         let headingDifference = (($0.target - $0.node.worldPosition).unitVector() - $0.velocity)
         $0.acceleration += headingDifference.scalarMultiplication(Scalar: $0.Speed)
         if $0.velocity.getMagnitude() > 0 {
-            $0.velocity = $0.velocity.toMagnitude($0.Speed)
+            var speedCoef: CGFloat =  -1*abs(1/($0.target - $0.node.worldPosition).getMagnitude()) + $0.Speed - 1
+            if speedCoef > 15 {
+                speedCoef = 15
+            }else if speedCoef < 1 {
+                speedCoef = 1
+            }
+            $0.velocity = $0.velocity.toMagnitude(speedCoef)
         }
     }
 }
