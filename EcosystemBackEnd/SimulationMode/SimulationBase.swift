@@ -12,8 +12,8 @@ class SimulationBase {
 
     var frameNumber: Int = 0
     
-    var mapDimension: CGFloat = 1024
-    var mapCountDimension: Int = 256
+    var mapDimension: CGFloat = 400
+    var mapCountDimension: Int = 100
     
     var gen: generator!
     var terrain: Ground!
@@ -84,13 +84,15 @@ class SimulationBase {
     }
     
     func addAnimals() {
-        let Diego = Rabbit(Position: SCNVector3(0,30,0), Handler: self)
+        let Diego = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         Diego.node.name = "Diego"
         Diego.sex = .Male
         let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
         secondRabbit.sex = .Female
         
-        
+        for _ in 0..<2 {
+            let _ = Sparrow(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+        }
 //        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
 //        for _ in 0..<2-1 {
 //            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
@@ -126,24 +128,6 @@ class SimulationBase {
     
     var lastTime: Float = 0
     func Physics() {
-        var foodList = foods
-        foodList.removeAll(where: {$0.foodType == .Plant})
-        if self.initialized {
-            let difference = Float(1)/Float(10)
-            for item in animals+foods {
-                item.acceleration = SCNVector3().zero()
-                if bottom(item) > 2 {
-                    item.acceleration -= SCNVector3().initOfComponent(Component: .y, Value: CGFloat(9.807*difference))
-                }else if bottom(item) < 2 {
-                    item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: 2-item.node.boundingBox.min.y)
-                }
-                if bottom(item) - 2 < 0.005 && item.velocity.y < 0 {
-                    item.velocity = SCNVector3().zero()
-                }
-                item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
-                item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
-            }
-        }
     }
     
     func commenceEngine() {

@@ -64,7 +64,6 @@ class Cloud {
                 minAngle = angle - mainAngle
             }
             
-            print(angle - mainAngle)
             
             x.childNodes.first?.geometry?.materials.first?.setValue(angle, forKey: "angle")
             x.childNodes.first?.geometry?.materials.first?.setValue(mainAngle - angle, forKey: "offset")

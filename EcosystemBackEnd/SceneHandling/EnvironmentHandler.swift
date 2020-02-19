@@ -261,8 +261,7 @@ class EnvironmentHandler: SimulationBase {
     override func Physics() {
         let difference = Float(1)/Float(30)
         
-        for item in animals+movableFoods {
-            item.acceleration = SCNVector3(0,0,0)
+        for item in movableFoods {
             
             let nodeShift = item.node.boundingBox.min.y
             
@@ -276,34 +275,34 @@ class EnvironmentHandler: SimulationBase {
             item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
             
             let height = item.node.worldPosition.y + nodeShift
-            if height <= heightMap{
+            if height <= heightMap {
                 item.velocity = SCNVector3(0,0,0)
                 item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
             }
+            item.acceleration = SCNVector3(0,0,0)
         }
         
-//        for item in animals+movableFoods {
-//            item.acceleration = SCNVector3().zero()
-//            let heightMap = mapValueAt(item.node.worldPosition)
-//            if bottom(item) > heightMap {
-//                item.acceleration -= SCNVector3(0,CGFloat(difference * 9.807),0)
-//            }else if bottom(item) < heightMap {
-//                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - item.node.boundingBox.min.y)
-//            }
-//            if bottom(item) - heightMap < 0.1 && item.velocity.y < 0 {
-//                item.velocity = SCNVector3().zero()
-//            }
-//            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
-//            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
-//        }
-//
-//        for item in animals {
-//            item.acceleration = SCNVector3().zero()
-////            let bm = CGFloat(gen.valueFor(x: Int32(item.node.worldPosition.x / 400*128), y: Int32(item.node.worldPosition.z / 400*128)))
-//            let Bm = mapValueAt(item.node.worldPosition)
-//            let btm = item.node.boundingBox.min.y
-//            item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: Bm - btm)
-//        }
+        for item in animals {
+            if item.inProcess == false {
+                let nodeShift = item.node.boundingBox.min.y
+                
+                let heightMap = mapValueAt(item.node.worldPosition)
+                let heightInit = item.node.worldPosition.y + nodeShift
+                
+                if heightInit > heightMap && item.affectedByGravity == true {
+                    item.acceleration += SCNVector3(0,-1 * 9.807,0)
+                }
+                item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+                item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+                
+                let height = item.node.worldPosition.y + nodeShift
+                if height <= heightMap {
+                    item.velocity = SCNVector3(0,0,0)
+                    item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
+                }
+                item.acceleration = SCNVector3(0,0,0)
+            }
+        }
         
         lastTime = self.time
     }

@@ -23,7 +23,7 @@ extension Animal {
     //                self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(0,0,0)
                 }
             }else {
-                self.node.eulerAngles = self.getLookingAngle(self.target)
+                self.node.eulerAngles = self.getLookingAngle(self.velocity + self.node.worldPosition)
             }
         }
     }

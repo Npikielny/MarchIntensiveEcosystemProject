@@ -41,6 +41,7 @@ extension Animal {
                     var breedingTargets = self.handler.animals
                     breedingTargets.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
                     breedingTargets.removeAll(where: {$0.sex == self.sex})
+                    breedingTargets.removeAll(where: {$0.speciesData.species != self.speciesData.species})
                     breedingTargets.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
                     
                     for index in 0..<breedingTargets.count {
@@ -73,26 +74,26 @@ extension Animal {
             default: //Idle
                 randomTarget()
         }
-        self.target = self.target.setValue(Component: .y, Value: self.handler.mapValueAt(self.target))
+        if self.affectedByGravity {
+            self.target = self.target.setValue(Component: .y, Value: self.handler.mapValueAt(self.target))
+        }
+        self.inProcess = false
     }
     
-    func randomTarget() {
-        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20)))
-    }
-    
-    func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 {
+    func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 { //MARK: This Needs to be changed
         let transfer: (CGFloat) -> (CGFloat) = {return CGFloat(Int($0/4)*4)}
         return SCNVector3(x: transfer(Vector.x), y: transfer(Vector.y), z: transfer(Vector.z))
     } // Finds a nearby point on the map
     
     func isNearTarget() -> Bool {
-        return ((self.target - self.node.worldPosition).zero(.y).getMagnitude() <= self.Speed/3)
+        return ((self.target - self.node.worldPosition).getMagnitude() <= CGFloat(self.node.boundingSphere.radius * 2))
     }
     
     func movementHandler() {
         if self.dead == false {
             if isNearTarget() { // logic for setting new target
-                self.node.worldPosition = self.target
+//                self.node.worldPosition = self.target
+                self.inProcess = true
                 decisionMaking()
             }else {
                 self.move(self)
@@ -102,7 +103,6 @@ extension Animal {
             handleStats()
 //            if max(abs(self.node.worldPosition.x),abs(self.node.worldPosition.z)) > 200 {
 //                reset()
-//                print("E")
 //            }
             
 //            if (self.node.worldPosition.zero(.y) - self.target.zero(.y)).getMagnitude() <= 0.5 {

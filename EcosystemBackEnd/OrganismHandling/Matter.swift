@@ -12,6 +12,7 @@ class Matter {
     var velocity: SCNVector3
     var acceleration: SCNVector3
     var node: SCNNode
+    var affectedByGravity: Bool = true
     
     init(Velocity: SCNVector3, Acceleration: SCNVector3, Node: SCNNode) {
         self.velocity = Velocity

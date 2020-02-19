@@ -48,7 +48,6 @@ class SimulationController: NSViewController {
     
     @objc func runSimulation() {
 //        for i in 0...4 {
-////            print(i+1)
 //            for _ in 0..<15 {
                 simulation.runSimulation()
 //            }
