@@ -63,8 +63,8 @@ class UserControls: NSViewController {
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
-		slider.maxValue = 100
-        slider.floatValue = 50
+		slider.maxValue = 1
+        slider.floatValue = 0.5
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -89,8 +89,8 @@ class UserControls: NSViewController {
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
-		slider.maxValue = 100
-        slider.floatValue = 50
+		slider.maxValue = 1
+        slider.floatValue = 0.5
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -115,8 +115,8 @@ class UserControls: NSViewController {
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
-		slider.maxValue = 100
-        slider.floatValue = 50
+		slider.maxValue = 1
+        slider.floatValue = 0.5
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -141,8 +141,8 @@ class UserControls: NSViewController {
 		slider.cell = cell
 		slider.sliderType = .linear
 		slider.minValue = 0
-		slider.maxValue = 100
-        slider.floatValue = 50
+		slider.maxValue = 1
+        slider.floatValue = 0.5
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		return slider
 	}()
@@ -281,10 +281,10 @@ class UserControls: NSViewController {
 	
 	@objc func updateStats() {
         if let animal = self.Manager.gameController?.handler.selectedAnimal {
-			self.thirstSlider.doubleValue = Double(animal.thirst)
-			self.hungerSlider.doubleValue = Double(animal.hunger)
-			self.healthSlider.doubleValue = Double(animal.health)
-			self.breedingSlider.doubleValue = 100-Double(animal.breedingUrge)
+			self.thirstSlider.doubleValue = Double(animal.thirst / animal.maxthirst)
+			self.hungerSlider.doubleValue = Double(animal.hunger / animal.maxhunger)
+			self.healthSlider.doubleValue = Double(animal.health / animal.maxhealth)
+			self.breedingSlider.doubleValue = Double(animal.maxbreedingUrge - animal.breedingUrge / animal.maxbreedingUrge)
         }
 	}
 	

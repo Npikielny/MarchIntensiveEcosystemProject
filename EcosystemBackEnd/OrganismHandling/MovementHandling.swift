@@ -188,10 +188,10 @@ extension EnvironmentHandler {
         
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 
-        self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.thirst/100-Float(height/2), forKey: "threshold")
-        self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.hunger/100-Float(height/2), forKey: "threshold")
-        self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.health/100-Float(height/2), forKey: "threshold")
-        self.breedNode.geometry?.materials.first!.setValue(Float(height)*(100-self.selectedAnimal!.breedingUrge)/100-Float(height/2), forKey: "threshold")
+        self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.thirst/self.selectedAnimal!.maxthirst-Float(height/2), forKey: "threshold")
+        self.hungerNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.hunger/self.selectedAnimal!.maxhunger-Float(height/2), forKey: "threshold")
+        self.healthNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.health/self.selectedAnimal!.maxhealth-Float(height/2), forKey: "threshold")
+        self.breedNode.geometry?.materials.first!.setValue(Float(height)*(100-self.selectedAnimal!.breedingUrge)/self.selectedAnimal!.maxbreedingUrge-Float(height/2), forKey: "threshold")
         self.statsNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 3+4+1.5)
 //        let statString = "Hunger: "+String(Int(self.hunger))+"\r\n"+"Thirst: "+String(Int(self.thirst))+"\r\n"+"Health: "+String(Int(self.health))
        let priorityString: String = {
