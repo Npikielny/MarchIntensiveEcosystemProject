@@ -14,7 +14,8 @@ extension Animal {
         switch self.priority {
             case .Food:
                 if let _ = self.targetFood {}else {
-                    var nearbyFoods = self.handler.foods.sorted(by: {($0.node.worldPosition - self.node.position).getMagnitude()<($1.node.worldPosition - self.node.position).getMagnitude()})
+                    var nearbyFoods = self.handler.foods
+                    nearbyFoods.removeAll(where: {$0.foodValue <= 0})
                     nearbyFoods.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
                     if nearbyFoods.count > 0 {
                         self.targetFood = nearbyFoods.first

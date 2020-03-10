@@ -108,16 +108,16 @@ class EnvironmentHandler: SimulationBase {
         lightSource.name = "LightSource"
         setupSky()
         
-//        let ambientNode = SCNNode()
-//        ambientNode.light = SCNLight()
-//        ambientNode.light?.type = .ambient
-//        ambientNode.worldPosition = SCNVector3(0, 100, 0)
-//        ambientNode.light?.shadowMode = .forward
-//        
-//        ambientNode.light?.color = NSColor.white
-//        ambientNode.light?.intensity = 100
-//        self.Scene.rootNode.addChildNode(ambientNode)
-//        ambientNode.name = "Ambient Light"
+        let ambientNode = SCNNode()
+        ambientNode.light = SCNLight()
+        ambientNode.light?.type = .ambient
+        ambientNode.worldPosition = SCNVector3(0, 100, 0)
+        ambientNode.light?.shadowMode = .forward
+        
+        ambientNode.light?.color = NSColor.white
+        ambientNode.light?.intensity = 25
+        self.Scene.rootNode.addChildNode(ambientNode)
+        ambientNode.name = "Ambient Light"
     }
     
     fileprivate func addClouds() {

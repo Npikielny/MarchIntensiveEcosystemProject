@@ -113,10 +113,10 @@ class SimulationBase {
             let _ = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
         
-//        for _ in 0..<150 {
-//            let pos = self.viableVerticies.randomElement()!.vector
-//            let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
-//        }
+        for _ in 0..<150 {
+            let pos = self.viableVerticies.randomElement()!.vector
+            let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+        }
     }
     
     func debugAnimals() {

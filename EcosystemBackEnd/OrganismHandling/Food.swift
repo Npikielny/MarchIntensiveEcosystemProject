@@ -157,7 +157,9 @@ struct cactus: FoodClass {
     static var growthRate: Int = 30 * 50 * 10 * 64 * 64
     static var growthDistance: ClosedRange<CGFloat> = 4...10
     static var scalingFactor: CGFloat = 1
-    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!
+        return fruit.childNodes
+    }
 }
 
 class Food: Matter {
@@ -172,7 +174,7 @@ class Food: Matter {
         self.dataStructure = DataStructure
         self.foodType = DataStructure.foodType
         self.handler = Handler
-        if foodType == .Plant {
+        if foodType == .Plant && DataStructure.speciesName != "cactus" {
             super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(DataStructure.speciesName+".scn", Shaders: "tree"))
         }else {
             super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(DataStructure.speciesName+".scn", Shaders: nil))
@@ -188,7 +190,9 @@ class Food: Matter {
         if let function = DataStructure.getFoodComponents {
             self.foodComponents = function(self.node)
         }
-        
+        if self.dataStructure.foodType == .Plant {
+            self.grow()
+        }
     }
     
     func reproductionChance() {
@@ -199,6 +203,26 @@ class Food: Matter {
             let x = function!(position, self.handler)
             x.node.name = "Reproduced"
         }
+    }
+    
+    func grow() {
+        for i in self.foodComponents ?? [] {
+            i.isHidden = true
+        }
+        self.node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {})
+        self.foodValue = 0
+        let animation = SCNAction.scale(by: 10, duration: 100)
+        self.node.runAction(animation, completionHandler: {
+            self.foodValue = Float(self.dataStructure.maxFoodValue)
+            for i in self.foodComponents ?? [] {
+                self.growFruit(Node: i, Percent: Float(self.dataStructure.maxFoodValue)/Float(self.foodComponents!.count))
+            }
+        })
+    }
+    
+    func growFruit(Node: SCNNode, Percent: Float) {
+        Node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {Node.isHidden = false})
+        Node.runAction(SCNAction.scale(by: 10, duration: 10), completionHandler: {self.foodValue += Percent})
     }
     
     func setYPosition(plant: Food) {
