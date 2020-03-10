@@ -107,52 +107,60 @@ import SceneKit
 protocol FoodClass {
     static var speciesName: String {get}
     static var foodType: FoodType {get}
-    static var maxFoodValue: CGFloat {get}
+    static var maxFoodValue: Float {get}
     static var spawnChance: CGFloat {get}
     static var growthRate: Int {get}
     static var growthDistance: ClosedRange<CGFloat> {get}
     static var scalingFactor: CGFloat {get}
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? {get}
+    static var timeToGrow: ClosedRange<TimeInterval>? {get}
+    static var timeToFruit: ClosedRange<TimeInterval>? {get}
 }
 
 
 struct grass: FoodClass {
     static var speciesName: String = "grass"
     static var foodType: FoodType = .Plant
-    static var maxFoodValue: CGFloat = 10
+    static var maxFoodValue: Float = 10
     static var spawnChance: CGFloat = 30 * 25 * 4
     static var growthRate: Int = 30 * 50 * 10
     static var growthDistance: ClosedRange<CGFloat> = 4...10
     static var scalingFactor: CGFloat = 1
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
+    static var timeToGrow: ClosedRange<TimeInterval>? = 50...70
+    static var timeToFruit: ClosedRange<TimeInterval>? = 50...70
 }
 
 struct daisy: FoodClass {
     static var speciesName: String = "daisy"
     static var foodType: FoodType = .Plant
-    static var maxFoodValue: CGFloat = 5
+    static var maxFoodValue: Float = 5
     static var spawnChance: CGFloat = 30 * 25 * 4
     static var growthRate: Int = 30*50*30
     static var growthDistance: ClosedRange<CGFloat> = 2...6
     static var scalingFactor: CGFloat = 0.5
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
+    static var timeToGrow: ClosedRange<TimeInterval>? = 40...60
+    static var timeToFruit: ClosedRange<TimeInterval>? = 40...60
 }
 
 struct apple: FoodClass {
     static var speciesName: String = "apple"
     static var foodType: FoodType = .Fruit
-    static var maxFoodValue: CGFloat = 50
+    static var maxFoodValue: Float = 50
     static var spawnChance: CGFloat = 30 * 25
     static var growthRate: Int = 0
     static var growthDistance: ClosedRange<CGFloat> = 0...0
     static var scalingFactor: CGFloat = 0.5
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
+    static var timeToGrow: ClosedRange<TimeInterval>? = nil
+    static var timeToFruit: ClosedRange<TimeInterval>? = nil
 }
 
 struct cactus: FoodClass {
     static var speciesName: String = "cactus"
     static var foodType: FoodType = .Plant
-    static var maxFoodValue: CGFloat = 100
+    static var maxFoodValue: Float = 100
     static var spawnChance: CGFloat = 0
     static var growthRate: Int = 30 * 50 * 10 * 64 * 64
     static var growthDistance: ClosedRange<CGFloat> = 4...10
@@ -160,11 +168,13 @@ struct cactus: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!
         return fruit.childNodes
     }
+    static var timeToGrow: ClosedRange<TimeInterval>? = 150...200
+    static var timeToFruit: ClosedRange<TimeInterval>? = 90...120
 }
 
 class Food: Matter {
     var foodType: FoodType
-    var foodValue: Float = 50
+    var foodValue: Float = 0
     var handler: SimulationBase
     var dataStructure: FoodClass.Type
     
@@ -190,8 +200,14 @@ class Food: Matter {
         if let function = DataStructure.getFoodComponents {
             self.foodComponents = function(self.node)
         }
-        if self.dataStructure.foodType == .Plant {
+        
+        switch self.dataStructure.foodType {
+        case .Producer:
             self.grow()
+        case .Plant:
+            self.foodComponents?.forEach({growFruit(Node: $0, Percent: Float(self.dataStructure.maxFoodValue)/Float(self.foodComponents!.count))})
+        default:
+            self.foodValue = Float(self.dataStructure.maxFoodValue)
         }
     }
     
@@ -211,9 +227,8 @@ class Food: Matter {
         }
         self.node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {})
         self.foodValue = 0
-        let animation = SCNAction.scale(by: 10, duration: 100)
+        let animation = SCNAction.scale(by: 10, duration: TimeInterval.random(in: self.dataStructure.timeToGrow!))
         self.node.runAction(animation, completionHandler: {
-            self.foodValue = Float(self.dataStructure.maxFoodValue)
             for i in self.foodComponents ?? [] {
                 self.growFruit(Node: i, Percent: Float(self.dataStructure.maxFoodValue)/Float(self.foodComponents!.count))
             }
@@ -222,7 +237,7 @@ class Food: Matter {
     
     func growFruit(Node: SCNNode, Percent: Float) {
         Node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {Node.isHidden = false})
-        Node.runAction(SCNAction.scale(by: 10, duration: TimeInterval(CGFloat.random(in: 25...50))), completionHandler: {self.foodValue += Percent})
+        Node.runAction(SCNAction.scale(by: 10, duration: TimeInterval.random(in: self.dataStructure.timeToFruit!)), completionHandler: {self.foodValue += Percent})
     }
     
     func setYPosition(plant: Food) {
@@ -250,7 +265,6 @@ class Food: Matter {
             handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
             self.node.removeFromParentNode()
         default:
-            handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
             self.foodComponents!.forEach({$0.isHidden = true})
             self.foodComponents!.forEach({growFruit(Node: $0, Percent: Float(self.dataStructure.maxFoodValue) / Float(self.foodComponents!.count))})
         }
@@ -262,7 +276,7 @@ func Apple(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: apple.self, Handler: Handler)
 }
 func Grass(Position: SCNVector3, Handler: SimulationBase) -> Food {
-    return Food(Position: Position, DataStructure: daisy.self, Handler: Handler)
+    return Food(Position: Position, DataStructure: grass.self, Handler: Handler)
 }
 func Daisy(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: daisy.self, Handler: Handler)

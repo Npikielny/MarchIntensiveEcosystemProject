@@ -42,6 +42,7 @@ enum FoodType {
     case Meat
     case Fruit
     case Plant
+    case Producer
     case Omnivore
     case Vegetarian
 }
