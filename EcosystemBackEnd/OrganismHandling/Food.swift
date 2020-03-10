@@ -234,7 +234,7 @@ class Food: Matter {
             }
         })
     }
-    
+
     func growFruit(Node: SCNNode, Percent: Float) {
         Node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {Node.isHidden = false})
         Node.runAction(SCNAction.scale(by: 10, duration: TimeInterval.random(in: self.dataStructure.timeToFruit!)), completionHandler: {self.foodValue += Percent})
