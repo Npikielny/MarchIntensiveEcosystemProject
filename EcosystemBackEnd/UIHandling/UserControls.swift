@@ -221,7 +221,7 @@ class UserControls: NSViewController {
     }()
     
     @objc func followCam() {
-//        self.Manager.gameController?.handler.camera.cameraType = .following
+        self.Manager.gameController?.handler.camera.cameraType = .following
     }
     
 	func getDocumentsDirectory() -> URL {
@@ -288,7 +288,7 @@ class UserControls: NSViewController {
 			self.thirstSlider.doubleValue = Double(animal.thirst / animal.maxthirst)
 			self.hungerSlider.doubleValue = Double(animal.hunger / animal.maxhunger)
 			self.healthSlider.doubleValue = Double(animal.health / animal.maxhealth)
-			self.breedingSlider.doubleValue = Double(animal.maxbreedingUrge - animal.breedingUrge / animal.maxbreedingUrge)
+			self.breedingSlider.doubleValue = Double((animal.maxbreedingUrge - animal.breedingUrge) / animal.maxbreedingUrge)
         }
 	}
 	

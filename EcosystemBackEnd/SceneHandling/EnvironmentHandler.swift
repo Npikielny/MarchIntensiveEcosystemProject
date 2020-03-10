@@ -141,7 +141,7 @@ class EnvironmentHandler: SimulationBase {
     
     override func classifyVerticies() {
         viableVerticies = terrain.vertices
-        viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
+        viableVerticies.removeAll(where: {$0.status == .Water || $0.status == .Tree})
         drinkableVertices = terrain.vertices
         drinkableVertices.removeAll(where: {$0.status != .NearWater})
     }
@@ -155,7 +155,8 @@ class EnvironmentHandler: SimulationBase {
     }
     
     func setupTrees() {
-        treeGen = TreeGenerator(NumberOfPines: 100, Points: viableVerticies.map({$0.vector}))
+        let verts = viableVerticies.map({$0.vector})
+        treeGen = TreeGenerator(NumberOfPines: 100, Points: verts)
         if building == false {
             for i in treeGen.trees {
                 Scene.rootNode.addChildNode(i.node)

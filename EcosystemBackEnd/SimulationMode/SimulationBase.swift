@@ -76,8 +76,8 @@ class SimulationBase {
     }
     
     func classifyVerticies() {
-        terrain.vertices = terrain.vertices.map({SpaciallyAwareVector(vector: $0.vector, status: $0.status)})
         viableVerticies = terrain.vertices
+        print(viableVerticies.map({$0.status}))
         viableVerticies.removeAll(where: {$0.status != .Normal && $0.status != .NearWater})
         drinkableVertices = terrain.vertices
         drinkableVertices.removeAll(where: {$0.status != .NearWater})

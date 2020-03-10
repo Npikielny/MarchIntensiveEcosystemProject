@@ -43,7 +43,7 @@ class Mesh {
 
 struct SpaciallyAwareVector {
     var vector: SCNVector3
-    var status: pointTypes = .Normal
+    var status: pointTypes
 }
 
 enum pointTypes {
@@ -65,57 +65,17 @@ class Ground: Mesh {
                 verts.append(SCNVector3(x: CGFloat(x)/CGFloat(widthCount)*width-width/2, y: Height, z: CGFloat(z)/CGFloat(heightCount)*height-height/2))
             }
         }
-        var heightMap = verts.map({heightMapValue($0)})
-//
-//        var pipeline: MTLComputePipelineState!
-//        let device:MTLDevice = MTLCreateSystemDefaultDevice()!
-//        let library = device.makeDefaultLibrary()
-//        let commandQueue = device.makeCommandQueue()
-//        let commandBuffer = commandQueue?.makeCommandBuffer()
-//
-//        let byteCount = heightMapValue.size*heightMap.count
-//
-//        let buffer = device.makeBuffer(bytes: heightMap, length: byteCount, options: [])!
-//
-//        let commandEncoder = (commandBuffer?.makeComputeCommandEncoder())!
-//
-//        let metalConstant = MTLFunctionConstantValues()
-//                metalConstant.setConstantValue([Int32(widthCount)], type: MTLDataType.int, index: 0)
-//                metalConstant.setConstantValue([Int32(heightCount)], type: MTLDataType.int, index: 1)
-//
-////            let function = try! library?.makeFunction(name: {if i == 0 || i == 2 {return "perlinNoiseX"}else {return "perlinNoiseZ"}}(),constantValues: metalConstant)
-//        let function = try! library?.makeFunction(name: "perlin",constantValues: metalConstant)
-//        pipeline = try! device.makeComputePipelineState(function: function!)
-//        commandEncoder.setComputePipelineState(pipeline)
-//        commandEncoder.setBuffer(buffer, offset: 0, index: 0)
-//
-//        let w = pipeline.threadExecutionWidth
-//        let h = pipeline.maxTotalThreadsPerThreadgroup / w
-//        let threadsPerThreadgroup = MTLSizeMake(1, 1, 1)
-//
-//        commandEncoder.dispatchThreadgroups(MTLSize(width: byteCount, height: 1, depth: 1), threadsPerThreadgroup: threadsPerThreadgroup)
-//        commandEncoder.endEncoding()
-//        commandBuffer!.commit()
-//        commandBuffer!.waitUntilCompleted()
-//
-//        let Output = (buffer.contents().bindMemory(to: heightMapValue.self, capacity: byteCount))
-//        heightMap = [heightMapValue]()
-//        for i in 0..<widthCount*heightCount {
-//            heightMap.append(heightMapValue(SCNVector3(Output[i].position),SCNVector3(Output[i].storedPosition)))
-//        }
-        verts = heightMap.map({SCNVector3($0.storedPosition)})
 
         let determinant: (SCNVector3) -> pointTypes = {
             if $0.y >= 1.6 {
                 return .Normal
-            }else if $0.y > 1.5 && $0.y < 2.5 {
-                return .NearWater
             }else {
                 return .Water
             }
         }
-
-        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: .Normal)})
+        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: determinant($0))})
+//        vertices = verts.map({SpaciallyAwareVector(vector: $0, status: .Normal)})
+        
         var indices = [UInt16]()
 
         let index: (Int,Int) -> Int = {return $0 * heightCount + $1}
@@ -153,8 +113,6 @@ class Ground: Mesh {
                     for i in squareVerticies {
                         if self.vertices[Int(i)].vector.y >= 1.6 {
                             self.vertices[Int(i)].status = .NearWater
-                        }else {
-                            self.vertices[Int(i)].status = .Water
                         }
                     }
                 }
@@ -342,5 +300,44 @@ extension SimulationBase {
         
     }
     
+    
+}
+
+
+
+struct RGBA32 {
+    var color: UInt32
+    
+    init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
+        color = (UInt32(red) << 24) | (UInt32(green) << 16) | (UInt32(blue) << 8) | (UInt32(alpha) << 0)
+    }
+    
+    static let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
+    
+    static func ==(lhs: RGBA32, rhs: RGBA32) -> Bool {
+        return lhs.color == rhs.color
+    }
+    
+    static let size = MemoryLayout<RGBA32>.stride
+    
+    var redComponent: UInt8 {
+        return UInt8((color >> 24) & 255)
+    }
+
+    var greenComponent: UInt8 {
+        return UInt8((color >> 16) & 255)
+    }
+
+    var blueComponent: UInt8 {
+        return UInt8((color >> 8) & 255)
+    }
+
+    var alphaComponent: UInt8 {
+        return UInt8((color >> 0) & 255)
+    }
+    
+    var colorComponents: (UInt8,UInt8,UInt8,UInt8) {
+        return (self.redComponent,self.greenComponent,self.blueComponent,self.alphaComponent)
+    }
     
 }

@@ -112,7 +112,9 @@ protocol FoodClass {
     static var growthRate: Int {get}
     static var growthDistance: ClosedRange<CGFloat> {get}
     static var scalingFactor: CGFloat {get}
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? {get}
 }
+
 
 struct grass: FoodClass {
     static var speciesName: String = "grass"
@@ -122,6 +124,7 @@ struct grass: FoodClass {
     static var growthRate: Int = 30 * 50 * 10
     static var growthDistance: ClosedRange<CGFloat> = 4...10
     static var scalingFactor: CGFloat = 1
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
 }
 
 struct daisy: FoodClass {
@@ -132,6 +135,7 @@ struct daisy: FoodClass {
     static var growthRate: Int = 30*50*30
     static var growthDistance: ClosedRange<CGFloat> = 2...6
     static var scalingFactor: CGFloat = 0.5
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
 }
 
 struct apple: FoodClass {
@@ -142,6 +146,7 @@ struct apple: FoodClass {
     static var growthRate: Int = 0
     static var growthDistance: ClosedRange<CGFloat> = 0...0
     static var scalingFactor: CGFloat = 0.5
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
 }
 
 struct cactus: FoodClass {
@@ -152,6 +157,7 @@ struct cactus: FoodClass {
     static var growthRate: Int = 30 * 50 * 10 * 64 * 64
     static var growthDistance: ClosedRange<CGFloat> = 4...10
     static var scalingFactor: CGFloat = 1
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
 }
 
 class Food: Matter {
@@ -159,6 +165,9 @@ class Food: Matter {
     var foodValue: Float = 50
     var handler: SimulationBase
     var dataStructure: FoodClass.Type
+    
+    var foodComponents: [SCNNode]?
+    
     init(Position: SCNVector3, DataStructure: FoodClass.Type, Handler: SimulationBase) {
         self.dataStructure = DataStructure
         self.foodType = DataStructure.foodType
@@ -175,6 +184,10 @@ class Food: Matter {
         
         self.node.worldPosition = Position
         self.handler.foods.append(self)
+        
+        if let function = DataStructure.getFoodComponents {
+            self.foodComponents = function(self.node)
+        }
         
     }
     
@@ -208,8 +221,14 @@ class Food: Matter {
 //    }
     
     func eaten() {
-        handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
-        self.node.removeFromParentNode()
+        switch self.dataStructure.foodType {
+        case .Fruit:
+            handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
+            self.node.removeFromParentNode()
+        default:
+            handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
+            self.foodComponents!.forEach({$0.isHidden = true})
+        }
     }
     
 }
