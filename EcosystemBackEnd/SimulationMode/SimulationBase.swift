@@ -108,12 +108,12 @@ class SimulationBase {
             let pos = self.viableVerticies.randomElement()!.vector
             let _ = Daisy(Position: pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
-        for _ in 0..<10 {
+        for _ in 0..<30 {
             let pos = self.viableVerticies.randomElement()!.vector
             let _ = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
         
-        for _ in 0..<150 {
+        for _ in 0..<2 {
             let pos = self.viableVerticies.randomElement()!.vector
             let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }

@@ -222,7 +222,7 @@ class Food: Matter {
     
     func growFruit(Node: SCNNode, Percent: Float) {
         Node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {Node.isHidden = false})
-        Node.runAction(SCNAction.scale(by: 10, duration: 10), completionHandler: {self.foodValue += Percent})
+        Node.runAction(SCNAction.scale(by: 10, duration: TimeInterval(CGFloat.random(in: 25...50))), completionHandler: {self.foodValue += Percent})
     }
     
     func setYPosition(plant: Food) {
@@ -252,6 +252,7 @@ class Food: Matter {
         default:
             handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
             self.foodComponents!.forEach({$0.isHidden = true})
+            self.foodComponents!.forEach({growFruit(Node: $0, Percent: Float(self.dataStructure.maxFoodValue) / Float(self.foodComponents!.count))})
         }
     }
     
