@@ -22,6 +22,7 @@ class GameController: NSViewController {
     
     var GameView = SCNView()
     var handler: EnvironmentHandler!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.

@@ -300,4 +300,4 @@ func Cactus(Position: SCNVector3, Handler: SimulationBase) -> Food {
 func BerryBush(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: berryBush.self, Handler: Handler)
 }
-var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus]
+var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus,"blueberryBush":BerryBush]
