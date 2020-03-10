@@ -41,7 +41,7 @@ class EnvironmentHandler: SimulationBase {
                 if let _ = foods[i].node.parent {}else {
                     self.Scene.rootNode.addChildNode(foods[i].node)
                 }
-                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && foods[i].foodType != .Plant {
+                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && (foods[i].foodType == .Fruit) {
                     movableFoods.append(foods[i])
                 }
             }
@@ -115,7 +115,7 @@ class EnvironmentHandler: SimulationBase {
         ambientNode.light?.shadowMode = .forward
         
         ambientNode.light?.color = NSColor.white
-        ambientNode.light?.intensity = 25
+        ambientNode.light?.intensity = 10
         self.Scene.rootNode.addChildNode(ambientNode)
         ambientNode.name = "Ambient Light"
     }
@@ -337,7 +337,7 @@ class EnvironmentHandler: SimulationBase {
                 }
                 
                 for i in foods {
-                    if i.foodType == .Plant && foods.count < 150 { //Mark: Cap – maybe want to remove later
+                    if i.foodType != .Fruit && foods.count < 150 { //Mark: Cap – maybe want to remove later
                         i.reproductionChance()
                     }
                 }

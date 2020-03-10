@@ -159,17 +159,30 @@ struct apple: FoodClass {
 
 struct cactus: FoodClass {
     static var speciesName: String = "cactus"
-    static var foodType: FoodType = .Plant
+    static var foodType: FoodType = .Producer
     static var maxFoodValue: Float = 100
     static var spawnChance: CGFloat = 0
     static var growthRate: Int = 30 * 50 * 10 * 64 * 64
     static var growthDistance: ClosedRange<CGFloat> = 4...10
     static var scalingFactor: CGFloat = 1
-    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!
-        return fruit.childNodes
-    }
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
     static var timeToGrow: ClosedRange<TimeInterval>? = 150...200
     static var timeToFruit: ClosedRange<TimeInterval>? = 90...120
+}
+
+struct berryBush: FoodClass {
+    static var speciesName: String = "blueberryBush"
+    static var foodType: FoodType = .Producer
+    static var maxFoodValue: Float = 30
+    static var spawnChance: CGFloat = 30 * 50 * 10 * 30 * 50 * 10
+    static var growthRate: Int = 30 * 50 * 10 * 64
+    static var growthDistance: ClosedRange<CGFloat> = 2...6
+    static var scalingFactor: CGFloat = 1
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
+    static var timeToGrow: ClosedRange<TimeInterval>? = 75...100
+    static var timeToFruit: ClosedRange<TimeInterval>? = 45...60
+    
+    
 }
 
 class Food: Matter {
@@ -283,5 +296,8 @@ func Daisy(Position: SCNVector3, Handler: SimulationBase) -> Food {
 }
 func Cactus(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: cactus.self, Handler: Handler)
+}
+func BerryBush(Position: SCNVector3, Handler: SimulationBase) -> Food {
+    return Food(Position: Position, DataStructure: berryBush.self, Handler: Handler)
 }
 var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus]
