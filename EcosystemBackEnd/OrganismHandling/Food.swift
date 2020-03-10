@@ -227,7 +227,7 @@ class Food: Matter {
         }
         self.node.runAction(SCNAction.scale(by: 1/10, duration: 0), completionHandler: {})
         self.foodValue = 0
-        let animation = SCNAction.scale(by: 10, duration: TimeInterval.random(in: self.dataStructure.timeToGrow ?? 0))
+        let animation = SCNAction.scale(by: 10, duration: TimeInterval.random(in: self.dataStructure.timeToGrow!))
         self.node.runAction(animation, completionHandler: {
             for i in self.foodComponents ?? [] {
                 self.growFruit(Node: i, Percent: Float(self.dataStructure.maxFoodValue)/Float(self.foodComponents!.count))
