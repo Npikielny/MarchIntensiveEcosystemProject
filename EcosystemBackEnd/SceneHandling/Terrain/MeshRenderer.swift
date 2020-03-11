@@ -264,6 +264,8 @@ class SurfaceWaterMesh: Mesh {
         self.node.geometry?.materials.first!.shaderModifiers = [.geometry :
             getShader(from: "waterShader")
         ]
+//        self.node.geometry?.materials = [material]
+        
     }
 }
 

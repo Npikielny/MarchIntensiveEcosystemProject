@@ -245,13 +245,23 @@ struct rabbit: AnimalClass {
         let h = $0.handler.mapValueAt($0.node.worldPosition)
         if ($0.velocity.zero(.y)).getMagnitude() == 0 {
             let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
-            if distance <= $0.Speed {
-                let velocity = pow(abs(9.807)*distance,0.5)
-                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
-            }else {
-                let velocity = pow(abs(9.807)*$0.Speed,0.5)
-                $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
-            }
+            let tp: SCNVector3 = {
+                if distance <= $0.Speed / 2 {
+                    return $0.target
+                }else {
+                    return $0.target.directionVector(Center: $0.node.worldPosition).toMagnitude($0.Speed / 2) + $0.node.worldPosition
+                }
+            }($0)
+            let y2H = $0.handler.mapValueAt(tp)
+            let xBar = ((tp - $0.node.worldPosition).zero(.y)).getMagnitude()
+            let xBarSQ = pow(xBar, 2)
+            let v2 = pow($0.Speed,2)
+            let g: CGFloat = -9.807
+            let yBar = y2H - h
+            
+            let angle = atan((xBar + pow(xBarSQ - 4 * ((g*xBarSQ)/(v2*2)) * ((g*xBarSQ)/(v2*2) - yBar),0.5))/(2 * (g*xBarSQ)/(v2*2)))
+            print(xBar,xBarSQ,v2,g,yBar)
+//            $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
         }
         
     }
