@@ -182,7 +182,19 @@ struct berryBush: FoodClass {
     static var timeToGrow: ClosedRange<TimeInterval>? = 75...100
     static var timeToFruit: ClosedRange<TimeInterval>? = 45...60
     
-    
+}
+
+struct meat: FoodClass {
+    static var speciesName: String = "meat"
+    static var foodType: FoodType = .Meat
+    static var maxFoodValue: Float = 50
+    static var spawnChance: CGFloat = 0
+    static var growthRate: Int = 0
+    static var growthDistance: ClosedRange<CGFloat> = 0...0
+    static var scalingFactor: CGFloat = 0.5
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
+    static var timeToGrow: ClosedRange<TimeInterval>? = nil
+    static var timeToFruit: ClosedRange<TimeInterval>? = nil
 }
 
 class Food: Matter {
@@ -300,4 +312,8 @@ func Cactus(Position: SCNVector3, Handler: SimulationBase) -> Food {
 func BerryBush(Position: SCNVector3, Handler: SimulationBase) -> Food {
     return Food(Position: Position, DataStructure: berryBush.self, Handler: Handler)
 }
+func Meat(Position: SCNVector3, Handler: SimulationBase) -> Food {
+    return Food(Position: Position, DataStructure: meat.self, Handler: Handler)
+}
+
 var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus,"blueberryBush":BerryBush]

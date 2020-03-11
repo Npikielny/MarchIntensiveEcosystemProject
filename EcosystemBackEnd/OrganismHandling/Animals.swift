@@ -157,6 +157,9 @@ class Animal: Matter {
             self.node.runAction(action, completionHandler: {
                 self.handler.animals.removeAll(where: {$0.node == self.node})
                 self.node.removeFromParentNode()
+				
+				_ = Meat(Position: self.node.worldPosition, Handler: self.handler)
+				
             })
         }
         
