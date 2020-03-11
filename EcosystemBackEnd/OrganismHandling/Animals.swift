@@ -236,7 +236,7 @@ struct rabbit: AnimalClass {
     static var maxThirst: Float = 100
     static var maxHealth: Float = 100
     static var maxBreedingUrge: Float = 100
-    static var Speed: CGFloat = 2
+    static var Speed: CGFloat = 10
     static var efficiency: CGFloat = 0.8
     static var species: Species = .Rabbit
     static var foodType: FoodType = .Vegetarian
@@ -246,22 +246,25 @@ struct rabbit: AnimalClass {
         if ($0.velocity.zero(.y)).getMagnitude() == 0 {
             let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
             let tp: SCNVector3 = {
-                if distance <= $0.Speed / 2 {
+                if distance <= $0.Speed / 3 {
                     return $0.target
                 }else {
-                    return $0.target.directionVector(Center: $0.node.worldPosition).toMagnitude($0.Speed / 2) + $0.node.worldPosition
+                    return ($0.target - $0.node.worldPosition).toMagnitude($0.Speed / 3) + $0.node.worldPosition
                 }
             }($0)
             let y2H = $0.handler.mapValueAt(tp)
-            let xBar = ((tp - $0.node.worldPosition).zero(.y)).getMagnitude()
-            let xBarSQ = pow(xBar, 2)
+            let dx = (tp - $0.node.worldPosition).zero(.y).getMagnitude()
+            let dx2 = pow(dx, 2)
             let v2 = pow($0.Speed,2)
             let g: CGFloat = -9.807
-            let yBar = y2H - h
-            
-            let angle = atan((xBar + pow(xBarSQ - 4 * ((g*xBarSQ)/(v2*2)) * ((g*xBarSQ)/(v2*2) - yBar),0.5))/(2 * (g*xBarSQ)/(v2*2)))
-            print(xBar,xBarSQ,v2,g,yBar)
-//            $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
+            let dy = y2H - h
+            let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
+            if sqrtPart >= 0 {
+                let angle = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
+            }else {
+                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
+            }
         }
         
     }
