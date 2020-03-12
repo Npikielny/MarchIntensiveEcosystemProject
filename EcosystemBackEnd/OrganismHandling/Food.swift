@@ -162,32 +162,19 @@ struct apple: FoodClass {
 }
 
 struct cactus: FoodClass {
-//    static var speciesName: String = "cactus"
-//    static var foodEaterType: FoodType = .Fruit
-//    static var foodGrowthType: FoodType = .Producer
-//    static var maxFoodValue: Float = 100
-//    static var spawnChance: CGFloat = 0
-//    static var growthRate: Int = 30 * 50 * 10 * 64 * 64
-//    static var growthDistance: ClosedRange<CGFloat> = 4...10
-//    static var scalingFactor: CGFloat = 1
-//    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
-//    static var timeToGrow: ClosedRange<TimeInterval>? = 150...200
-//    static var timeToFruit: ClosedRange<TimeInterval>? = 90...120
-//}
-     static var speciesName: String = "cactus"
-        static var foodEaterType: FoodType = .Fruit
-        static var foodGrowthType: FoodType = .Producer
-        static var maxFoodValue: Float = 100
-        static var spawnChance: CGFloat = 0
-        static var growthRate: Int = 30 * 50 * 10 * 64 * 64
-        static var growthDistance: ClosedRange<CGFloat> = 4...10
-        static var scalingFactor: CGFloat = 1
-        static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
-        static var timeToGrow: ClosedRange<TimeInterval>? = 10...20
-        static var timeToFruit: ClosedRange<TimeInterval>? = 9...12
-    }
-    
-    
+    static var speciesName: String = "cactus"
+    static var foodEaterType: FoodType = .Fruit
+    static var foodGrowthType: FoodType = .Producer
+    static var maxFoodValue: Float = 100
+    static var spawnChance: CGFloat = 0
+    static var growthRate: Int = 30 * 50 * 10 * 64 * 64
+    static var growthDistance: ClosedRange<CGFloat> = 4...10
+    static var scalingFactor: CGFloat = 1
+    static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
+    static var timeToGrow: ClosedRange<TimeInterval>? = 150...200
+    static var timeToFruit: ClosedRange<TimeInterval>? = 90...120
+}
+
 struct berryBush: FoodClass {
     static var speciesName: String = "blueberryBush"
     static var foodEaterType: FoodType = .Fruit

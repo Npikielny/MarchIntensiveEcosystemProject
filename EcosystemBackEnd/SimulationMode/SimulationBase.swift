@@ -104,26 +104,26 @@ class SimulationBase {
     }
     
     func addFood() {
-//        for _ in 0..<10 {
-//            let pos = self.viableVerticies.randomElement()!.vector
-//            let _ = Daisy(Position: pos.setValue(Component: .y, Value: pos.y), Handler: self)
-//        }
-//        for _ in 0..<30 {
-//            let pos = self.viableVerticies.randomElement()!.vector
-//            let _ = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
-//        }
-//        
-//        for _ in 0..<5 {
-//            let pos = self.viableVerticies.randomElement()!.vector
-//            let _ = BerryBush(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
-//        }
-        
-        
-        
-        for _ in 0..<2 {
+        for _ in 0..<10 {
             let pos = self.viableVerticies.randomElement()!.vector
-            let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+            let _ = Daisy(Position: pos.setValue(Component: .y, Value: pos.y), Handler: self)
         }
+        for _ in 0..<30 {
+            let pos = self.viableVerticies.randomElement()!.vector
+            let _ = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+        }
+
+        for _ in 0..<5 {
+            let pos = self.viableVerticies.randomElement()!.vector
+            let _ = BerryBush(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+        }
+        
+        
+//
+//        for _ in 0..<2 {
+//            let pos = self.viableVerticies.randomElement()!.vector
+//            let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+//        }
     }
     
     func debugAnimals() {
