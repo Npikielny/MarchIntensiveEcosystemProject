@@ -299,37 +299,50 @@ struct fox: AnimalClass {
     static var foodType: FoodType = .Meat
     static var name: String = "fox"
     static var movementFunction: (Animal) -> () = {
-        let h = $0.handler.gen.valueFor(x: Int32($0.node.worldPosition.x / 400) * 128, y: Int32($0.node.worldPosition.z / 400) * 128)
-        if abs(CGFloat(h) - $0.node.worldPosition.y) < 0.1 || $0.node.worldPosition.y <= CGFloat(h) {
-            $0.node.worldPosition = $0.node.worldPosition.setValue(Component: .y, Value: CGFloat(h))
-            
-            if ($0.velocity.zero(.y)).getMagnitude() <= 0.01 {
-                let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
-                if distance <= $0.Speed {
-                    if distance < 1.2 {
-                        $0.node.worldPosition = $0.target
-                    }else {
-                        let velocity = pow(abs(1)*distance,0.5)
-                        $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
-                    }
+        let h = $0.handler.mapValueAt($0.node.worldPosition)
+        if ($0.velocity.zero(.y)).getMagnitude() == 0 {
+            let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
+            let tp: SCNVector3 = {
+                let maxDist: CGFloat = 10
+                if distance <= maxDist {
+                    return $0.target
                 }else {
-                    let velocity = pow(abs(1)*$0.Speed,0.5)
-                    $0.velocity = ($0.target - $0.node.worldPosition).zero(.y).toMagnitude(velocity).setValue(Component: .y, Value: velocity)
+                    return ($0.target - $0.node.worldPosition).toMagnitude(maxDist) + $0.node.worldPosition
                 }
+            }($0)
+            let y2H = $0.handler.mapValueAt(tp)
+            let dx = (tp - $0.node.worldPosition).zero(.y).getMagnitude()
+            let dx2 = pow(dx, 2)
+            let v2 = pow($0.Speed,2)
+            let g: CGFloat = -9.807
+            let dy = y2H - h
+            let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
+            if sqrtPart >= 0 {
+                let angle: CGFloat = {
+                    let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                    let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                    if $0.priority == .Flee {
+                        return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                    }else {
+                        return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                    }
+                }($0)
+                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
+            }else {
+                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
             }
-            
         }
     }
 }
 
 struct sparrow: AnimalClass {
     static var lookType: LookType = .Forward
-    static var maxHunger: Float = 100
-    static var maxThirst: Float = 100
-    static var maxHealth: Float = 100
+    static var maxHunger: Float = 75
+    static var maxThirst: Float = 75
+    static var maxHealth: Float = 75
     static var maxBreedingUrge: Float = 1000
     static var Speed: CGFloat = 25
-    static var efficiency: CGFloat = 0.1
+    static var efficiency: CGFloat = 0.25
     static var species: Species = .Sparrow
     static var foodType: FoodType = .Fruit
     static var name: String = "sparrow"

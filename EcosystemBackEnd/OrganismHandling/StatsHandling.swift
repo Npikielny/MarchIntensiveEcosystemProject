@@ -66,7 +66,7 @@ extension Animal {
         if Item.foodValue <= 0 {
             Item.eaten()
             return true
-        }else if self.hunger >= 100 {
+        }else if self.hunger >= self.maxhunger {
             return true
         }else {
             self.hunger += 0.1

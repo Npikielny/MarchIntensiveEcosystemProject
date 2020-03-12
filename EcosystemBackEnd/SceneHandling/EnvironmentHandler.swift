@@ -41,7 +41,7 @@ class EnvironmentHandler: SimulationBase {
                 if let _ = foods[i].node.parent {}else {
                     self.Scene.rootNode.addChildNode(foods[i].node)
                 }
-                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && (foods[i].foodType == .Fruit) || (foods[i].foodType == .Meat) {
+                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && (foods[i].foodGrowthType == .Fruit) || (foods[i].foodGrowthType == .Meat) {
                     movableFoods.append(foods[i])
                 }
             }
@@ -261,9 +261,7 @@ class EnvironmentHandler: SimulationBase {
     
     override func Physics() {
         let difference = Float(1)/Float(30)
-        var animalsNotInProcess = animals
-        animalsNotInProcess.removeAll(where: {$0.inProcess})
-        for item in movableFoods+animalsNotInProcess {
+        for item in movableFoods {
             
             let nodeShift = item.node.boundingBox.min.y
             
@@ -280,6 +278,33 @@ class EnvironmentHandler: SimulationBase {
             if height <= heightMap {
                 item.velocity = SCNVector3(0,0,0)
                 item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
+            }
+            item.acceleration = SCNVector3(0,0,0)
+        }
+        
+        for item in animals {
+            if item.inProcess {
+                item.velocity = item.velocity.setValue(Component: .z, Value: 0)
+                item.velocity = item.velocity.setValue(Component: .x, Value: 0)
+            }
+            let nodeShift = item.node.boundingBox.min.y
+            
+            let heightMap = mapValueAt(item.node.worldPosition)
+            let heightInit = item.node.worldPosition.y + nodeShift
+            
+            if heightInit > heightMap {
+                item.acceleration += SCNVector3(0,-1 * 9.807,0)
+            }
+            item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
+            item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
+            
+            let height = item.node.worldPosition.y + nodeShift
+            if height <= heightMap {
+                item.velocity = SCNVector3(0,0,0)
+                item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
+                if item.inProcess && item.priority == .Breed {
+                    item.velocity = SCNVector3(0,item.Speed,0)
+                }
             }
             item.acceleration = SCNVector3(0,0,0)
         }
@@ -316,7 +341,7 @@ class EnvironmentHandler: SimulationBase {
                 }
                 
                 for i in foods {
-                    if i.foodType != .Fruit && foods.count < 150 { //Mark: Cap – maybe want to remove later
+                    if (i.foodGrowthType != .Fruit || i.foodGrowthType != .Meat) && foods.count < 150 { //Mark: Cap – maybe want to remove later
                         i.reproductionChance()
                     }
                 }
@@ -329,19 +354,19 @@ class EnvironmentHandler: SimulationBase {
     }
     
     fileprivate func newPlants() {
-        if Int.random(in: 0..<30*25) == 0 {
-            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-        }
-        
-        if Int.random(in: 0..<30*25*4) == 0 {
-            let vector = self.viableVerticies.randomElement()!.vector
-            _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-        }
-        
-        if Int.random(in: 0..<30*25*4) == 0 {
-            let vector = self.viableVerticies.randomElement()!.vector
-            _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-        }
+//        if Int.random(in: 0..<30*25) == 0 {
+//            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+//        }
+//        
+//        if Int.random(in: 0..<30*25*4) == 0 {
+//            let vector = self.viableVerticies.randomElement()!.vector
+//            _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+//        }
+//        
+//        if Int.random(in: 0..<30*25*4) == 0 {
+//            let vector = self.viableVerticies.randomElement()!.vector
+//            _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+//        }
     }
     
     fileprivate func selectionhandling() {

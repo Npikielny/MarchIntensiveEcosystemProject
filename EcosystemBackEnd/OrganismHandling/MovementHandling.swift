@@ -14,14 +14,7 @@ extension Animal {
         switch self.priority {
             case .Food:
                 if let _ = self.targetFood {}else {
-                    var nearbyFoods = self.handler.foods
-                    nearbyFoods.removeAll(where: {$0.foodValue <= 0})
-                    if nearbyFoods.count > 0 {
-                        self.targetFood = nearbyFoods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
-                        self.target = self.targetFood!.node.worldPosition
-                    } else {
-                        self.randomTarget()
-                    }
+                    _ = getFood()
                 }
                 
             case .Water:
@@ -148,13 +141,9 @@ extension Animal {
         var randomSaver: Bool = false
         switch self.priority {
         case .Food:
-            if let food = self.targetFood {
-                if food.foodValue > 0 {
-                    if self.eat(Item: &self.targetFood!) {
-                        self.inProcess = false
-                    }
-                }else {
-                    _ = getFood()
+            if let _ = self.targetFood {
+                if self.eat(Item: &self.targetFood!) {
+                    self.targetFood = nil
                     self.inProcess = false
                 }
             }
@@ -196,7 +185,7 @@ extension Animal {
     func getFood() -> Bool {
         var foods = self.handler.foods
         let acceptableFoods = foodConversion[self.speciesData.foodType]
-        foods.removeAll(where: {acceptableFoods?.contains($0.dataStructure.foodType) == false})
+        foods.removeAll(where: {acceptableFoods?.contains($0.dataStructure.foodEaterType) == false})
         foods.removeAll(where: {$0.foodValue < 0})
         if foods.count > 0 {
             self.targetFood = foods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
@@ -205,8 +194,8 @@ extension Animal {
             //MARK: But what if water or smthn else is also on shortage?
             self.checkPriority()
             if self.priority == .Food {
-            self.priority = .Idle
-            self.setTarget()
+                self.priority = .Idle
+                self.setTarget()
             }else {
                 self.setTarget()
             }

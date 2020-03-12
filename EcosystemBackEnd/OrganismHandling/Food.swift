@@ -106,7 +106,8 @@ import SceneKit
 
 protocol FoodClass {
     static var speciesName: String {get}
-    static var foodType: FoodType {get}
+    static var foodEaterType: FoodType {get}
+    static var foodGrowthType: FoodType {get}
     static var maxFoodValue: Float {get}
     static var spawnChance: CGFloat {get}
     static var growthRate: Int {get}
@@ -120,7 +121,8 @@ protocol FoodClass {
 
 struct grass: FoodClass {
     static var speciesName: String = "grass"
-    static var foodType: FoodType = .Plant
+    static var foodEaterType: FoodType = .Plant
+    static var foodGrowthType: FoodType = .Plant
     static var maxFoodValue: Float = 10
     static var spawnChance: CGFloat = 30 * 25 * 4
     static var growthRate: Int = 30 * 50 * 10
@@ -133,7 +135,8 @@ struct grass: FoodClass {
 
 struct daisy: FoodClass {
     static var speciesName: String = "daisy"
-    static var foodType: FoodType = .Plant
+    static var foodEaterType: FoodType = .Plant
+    static var foodGrowthType: FoodType = .Plant
     static var maxFoodValue: Float = 5
     static var spawnChance: CGFloat = 30 * 25 * 4
     static var growthRate: Int = 30*50*30
@@ -146,7 +149,8 @@ struct daisy: FoodClass {
 
 struct apple: FoodClass {
     static var speciesName: String = "apple"
-    static var foodType: FoodType = .Fruit
+    static var foodEaterType: FoodType = .Fruit
+    static var foodGrowthType: FoodType = .Fruit
     static var maxFoodValue: Float = 50
     static var spawnChance: CGFloat = 30 * 25
     static var growthRate: Int = 0
@@ -159,7 +163,8 @@ struct apple: FoodClass {
 
 struct cactus: FoodClass {
     static var speciesName: String = "cactus"
-    static var foodType: FoodType = .Producer
+    static var foodEaterType: FoodType = .Fruit
+    static var foodGrowthType: FoodType = .Producer
     static var maxFoodValue: Float = 100
     static var spawnChance: CGFloat = 0
     static var growthRate: Int = 30 * 50 * 10 * 64 * 64
@@ -172,8 +177,9 @@ struct cactus: FoodClass {
 
 struct berryBush: FoodClass {
     static var speciesName: String = "blueberryBush"
-    static var foodType: FoodType = .Producer
-    static var maxFoodValue: Float = 30
+    static var foodEaterType: FoodType = .Fruit
+    static var foodGrowthType: FoodType = .Producer
+    static var maxFoodValue: Float = 10
     static var spawnChance: CGFloat = 30 * 50 * 10 * 30 * 50 * 10
     static var growthRate: Int = 30 * 50 * 10 * 64
     static var growthDistance: ClosedRange<CGFloat> = 2...6
@@ -186,7 +192,8 @@ struct berryBush: FoodClass {
 
 struct meat: FoodClass {
     static var speciesName: String = "meat"
-    static var foodType: FoodType = .Meat
+    static var foodEaterType: FoodType = .Meat
+    static var foodGrowthType: FoodType = .Meat
     static var maxFoodValue: Float = 50
     static var spawnChance: CGFloat = 0
     static var growthRate: Int = 0
@@ -198,7 +205,8 @@ struct meat: FoodClass {
 }
 
 class Food: Matter {
-    var foodType: FoodType
+    var foodGrowthType: FoodType
+    var foodEaterType: FoodType
     var foodValue: Float = 0
     var handler: SimulationBase
     var dataStructure: FoodClass.Type
@@ -207,9 +215,10 @@ class Food: Matter {
     
     init(Position: SCNVector3, DataStructure: FoodClass.Type, Handler: SimulationBase) {
         self.dataStructure = DataStructure
-        self.foodType = DataStructure.foodType
+        self.foodGrowthType = DataStructure.foodGrowthType
+        self.foodEaterType = DataStructure.foodEaterType
         self.handler = Handler
-        if foodType == .Plant && DataStructure.speciesName != "cactus" {
+        if foodGrowthType == .Plant {
             super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(DataStructure.speciesName+".scn", Shaders: "tree"))
         }else {
             super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: getPrefab(DataStructure.speciesName+".scn", Shaders: nil))
@@ -226,7 +235,7 @@ class Food: Matter {
             self.foodComponents = function(self.node)
         }
         
-        switch self.dataStructure.foodType {
+        switch self.dataStructure.foodGrowthType {
         case .Producer:
             self.grow()
         case .Plant:
@@ -285,9 +294,12 @@ class Food: Matter {
 //    }
     
     func eaten() {
-        switch self.dataStructure.foodType {
+        switch self.dataStructure.foodGrowthType {
         case .Fruit:
-            handler.foods.removeAll(where: {$0.node.worldPosition == self.node.worldPosition})
+            handler.foods.removeAll(where: {$0.node == self.node})
+            self.node.removeFromParentNode()
+        case .Meat:
+            handler.foods.removeAll(where: {$0.node == self.node})
             self.node.removeFromParentNode()
         default:
             self.foodComponents!.forEach({$0.isHidden = true})

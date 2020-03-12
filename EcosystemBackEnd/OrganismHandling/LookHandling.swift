@@ -13,14 +13,16 @@ extension Animal {
     func look() {
         if self.target != self.node.worldPosition {
             if self.lookType == .Velocity {
-                let dotProduct = self.velocity.x*self.velocity.x+self.velocity.z*self.velocity.z
-                let holder = dotProduct/((self.velocity.getMagnitude())*((self.velocity.zero(.y)).getMagnitude()))
-                if self.velocity.y < 0 {
-    //                self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(acos(holder)-CGFloat.pi/4,0,0)
-                    self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(acos(holder)+4*CGFloat.pi/2,0,0)
-                }else {
-                    self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(-acos(holder),0,0)
-    //                self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(0,0,0)
+                if self.velocity.getMagnitude() > 0 {
+                    let dotProduct = self.velocity.x*self.velocity.x+self.velocity.z*self.velocity.z
+                    let holder = dotProduct/((self.velocity.getMagnitude())*((self.velocity.zero(.y)).getMagnitude()))
+                    if self.velocity.y < 0 {
+        //                self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(acos(holder)-CGFloat.pi/4,0,0)
+                        self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(acos(holder)+4*CGFloat.pi/2,0,0)
+                    }else {
+                        self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(-acos(holder),0,0)
+        //                self.node.eulerAngles = self.getLookingAngle(self.target) + SCNVector3(0,0,0)
+                    }
                 }
             }else {
                 self.node.eulerAngles = self.getLookingAngle(self.velocity + self.node.worldPosition)
