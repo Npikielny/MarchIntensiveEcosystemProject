@@ -354,19 +354,19 @@ class EnvironmentHandler: SimulationBase {
     }
     
     fileprivate func newPlants() {
-//        if Int.random(in: 0..<30*25) == 0 {
-//            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
-//        }
-//        
-//        if Int.random(in: 0..<30*25*4) == 0 {
-//            let vector = self.viableVerticies.randomElement()!.vector
-//            _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-//        }
-//        
-//        if Int.random(in: 0..<30*25*4) == 0 {
-//            let vector = self.viableVerticies.randomElement()!.vector
-//            _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
-//        }
+        if Int.random(in: 0..<30*25) == 0 {
+            _ = Apple(Position: self.viableVerticies.randomElement()!.vector.setValue(Component: .y, Value: 10), Handler: self)
+        }
+        
+        if Int.random(in: 0..<30*25*4) == 0 {
+            let vector = self.viableVerticies.randomElement()!.vector
+            _ = Daisy(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+        }
+        
+        if Int.random(in: 0..<30*25*4) == 0 {
+            let vector = self.viableVerticies.randomElement()!.vector
+            _ = Grass(Position: vector.setValue(Component: .y, Value: mapValueAt(vector)), Handler: self)
+        }
     }
     
     fileprivate func selectionhandling() {
