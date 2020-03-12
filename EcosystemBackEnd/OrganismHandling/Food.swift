@@ -239,7 +239,7 @@ class Food: Matter {
     func reproductionChance() {
         if Int.random(in: 0...dataStructure.growthRate) == 1 {
             var position = self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: dataStructure.growthDistance))
-            position = position.setValue(Component: .y, Value: CGFloat(self.handler.gen.valueFor(x: Int32(position.x)/400*128, y: Int32(position.y)/400*128)))
+            position = position.setValue(Component: .y, Value: CGFloat(self.handler.mapValueAt(position)))
             let function = plantReproductionIndex[self.dataStructure.speciesName]
             let x = function!(position, self.handler)
             x.node.name = "Reproduced"

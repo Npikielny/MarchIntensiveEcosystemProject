@@ -175,25 +175,29 @@ class Animal: Matter {
         
     }
     
-    func breedRequest(_ Partner: Animal) {
-        if self.hunger > 30 && self.thirst > 30 && self.breedingUrge < 70 {
-            if let _ = self.targetMate {
-                Partner.targetMate = nil
+    func breedRequest(_ Recipient: Animal) -> Bool {
+        if Recipient.hunger > 30 && Recipient.thirst > 30 && Recipient.breedingUrge < 70 {
+            if let _ = Recipient.targetMate {
+                self.targetMate = nil
+                return false
             }else {
-                self.targetMate = Partner
-                Partner.targetMate = self
+                self.targetMate = Recipient
+                Recipient.targetMate = self
                 self.priority = .Breed
-                let target = (self.node.worldPosition + Partner.node.worldPosition).scalarMultiplication(Scalar: 0.5)
-                self.target = target
-                Partner.target = target
+                Recipient.priority = .Breed
+                let target = (self.node.worldPosition + Recipient.node.worldPosition).scalarMultiplication(Scalar: 0.5)
+                let breedingPoint = target.setValue(Component: .y, Value: self.handler.mapValueAt(target))
+                self.target = breedingPoint
+                Recipient.target = breedingPoint
+                return true
             }
         }else {
             self.targetMate = nil
-            Partner.targetMate = nil
+            return false
         }
     }
     func randomTarget() {
-        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(20)))
+        self.target = (self.node.worldPosition + SCNVector3().random().toMagnitude(20))
     }
 }
 
@@ -203,13 +207,13 @@ class Bird: Animal {
     }
     
     override func randomTarget() {
-        self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))))
+        self.target = self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))
         self.target = self.target.setValue(Component: .y, Value: CGFloat.random(in: 7...15) + self.handler.mapValueAt(self.target))
         
         if abs(self.target.x) > self.handler.mapDimension / 2 || abs(self.target.z) > self.handler.mapDimension / 2 {
             var i = 0
             while abs(self.target.x) > self.handler.mapDimension / 2 || abs(self.target.z) > self.handler.mapDimension / 2 && i < 10 {
-                self.target = (coordinateTransfer(self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))))
+                self.target = self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))
                 self.target = self.target.setValue(Component: .y, Value: CGFloat.random(in: 7...15) + self.handler.mapValueAt(self.target))
                 i += 1
             }
@@ -241,7 +245,7 @@ struct rabbit: AnimalClass {
     static var maxThirst: Float = 100
     static var maxHealth: Float = 100
     static var maxBreedingUrge: Float = 100
-    static var Speed: CGFloat = 10
+    static var Speed: CGFloat = 20
     static var efficiency: CGFloat = 0.8
     static var species: Species = .Rabbit
     static var foodType: FoodType = .Vegetarian
@@ -251,10 +255,11 @@ struct rabbit: AnimalClass {
         if ($0.velocity.zero(.y)).getMagnitude() == 0 {
             let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
             let tp: SCNVector3 = {
-                if distance <= $0.Speed / 3 {
+                let maxDist: CGFloat = 10
+                if distance <= maxDist {
                     return $0.target
                 }else {
-                    return ($0.target - $0.node.worldPosition).toMagnitude($0.Speed / 3) + $0.node.worldPosition
+                    return ($0.target - $0.node.worldPosition).toMagnitude(maxDist) + $0.node.worldPosition
                 }
             }($0)
             let y2H = $0.handler.mapValueAt(tp)
@@ -265,13 +270,20 @@ struct rabbit: AnimalClass {
             let dy = y2H - h
             let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
             if sqrtPart >= 0 {
-                let angle = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                let angle: CGFloat = {
+                    let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                    let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                    if $0.priority == .Flee {
+                        return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                    }else {
+                        return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                    }
+                }($0)
                 $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
             }else {
                 $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
             }
         }
-        
     }
 }
 

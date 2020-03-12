@@ -261,8 +261,9 @@ class EnvironmentHandler: SimulationBase {
     
     override func Physics() {
         let difference = Float(1)/Float(30)
-        
-        for item in movableFoods {
+        var animalsNotInProcess = animals
+        animalsNotInProcess.removeAll(where: {$0.inProcess})
+        for item in movableFoods+animalsNotInProcess {
             
             let nodeShift = item.node.boundingBox.min.y
             
@@ -281,28 +282,6 @@ class EnvironmentHandler: SimulationBase {
                 item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
             }
             item.acceleration = SCNVector3(0,0,0)
-        }
-        
-        for item in animals {
-            if item.inProcess == false {
-                let nodeShift = item.node.boundingBox.min.y
-                
-                let heightMap = mapValueAt(item.node.worldPosition)
-                let heightInit = item.node.worldPosition.y + nodeShift
-                
-                if heightInit > heightMap && item.affectedByGravity == true {
-                    item.acceleration += SCNVector3(0,-1 * 9.807,0)
-                }
-                item.velocity += item.acceleration.scalarMultiplication(Scalar: CGFloat(difference))
-                item.node.worldPosition += item.velocity.scalarMultiplication(Scalar: CGFloat(difference))
-                
-                let height = item.node.worldPosition.y + nodeShift
-                if height <= heightMap {
-                    item.velocity = SCNVector3(0,0,0)
-                    item.node.worldPosition = item.node.worldPosition.setValue(Component: .y, Value: heightMap - nodeShift)
-                }
-                item.acceleration = SCNVector3(0,0,0)
-            }
         }
         
         lastTime = self.time

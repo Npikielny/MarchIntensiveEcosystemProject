@@ -75,7 +75,7 @@ extension SimulationHandler {
             
             case .Food:
                 if let _ = item.targetFood {}else {
-                    var nearbyFoods = item.handler.foods.sorted(by: {($0.node.worldPosition - item.node.position).getMagnitude()<($1.node.worldPosition - item.node.position).getMagnitude()})
+                    var nearbyFoods = item.handler.foods
                     nearbyFoods.sort(by: {($0.node.worldPosition - item.node.worldPosition).getMagnitude()<($1.node.worldPosition - item.node.worldPosition).getMagnitude()})
                     if nearbyFoods.count > 0 {
                         item.targetFood = nearbyFoods.first

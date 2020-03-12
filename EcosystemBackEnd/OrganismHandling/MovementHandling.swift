@@ -16,19 +16,17 @@ extension Animal {
                 if let _ = self.targetFood {}else {
                     var nearbyFoods = self.handler.foods
                     nearbyFoods.removeAll(where: {$0.foodValue <= 0})
-                    nearbyFoods.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
                     if nearbyFoods.count > 0 {
-                        self.targetFood = nearbyFoods.first
+                        self.targetFood = nearbyFoods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude()<($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
                         self.target = self.targetFood!.node.worldPosition
                     } else {
-                        randomTarget()
+                        self.randomTarget()
                     }
                 }
                 
             case .Water:
                 var groundVerts = self.handler.drinkableVertices!
-                groundVerts.sort(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()})
-                if let position = groundVerts.first {
+                if let position = groundVerts.min(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()}) {
                     self.target = position.vector
                 }else {
                     checkPriority()
@@ -78,37 +76,58 @@ extension Animal {
         }
         if self.affectedByGravity {
             self.target = self.target.setValue(Component: .y, Value: self.handler.mapValueAt(self.target))
+        }else {
+            let h = self.handler.mapValueAt(self.target)
+            if self.target.y < h {
+                self.target = self.target.setValue(Component: .y, Value: h)
+            }
         }
         self.inProcess = false
     }
     
-    func coordinateTransfer(_ Vector: SCNVector3) -> SCNVector3 { //MARK: This Needs to be changed
-        let transfer: (CGFloat) -> (CGFloat) = {return CGFloat(Int($0/4)*4)}
-        return SCNVector3(x: transfer(Vector.x), y: transfer(Vector.y), z: transfer(Vector.z))
-    } // Finds a nearby point on the map
-    
     func isNearTarget() -> Bool {
-        return ((self.target - self.node.worldPosition).getMagnitude() <= CGFloat(self.node.boundingSphere.radius / 2) + CGFloat(self.targetTries) / 500)
+        let distance: CGFloat = {
+//            if self.affectedByGravity {
+//                return (self.target - self.node.worldPosition).zero(.y).getMagnitude()
+//            }else {
+                return (self.target - self.node.worldPosition).getMagnitude()
+//            }
+        }()
+//        let d2 = (self.target - (self.node.worldPosition + self.velocity + SCNVector3(0,-9.807,0).scalarMultiplication(Scalar: 1/30))).getMagnitude()
+//        if d2 < distance {
+//            return false
+//        }else {
+        return (distance - CGFloat(self.node.boundingSphere.radius / 2) <= CGFloat(self.targetTries) / 500 + self.Speed/30)
+//        }
+        
+//        SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries)/500+CGFloat(self.selectedAnimal!.node.boundingSphere.radius/2)+self.selectedAnimal!.Speed/30)
     }
     
     func movementHandler() {
         if self.dead == false {
-//            if self.inProcess == false {
+            if self.inProcess == false {
                 self.targetTries += 1
-//            }else {
-//                self.targetTries = 0
-//            }
-            if self.targetTries > 1575 {
-                self.decisionMaking()
             }
-            
-            if isNearTarget() { // logic for setting new target
-//                self.node.worldPosition = self.target
-                self.inProcess = true
-                decisionMaking()
+            if self.targetTries > 1575 {
+                self.checkPriority()
+                self.setTarget()
+            }
+            if self.inProcess {
+                executeProcesses()
             }else {
-                
-                self.move(self)
+                if isNearTarget() { // logic for setting new target
+    //                self.node.worldPosition = self.target
+                    switch self.priority { //MARK: .Flee
+                    case .Idle:
+                        self.checkPriority()
+                        self.setTarget()
+                    default:
+                        self.inProcess = true
+                        executeProcesses()
+                    }
+                }else {
+                    self.move(self)
+                }
             }
             additionalPhysics() // overridable function
             look() // handles looking
@@ -125,52 +144,92 @@ extension Animal {
         }
     }
     
-    fileprivate func decisionMaking() {
+    fileprivate func executeProcesses() {
+        var randomSaver: Bool = false
         switch self.priority {
-            case .Water:
-                self.drink()
-                if self.thirst >= 100 {
-                    checkPriority()
-                    setTarget()
-                    randomTarget()
-                }
-            case .Food:
-                if let _ = self.targetFood {
+        case .Food:
+            if let food = self.targetFood {
+                if food.foodValue > 0 {
                     if self.eat(Item: &self.targetFood!) {
-                        self.targetFood = nil
-                        checkPriority()
-                        setTarget()
-                        randomTarget()
-                        randomTarget()
+                        self.inProcess = false
                     }
-                } else {
-                    setTarget()
+                }else {
+                    _ = getFood()
+                    self.inProcess = false
                 }
-            case .Breed:
-                let success: Bool = {
-                    if let node = self.targetMate?.targetMate?.node {
-                        if node == self.node {
-                            self.breed()
-                            return true
-                        }
+            }
+        case .Breed:
+            if let check = self.targetMate?.targetMate {
+                if check == self {
+                    if self.breed() {
+                        self.inProcess = false
                     }
-                    return false
-                }()
-                self.inProcess = true
-                if success == false {
+                }else {
+                    if findMate() == false {
+                        randomSaver = true
+                        self.priority = .Idle
+                    }
                     self.inProcess = false
-                    checkPriority()
-                    setTarget()
                 }
-                if self.breedingUrge >= self.maxbreedingUrge {
-                    self.inProcess = false
-                    checkPriority()
-                    setTarget()
+            }else {
+                if findMate() == false {
+                    self.priority = .Idle
+                    randomSaver = true
                 }
-            default:
-                checkPriority()
-                setTarget()
+                self.inProcess = false
+            }
+        case .Water:
+            if self.drink() {
+                self.inProcess = false
+            }
+        default:
+            self.inProcess = false
         }
+        if self.inProcess == false {
+            if randomSaver == false {
+                self.checkPriority()
+            }
+            self.setTarget()
+        }
+    }
+    
+    func getFood() -> Bool {
+        var foods = self.handler.foods
+        let acceptableFoods = foodConversion[self.speciesData.foodType]
+        foods.removeAll(where: {acceptableFoods?.contains($0.dataStructure.foodType) == false})
+        foods.removeAll(where: {$0.foodValue < 0})
+        if foods.count > 0 {
+            self.targetFood = foods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+            return true
+        }else {
+            //MARK: But what if water or smthn else is also on shortage?
+            self.checkPriority()
+            if self.priority == .Food {
+            self.priority = .Idle
+            self.setTarget()
+            }else {
+                self.setTarget()
+            }
+            return false
+        }
+    }
+    
+    func findMate() -> Bool {
+        var potentialMates = self.handler.animals
+        potentialMates.removeAll(where: {$0.speciesData != self.speciesData})
+        potentialMates.removeAll(where: {$0.breedingUrge > 70})
+        
+        potentialMates.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+        for i in potentialMates {
+            if self.breedRequest(i) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    static func == (left: Animal, right: Animal) -> Bool {
+        return left.node == right.node
     }
 }
 
@@ -185,7 +244,7 @@ extension EnvironmentHandler {
         self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
         self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
         self.targetNode.worldPosition = self.selectedAnimal!.target
-        self.targetNode.geometry = SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries) / 500 + CGFloat(self.selectedAnimal!.node.boundingSphere.radius / 2))
+        self.targetNode.geometry = SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries)/500+CGFloat(self.selectedAnimal!.node.boundingSphere.radius/2)+self.selectedAnimal!.Speed/30)
         
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 
