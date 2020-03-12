@@ -186,7 +186,7 @@ extension Animal {
         var foods = self.handler.foods
         let acceptableFoods = foodConversion[self.speciesData.foodType]
         foods.removeAll(where: {acceptableFoods?.contains($0.dataStructure.foodEaterType) == false})
-        foods.removeAll(where: {$0.foodValue < 0})
+        foods.removeAll(where: {$0.foodValue <= 0})
         if foods.count > 0 {
             self.targetFood = foods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
             return true
