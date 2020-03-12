@@ -158,7 +158,9 @@ class Animal: Matter {
                 self.handler.animals.removeAll(where: {$0.node == self.node})
                 self.node.removeFromParentNode()
 				
-				_ = Meat(Position: self.node.worldPosition, Handler: self.handler)
+				for _ in 0..<3 {
+					Meat(Position: self.node.worldPosition, Handler: self.handler).velocity = SCNVector3(x: .random(in: -5..<5), y: .random(in: 1..<10), z: .random(in: -5..<5))
+				}
 				
             })
         }
