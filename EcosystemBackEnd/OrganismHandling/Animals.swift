@@ -221,6 +221,7 @@ protocol AnimalClass {
     static var movementFunction : (Animal) -> () {get}
     static var frictionCoefficient: CGFloat {get}
     static var affectedByGravity: Bool {get}
+    static var averageLitterSize: Int {get}
 }
 
 struct rabbit: AnimalClass {
@@ -278,6 +279,7 @@ struct rabbit: AnimalClass {
                 }
             }
         }
+        static var averageLitterSize: Int = 6
     }
     static var frictionCoefficient: CGFloat = 1
     static var affectedByGravity: Bool = true
@@ -341,6 +343,7 @@ struct fox: AnimalClass {
     }
     static var frictionCoefficient: CGFloat = 0.25
     static var affectedByGravity: Bool = true
+    static var averageLitterSize: Int = 2
 }
 
 struct sparrow: AnimalClass {
@@ -369,6 +372,7 @@ struct sparrow: AnimalClass {
     }
     static var frictionCoefficient: CGFloat = 0.25
     static var affectedByGravity: Bool = false
+    static var averageLitterSize: Int = 3
 }
 
 func Rabbit(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {

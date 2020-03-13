@@ -86,16 +86,27 @@ extension Animal {
             self.targetMate?.breedingUrge = self.targetMate!.maxbreedingUrge
             if self.targetMate!.sex == .Female {
                 self.targetMate!.birth()
+                
+                self.inProcess = false
+                self.targetMate!.inProcess = false
+                self.targetMate?.targetMate = nil
+                self.targetMate?.checkPriority()
+                self.targetMate = nil
+                self.checkPriority()
+                
+                return true
             }else {
                 birth()
+                
+                self.inProcess = false
+                self.targetMate!.inProcess = false
+                self.targetMate?.targetMate = nil
+                self.targetMate?.checkPriority()
+                self.targetMate = nil
+                self.checkPriority()
+                
                 return true
             }
-            self.inProcess = false
-            self.targetMate!.inProcess = false
-            self.targetMate?.targetMate = nil
-            self.targetMate?.checkPriority()
-            self.targetMate = nil
-            self.checkPriority()
         }
         return false
     }
@@ -124,7 +135,7 @@ extension Animal {
     
     func birth() {
         if self.sex == .Female {
-            for _ in 0...11 {
+            for _ in 0..<self.speciesData.averageLitterSize * 2 {
                 if Int.random(in: 0...1) == 0 {
                     self.reproduce()
                 }
