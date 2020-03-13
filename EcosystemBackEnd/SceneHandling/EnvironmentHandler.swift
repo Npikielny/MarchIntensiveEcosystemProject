@@ -74,11 +74,7 @@ class EnvironmentHandler {
                     self.selectedAnimal = nil
                 }
             }else {
-                if self.animals.count > 0 {
-                    self.selectionIndex = 0
-                }else {
-                    self.selectedAnimal = nil
-                }
+                self.selectedAnimal = nil
             }
         }
     }

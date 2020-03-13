@@ -225,7 +225,7 @@ extension EnvironmentHandler {
         self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
         self.targetNode.worldPosition = self.selectedAnimal!.target
         self.targetNode.geometry = SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries)/500+CGFloat(self.selectedAnimal!.node.boundingSphere.radius/2)+self.selectedAnimal!.Speed/30)
-        
+        self.targetNode.geometry?.materials.first!.diffuse.contents = NSColor.systemOrange.withAlphaComponent(100)
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)
 
         self.thirstNode.geometry?.materials.first!.setValue(Float(height)*self.selectedAnimal!.thirst/self.selectedAnimal!.maxthirst-Float(height/2), forKey: "threshold")
