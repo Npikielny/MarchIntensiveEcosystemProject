@@ -26,26 +26,13 @@ class Animal: Matter {
     }
     var breedingUrge: Float
     
-    var maxhunger: Float {
-        didSet {
-            self.hunger = maxhunger
-        }
-    }
-    var maxthirst: Float {
-        didSet {
-            self.thirst = maxthirst
-        }
-    }
-    var maxhealth: Float {
-        didSet {
-            self.health = maxhealth
-        }
-    }
-    var maxbreedingUrge: Float {
-        didSet {
-            self.breedingUrge = maxbreedingUrge
-        }
-    }
+    var maxhunger: Float
+    
+    var maxthirst: Float
+    
+    var maxhealth: Float
+    
+    var maxbreedingUrge: Float
     
     var priority: Priority = .Idle
     //Life Handling
@@ -74,7 +61,9 @@ class Animal: Matter {
     
     var efficiency: CGFloat
     
-    lazy var priorities: () -> [(Priority,Float)] = {return [(.Food,self.hunger), (.Water,self.thirst), (.Breed,self.breedingUrge)]}
+    lazy var priorities: () -> [(Priority,Float,Float)] = {return [(.Food,self.hunger,self.maxhunger), (.Water,self.thirst,self.maxthirst), (.Breed,self.breedingUrge,self.maxbreedingUrge)]}
+    
+    var barring = [Priority]()
     
 //
 //    init(Position: SCNVector3, Species: String, lookType: LookType, Handler: SimulationBase) {
@@ -300,7 +289,7 @@ struct fox: AnimalClass {
     static var maxThirst: Float = 500
     static var maxHealth: Float = 500
     static var maxBreedingUrge: Float = 500
-    static var Speed: CGFloat = 2
+    static var Speed: CGFloat = 20
     static var efficiency: CGFloat = 0.5
     static var species: Species = .Fox
     static var foodType: FoodType = .Meat
@@ -324,19 +313,29 @@ struct fox: AnimalClass {
             let g: CGFloat = -9.807
             let dy = y2H - h
             let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
-            if sqrtPart >= 0 {
-                let angle: CGFloat = {
-                    let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                    let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                    if $0.priority == .Flee {
-                        return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
-                    }else {
-                        return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+            if dx > 0 {
+                if sqrtPart >= 0 {
+                    let angle: CGFloat = {
+                        let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                        let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                        if $0.priority == .Flee {
+                            return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                        }else {
+                            return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                        }
+                    }($0)
+                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
+                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
+                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
+                        $0.velocity = SCNVector3(0,0,0)
                     }
-                }($0)
-                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
-            }else {
-                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
+                }else {
+                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
+                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
+                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
+                        $0.velocity = SCNVector3(0,0,0)
+                    }
+                }
             }
         }
     }

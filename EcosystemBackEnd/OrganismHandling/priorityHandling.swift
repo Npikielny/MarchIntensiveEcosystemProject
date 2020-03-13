@@ -11,9 +11,19 @@ import SceneKit
 extension Animal {
     
     func checkPriority () {
-        let priority = self.priorities().sorted(by: {$0.1<$1.1})
+        var priority = self.priorities().sorted(by: {$0.1 < $1.1})
+        priority.removeAll(where: {self.barring.contains($0.0)})
+        
         if priority.first!.1 > 50 {
-            self.priority = .Idle
+            let bestPriority: Priority = {
+                for i in priority {
+                    if (i.2 - i.1)/i.2 >= 0.1 {
+                        return i.0
+                    }
+                }
+                return .Idle
+            }()
+            self.priority = bestPriority
         }else {
             if priority.first!.0 == .Breed {
                 if priority[1].1 < 30 {//Making sure food/water is prioritized over breeding

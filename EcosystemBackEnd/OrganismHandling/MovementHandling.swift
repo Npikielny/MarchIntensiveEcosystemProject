@@ -134,11 +134,11 @@ extension Animal {
 //                self.node.worldPosition = self.target.setValue(Component: .y, Value: bm-self.node.boundingBox.min.y)
 //                self.velocity = SCNVector3().zero()
 //            }
+            self.barring = []
         }
     }
     
     fileprivate func executeProcesses() {
-        var randomSaver: Bool = false
         switch self.priority {
         case .Food:
             if let _ = self.targetFood {
@@ -155,15 +155,15 @@ extension Animal {
                     }
                 }else {
                     if findMate() == false {
-                        randomSaver = true
-                        self.priority = .Idle
+                        self.checkPriority()
+                        self.setTarget()
                     }
                     self.inProcess = false
                 }
             }else {
                 if findMate() == false {
-                    self.priority = .Idle
-                    randomSaver = true
+                    self.checkPriority()
+                    self.setTarget()
                 }
                 self.inProcess = false
             }
@@ -173,12 +173,6 @@ extension Animal {
             }
         default:
             self.inProcess = false
-        }
-        if self.inProcess == false {
-            if randomSaver == false {
-                self.checkPriority()
-            }
-            self.setTarget()
         }
     }
     
@@ -192,13 +186,9 @@ extension Animal {
             return true
         }else {
             //MARK: But what if water or smthn else is also on shortage?
-            self.checkPriority()
-            if self.priority == .Food {
-                self.priority = .Idle
-                self.setTarget()
-            }else {
-                self.setTarget()
-            }
+            self.barring.append(.Food)
+            checkPriority()
+            setTarget()
             return false
         }
     }
@@ -214,6 +204,7 @@ extension Animal {
                 return true
             }
         }
+        self.barring.append(.Breed)
         return false
     }
     
