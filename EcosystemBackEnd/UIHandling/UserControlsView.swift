@@ -74,7 +74,6 @@ struct UserControlsView: View {
 											Button(action: {
 												withAnimation(.easeIn) {
 													self.animalIndex = self.userControls.animalList.firstIndex(where: {$0.node.name == animal.node.name}) ?? 0
-													//													self.getAnimalData()
 													self.userControls.Manager.gameController?.handler.selectionIndex = self.animalIndex
 													self.animalIsSelected.toggle()
 												}
@@ -93,9 +92,6 @@ struct UserControlsView: View {
 								}
 							}
 						}
-						
-						
-						
 					}
 					
 					Spacer()
@@ -134,25 +130,6 @@ struct selectedAnimalView: View {
 	//	@Binding var animal: Animal
 	@Binding var animalIsSelected: Bool
 	@Binding var animalIndex: Int?
-	
-	//	@State var name: String
-	//	@State var sex: String
-	//	@State var species: String
-	//
-//		@State var foodType: String = ""
-	//	@State var priority: String
-	//	@State var age: Float
-	//	@State var speed: CGFloat
-	//	@State var efficiency: CGFloat
-	//
-	//	@State var health: Float
-	//	@State var thirst: Float
-	//	@State var hunger: Float
-	//	@State var breedingUrge: Float
-	//	@State var maxHealth: Float
-	//	@State var maxThirst: Float
-	//	@State var maxHunger: Float
-	//	@State var maxBreedingUrge: Float
 	
 	var body: some View {
 		
