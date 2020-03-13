@@ -149,6 +149,9 @@ extension Animal {
                     self.targetFood = nil
                     self.inProcess = false
                 }
+            }else {
+                self.getFood()
+                self.inProcess = false
             }
         case .Breed:
             if let check = self.targetMate?.targetMate {
@@ -186,6 +189,7 @@ extension Animal {
         foods.removeAll(where: {$0.foodValue <= 0})
         if foods.count > 0 {
             self.targetFood = foods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
+            self.target = self.targetFood!.node.worldPosition
             return true
         }else {
             self.barring.append(.Food)
