@@ -14,7 +14,10 @@ extension Animal {
         switch self.priority {
             case .Food:
                 if let _ = self.targetFood {}else {
-                    _ = getFood()
+                    if getFood() {
+                        self.checkPriority()
+                        self.setTarget()
+                    }
                 }
                 
             case .Water:
@@ -185,10 +188,7 @@ extension Animal {
             self.targetFood = foods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
             return true
         }else {
-            //MARK: But what if water or smthn else is also on shortage?
             self.barring.append(.Food)
-            checkPriority()
-            setTarget()
             return false
         }
     }
