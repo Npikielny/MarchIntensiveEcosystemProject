@@ -37,75 +37,80 @@ struct UserControlsView: View {
 							
 						}
 						
-//						if self.animalIsSelected == false {
-							ZStack {
-								VStack {
-									HStack {
-										Text("All Species")
-											.font(.title)
-											.bold()
-											.lineLimit(2)
-											.multilineTextAlignment(.leading)
-										
-										Spacer()
-									}
-									.padding()
+						ZStack {
+							VStack {
+								HStack {
+									Text("All Species")
+										.font(.title)
+										.bold()
+										.lineLimit(2)
+										.multilineTextAlignment(.leading)
 									
-									Divider()
+									Spacer()
+								}
+								.padding()
+								
+								Divider()
+								
+								HStack {
 									
-									HStack {
-										
-										Spacer()
-										
-										Text("Animals: \(String(self.userControls.animalCount))")
-											.font(.headline)
-										
-										Spacer()
-										
-										Text("Food: \(self.userControls.foodCount)")
-											.font(.headline)
-										
-										Spacer()
-										
-									}
-									.padding(.horizontal)
+									Spacer()
 									
-									List(self.userControls.animalList, id: \.self.node) { animal in
-										
-										HStack {
-											
-											Text("\(animal.node.name ?? "N/A") - \(animal.speciesData.name.capitalized)")
-												.font(.subheadline)
-											
-											Spacer()
-											
-											Button(action: {
-												withAnimation(.easeIn) {
-													self.animalIndex = self.userControls.animalList.firstIndex(where: {$0.node.name == animal.node.name}) ?? 0
-													self.userControls.Manager.gameController?.handler.selectionIndex = self.animalIndex
-													self.animalIsSelected.toggle()
-												}
-											}) {
-												Image("camera")
-													.resizable()
-													.aspectRatio(contentMode: .fit)
-											}
-											
-										}
-										.padding(.horizontal)
-									}
+									Text("Animals: \(String(self.userControls.animalCount))")
+										.font(.headline)
+									
+									Spacer()
+									
+									Text("Food: \(self.userControls.foodCount)")
+										.font(.headline)
 									
 									Spacer()
 									
 								}
+								.padding(.horizontal)
+								
+								List(self.userControls.animalList, id: \.self.node) { animal in
+									
+									HStack {
+										
+										Text("\(animal.node.name ?? "N/A") - \(animal.speciesData.name.capitalized)")
+											.font(.subheadline)
+										
+										Spacer()
+										
+										Button(action: {
+											withAnimation(.easeIn) {
+												self.animalIndex = self.userControls.animalList.firstIndex(where: {$0.node.name == animal.node.name}) ?? 0
+												self.userControls.Manager.gameController?.handler.selectionIndex = self.animalIndex
+												self.animalIsSelected.toggle()
+											}
+										}) {
+											Image("camera")
+												.resizable()
+												.aspectRatio(contentMode: .fit)
+										}
+										
+									}
+									.padding(.horizontal)
+								}
+								
+								Spacer()
+								
 							}
-							.blur(radius: self.animalIsSelected ? 5 : 0)
-//						}
+						}
+						.blur(radius: self.animalIsSelected ? 5 : 0)
+						
 					}
 					
 					Spacer()
 					
 					HStack {
+						
+						Button(action: {
+							self.userControls.debug()
+						}) {
+							Text("Debug")
+						}
 						
 						Spacer()
 						
@@ -358,8 +363,8 @@ struct selectedAnimalView: View {
 			}
 			
 		}
-			
-			
+		
+		
 		
 	}
 	
@@ -385,38 +390,38 @@ struct SceneKitView: NSViewRepresentable {
 	
 	func makeNSView(context: Context) -> SCNView {
 		
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
+		// create and add a camera to the scene
+		let cameraNode = SCNNode()
+		cameraNode.camera = SCNCamera()
 		self.scene.rootNode.addChildNode(cameraNode)
-
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+		
+		// place the camera
+		cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+		
+		// create and add a light to the scene
+		let lightNode = SCNNode()
+		lightNode.light = SCNLight()
+		lightNode.light!.type = .omni
+		lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
 		self.scene.rootNode.addChildNode(lightNode)
-
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = NSColor.darkGray
+		
+		// create and add an ambient light to the scene
+		let ambientLightNode = SCNNode()
+		ambientLightNode.light = SCNLight()
+		ambientLightNode.light!.type = .ambient
+		ambientLightNode.light!.color = NSColor.darkGray
 		self.scene.rootNode.addChildNode(ambientLightNode)
-
-        // retrieve the ship node
+		
+		// retrieve the ship node
 		let model = self.scene.rootNode.childNode(withName: self.modelName, recursively: true)
-
+		
 		model?.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
 		
-        // animate the 3d object
-
-        // retrieve the SCNView
-        let scnView = SCNView()
-        return scnView
+		// animate the 3d object
+		
+		// retrieve the SCNView
+		let scnView = SCNView()
+		return scnView
 	}
 	
 	
@@ -424,27 +429,27 @@ struct SceneKitView: NSViewRepresentable {
 	func updateNSView(_ nsView: SCNView, context: Context) {
 		
 		nsView.scene = self.scene
-
-//		nsView.scene?.rootNode.childNodes.first?.runAction(SCNAction.rotateBy(x: 0, y: 0.25, z: 0, duration: 0.1))
 		
-        // allows the user to manipulate the camera
-        nsView.allowsCameraControl = true
-
-        // show statistics such as fps and timing information
-        nsView.showsStatistics = false
-
-        // configure the view
-        nsView.backgroundColor = NSColor.white
+		//		nsView.scene?.rootNode.childNodes.first?.runAction(SCNAction.rotateBy(x: 0, y: 0.25, z: 0, duration: 0.1))
+		
+		// allows the user to manipulate the camera
+		nsView.allowsCameraControl = true
+		
+		// show statistics such as fps and timing information
+		nsView.showsStatistics = false
+		
+		// configure the view
+		nsView.backgroundColor = NSColor.white
 	}
 	
 }
 
 extension AnyTransition {
-    static var moveAndFade: AnyTransition {
-        let insertion = AnyTransition.move(edge: .bottom)
-            .combined(with: .opacity)
+	static var moveAndFade: AnyTransition {
+		let insertion = AnyTransition.move(edge: .bottom)
+			.combined(with: .opacity)
 		let removal = AnyTransition.move(edge: .bottom)
-            .combined(with: .opacity)
+			.combined(with: .opacity)
 		return .asymmetric(insertion: insertion, removal: removal)
-    }
+	}
 }

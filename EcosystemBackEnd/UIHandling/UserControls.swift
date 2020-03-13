@@ -61,6 +61,10 @@ class UserControls: NSViewController, ObservableObject {
 		
     }
 	
+	func debug() {
+		
+	}
+	
 	@objc func createCSV() {
 		
 		let currentDate = Date()
@@ -121,11 +125,6 @@ class UserControls: NSViewController, ObservableObject {
 		
 		self.animalList = self.Manager.gameController?.handler.animals ?? []
 		
-//		self.health = self.Manager.gameController?.handler.selectedAnimal?.health ?? 0
-//		self.thirst = self.Manager.gameController?.handler.selectedAnimal?.thirst ?? 0
-//		self.hunger = self.Manager.gameController?.handler.selectedAnimal?.hunger ?? 0
-//		self.breedingUrge = self.Manager.gameController?.handler.selectedAnimal?.breedingUrge ?? 0
-		
 		switch self.Manager.gameController?.handler.selectedAnimal?.speciesData.foodType {
 		case .Omnivore:
 			self.foodType = "Omnivore"
@@ -142,7 +141,7 @@ class UserControls: NSViewController, ObservableObject {
 		case .none:
 			self.foodType = "N/A"
 		}
-		
+
 		switch self.Manager.gameController?.handler.selectedAnimal?.priority {
 		case .Food:
 			self.priority = "Food"
