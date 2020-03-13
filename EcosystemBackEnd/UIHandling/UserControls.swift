@@ -9,6 +9,7 @@
 import Cocoa
 import SwiftUI
 import Combine
+import SceneKit
 
 class UserControls: NSViewController, ObservableObject {
 
@@ -62,7 +63,25 @@ class UserControls: NSViewController, ObservableObject {
     }
 	
 	func debug() {
-		
+        let handler = self.Manager.gameController!.handler
+        for i in handler!.foods {
+            let Sphere = SCNNode(geometry: SCNSphere(radius: 0.5))
+            let color: NSColor = {
+                switch i.dataStructure.foodGrowthType {
+                case .Fruit:
+                    return #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 0.5134310788)
+                case .Meat:
+                    return #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 0.4924550514)
+                case .Plant:
+                    return #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 0.5124678938)
+                default:
+                    return #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 0.5152236729)
+                }
+            }()
+            Sphere.geometry?.materials.first!.diffuse.contents = color
+            handler?.Scene.rootNode.addChildNode(Sphere)
+            Sphere.worldPosition = i.node.worldPosition
+        }
 	}
 	
 	@objc func createCSV() {
