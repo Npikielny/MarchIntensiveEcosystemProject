@@ -283,6 +283,9 @@ func getShader(from filename: String) -> String {
 
 extension EnvironmentHandler {
     func mapValueAt (_ Vector: SCNVector3) -> (CGFloat) {
+        if Vector.x.isNaN || Vector.y.isNaN || Vector.z.isNaN {
+            return 0
+        }
         let h = CGFloat(self.gen.valueFor(x: Int32((Vector.x + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32((Vector.z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
         if h < 1.6 {
             return h - 2
