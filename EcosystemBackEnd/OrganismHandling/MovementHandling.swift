@@ -21,7 +21,7 @@ extension Animal {
                 }
                 
             case .Water:
-                var groundVerts = self.handler.drinkableVertices!
+                let groundVerts = self.handler.drinkableVertices!
                 if let position = groundVerts.min(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()}) {
                     self.target = position.vector
                 }else {

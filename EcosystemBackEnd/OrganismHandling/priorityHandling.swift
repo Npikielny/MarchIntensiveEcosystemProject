@@ -16,8 +16,10 @@ extension Animal {
         
         if priority.first!.1 > 50 {
             let bestPriority: Priority = {
-                for i in priority {
-                    if (i.2 - i.1)/i.2 >= 0.1 {
+                var validPriorities = priority
+                validPriorities.removeAll(where: {$0.0 == .Breed})
+                for i in validPriorities {
+                    if (i.2 - i.1)/i.2 >= 0.25 {
                         return i.0
                     }
                 }
