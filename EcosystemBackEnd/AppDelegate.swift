@@ -16,9 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // Insert code here to initialize your application
-        let controller = FrontHolder()
+        let controller = HomeScreenViewController()
         let window = NSWindow(contentViewController: controller)
         controller.window = window
+        window.title = "Ecosystem Simulator"
         window.makeKeyAndOrderFront(self)
     }
         
