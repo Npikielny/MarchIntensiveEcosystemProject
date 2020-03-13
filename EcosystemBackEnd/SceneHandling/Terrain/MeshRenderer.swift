@@ -281,7 +281,7 @@ func getShader(from filename: String) -> String {
     return ""
 }
 
-extension SimulationBase {
+extension EnvironmentHandler {
     func mapValueAt (_ Vector: SCNVector3) -> (CGFloat) {
         let h = CGFloat(self.gen.valueFor(x: Int32((Vector.x + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension)), y: Int32((Vector.z + self.mapDimension / 2) / self.mapDimension * CGFloat(self.mapCountDimension))))
         if h < 1.6 {

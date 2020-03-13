@@ -208,12 +208,12 @@ class Food: Matter {
     var foodGrowthType: FoodType
     var foodEaterType: FoodType
     var foodValue: Float = 0
-    var handler: SimulationBase
+    var handler: EnvironmentHandler
     var dataStructure: FoodClass.Type
     
     var foodComponents: [SCNNode]?
     
-    init(Position: SCNVector3, DataStructure: FoodClass.Type, Handler: SimulationBase) {
+    init(Position: SCNVector3, DataStructure: FoodClass.Type, Handler: EnvironmentHandler) {
         self.dataStructure = DataStructure
         self.foodGrowthType = DataStructure.foodGrowthType
         self.foodEaterType = DataStructure.foodEaterType
@@ -309,23 +309,23 @@ class Food: Matter {
     
 }
 
-func Apple(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func Apple(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: apple.self, Handler: Handler)
 }
-func Grass(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func Grass(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: grass.self, Handler: Handler)
 }
-func Daisy(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func Daisy(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: daisy.self, Handler: Handler)
 }
-func Cactus(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func Cactus(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: cactus.self, Handler: Handler)
 }
-func BerryBush(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func BerryBush(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: berryBush.self, Handler: Handler)
 }
-func Meat(Position: SCNVector3, Handler: SimulationBase) -> Food {
+func Meat(Position: SCNVector3, Handler: EnvironmentHandler) -> Food {
     return Food(Position: Position, DataStructure: meat.self, Handler: Handler)
 }
 
-var plantReproductionIndex: [String: (SCNVector3,SimulationBase) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus,"blueberryBush":BerryBush]
+var plantReproductionIndex: [String: (SCNVector3,EnvironmentHandler) -> Food] = ["apple": Apple, "grass": Grass, "daisy": Daisy,"cactus": Cactus,"blueberryBush":BerryBush]

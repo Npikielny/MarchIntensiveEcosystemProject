@@ -10,7 +10,7 @@ import SceneKit
 
 func bottom (_ Object: Matter) -> (CGFloat) {return Object.node.worldPosition.y-Object.node.boundingBox.min.y}
 
-class EnvironmentHandler: SimulationBase {
+class EnvironmentHandler {
     
     var View: SCNView?
     
@@ -25,7 +25,22 @@ class EnvironmentHandler: SimulationBase {
     
     var controller: GameController
     
-    override var animals: [Animal] {
+    
+    var frameNumber: Int = 0
+    
+    var mapDimension: CGFloat = 400
+    var mapCountDimension: Int = 100
+    
+    var gen: generator!
+    var terrain: Ground!
+    
+    var dataStorage = [DataPoint]()
+    
+    lazy var setupFunctions: [(()->(),String)] = [(()->(),String)]()
+    var setupFunctionIndex: Int = 0
+    var initialized: Bool = false // Necessary to keep animals from moving before startup
+    
+    var animals: [Animal] = [Animal] () {
         didSet {
             for i in 0..<animals.count {
                 if let _ = animals[i].node.parent {}else {
@@ -35,18 +50,20 @@ class EnvironmentHandler: SimulationBase {
         }
     }
     
-    override var foods: [Food] {
+    var foods: [Food] = [Food]() {
         didSet {
             for i in 0..<foods.count {
                 if let _ = foods[i].node.parent {}else {
                     self.Scene.rootNode.addChildNode(foods[i].node)
                 }
-                if movableFoods.contains(where: {$0.node == foods[i].node}) == false && (foods[i].foodGrowthType == .Fruit) || (foods[i].foodGrowthType == .Meat) {
-                    movableFoods.append(foods[i])
+                if moveableFoods.contains(where: {$0.node == foods[i].node}) == false && (foods[i].foodGrowthType == .Fruit) || (foods[i].foodGrowthType == .Meat) {
+                    moveableFoods.append(foods[i])
                 }
             }
         }
     }
+    
+    var moveableFoods = [Food]()
     
     var selectionIndex: Int? = nil {
         didSet {
@@ -72,32 +89,62 @@ class EnvironmentHandler: SimulationBase {
     init(_ FileNamed: String, InitialNumberOfBunnies: Int, Controller: GameController) {
         self.controller = Controller
         self.Scene = SCNScene(named: FileNamed)!
-        super.init(Handler: true)
-        setupFunctions.append(({}, "Setting Up SCNScene"))
-        setupFunctions.append((setupCamera, "Setting Up Camera"))
-        setupFunctions.append((setupTerrrain, "Adding Terrain"))
-        setupFunctions.append((classifyVerticies, "Analyzing Terrain"))
+        var functions = [(()->(),String)]()
+        functions.append(({}, "Setting Up SCNScene"))
+        functions.append((setupCamera, "Setting Up Camera"))
+        functions.append((setupTerrrain, "Adding Terrain"))
+        functions.append((classifyVerticies, "Analyzing Terrain"))
         if building == false {
-            setupFunctions.append((setupLighting, "Adding Lighting and Loading Sky"))
-            setupFunctions.append((setupWater, "Adding Water"))
-            setupFunctions.append((setupTrees, "Adding Trees"))
-            setupFunctions.append((getNames, "Finding Animal Names"))
-            setupFunctions.append((addAnimals, "Adding Animals"))
-            setupFunctions.append((addFood, "Adding Food"))
-            setupFunctions.append((addClouds, "Creating Weather"))
+            functions.append((setupLighting, "Adding Lighting and Loading Sky"))
+            functions.append((setupWater, "Adding Water"))
+            functions.append((setupTrees, "Adding Trees"))
+            functions.append((getNames, "Finding Animal Names"))
+            functions.append((addAnimals, "Adding Animals"))
+            functions.append((addFood, "Adding Food"))
+            functions.append((addClouds, "Creating Weather"))
         }
         
         else {
 //            setupFunctions.append((debugPoints,"Adding Debugging Points"))
-            setupFunctions.append((checkPoints,"Check Points"))
+            functions.append((checkPoints,"Check Points"))
         }
-        setupFunctions.append((commenceEngine, "Starting Physics Engine"))
+        functions.append((commenceEngine, "Starting Physics Engine"))
+        setupFunctions = functions
     }
     
+    var Names: [String]!
+    
+    func getNames() {
+        guard let filepath = Bundle.main.path(forResource: "PetNames", ofType: "csv")
+            else {
+                fatalError("FailedtoFindPath")
+        }
+        
+        
+        let contents = try! String(contentsOfFile: filepath)
+        var nems = contents.components(separatedBy: ",")
+        nems = nems.map({$0.lowercased()})
+        nems = nems.map({$0.capitalized})
+        
+        self.Names = nems
+    }
+    
+    func runSetupFunction() {
+        if setupFunctionIndex < setupFunctions.count {
+            (setupFunctions[setupFunctionIndex].0)()
+            setupFunctionIndex += 1
+        }else {
+            fatalError("Index Out of Range")
+        }
+    }
+    
+    var viableVerticies: [SpaciallyAwareVector]!
+    var drinkableVertices: [SpaciallyAwareVector]!
     
     var lightSource: SCNNode!
     var skySave: [Float:CGImage?] = [:]
     var skyIndex: Float = 0
+    var lastTime: Float = 0
     func setupLighting() {
         lightSource = SCNNode()
         lightSource.light = SCNLight()
@@ -130,7 +177,7 @@ class EnvironmentHandler: SimulationBase {
         
     }
     
-    override func setupTerrrain() {
+    func setupTerrrain() {
         gen = generator()
         terrain = Ground(width: mapDimension, height: mapDimension, widthCount: mapCountDimension, heightCount: mapCountDimension, Gen: gen) // max rated at 256x256
         terrain.node.name = "Terrain"
@@ -139,7 +186,7 @@ class EnvironmentHandler: SimulationBase {
         self.terrain.node.geometry?.materials.first!.setValue(Float(mapDimension + 30), forKey: "z")
     }
     
-    override func classifyVerticies() {
+    func classifyVerticies() {
         viableVerticies = terrain.vertices
         viableVerticies.removeAll(where: {$0.status == .Water || $0.status == .Tree})
         drinkableVertices = terrain.vertices
@@ -163,6 +210,50 @@ class EnvironmentHandler: SimulationBase {
             }
         }
     }
+    
+
+        func addAnimals() {
+            let Diego = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+            Diego.node.name = "Diego"
+            Diego.sex = .Male
+            let secondRabbit = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+            secondRabbit.sex = .Female
+            
+            let sparrow1 = Sparrow(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+            sparrow1.sex = .Male
+            
+            let sparrow2 = Sparrow(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+            sparrow2.sex = .Female
+            
+    //        let x = Fox(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+    //        for _ in 0..<2-1 {
+    //            let _ = Rabbit(Position: SCNVector3().random().zero(.y).toMagnitude(CGFloat(Int.random(in:0...200))).setValue(Component: .y, Value: 30), Handler: self)
+    //        }
+            
+        }
+        
+        func addFood() {
+            for _ in 0..<10 {
+                let pos = self.viableVerticies.randomElement()!.vector
+                let _ = Daisy(Position: pos.setValue(Component: .y, Value: pos.y), Handler: self)
+            }
+            for _ in 0..<30 {
+                let pos = self.viableVerticies.randomElement()!.vector
+                let _ = Grass(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+            }
+
+            for _ in 0..<5 {
+                let pos = self.viableVerticies.randomElement()!.vector
+                let _ = BerryBush(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+            }
+            
+            
+    //
+    //        for _ in 0..<2 {
+    //            let pos = self.viableVerticies.randomElement()!.vector
+    //            let _ = Cactus(Position:  pos.setValue(Component: .y, Value: pos.y), Handler: self)
+    //        }
+        }
     
     func debugPoints() {
         for i in self.terrain.vertices {
@@ -259,9 +350,9 @@ class EnvironmentHandler: SimulationBase {
         return node
     }()
     
-    override func Physics() {
+    func Physics() {
         let difference = Float(1)/Float(30)
-        for item in movableFoods {
+        for item in moveableFoods {
             
             let nodeShift = item.node.boundingBox.min.y
             
@@ -312,7 +403,7 @@ class EnvironmentHandler: SimulationBase {
         lastTime = self.time
     }
     
-    override func commenceEngine() {
+    func commenceEngine() {
         self.initialized = true
         self.Scene.rootNode.addChildNode(thirstNode)
         self.Scene.rootNode.addChildNode(hungerNode)
@@ -329,7 +420,7 @@ class EnvironmentHandler: SimulationBase {
         self.targetNode.isHidden = true
     }
     
-    override func process() {
+    func process() {
         if self.frameNumber % 30*50*40 == 0 {
             self.collectData()
         }
@@ -403,4 +494,20 @@ class EnvironmentHandler: SimulationBase {
         }
     }
     
+
+    func collectData() {
+        var foodPoints: Float = 0
+        for i in self.foods {
+            foodPoints += (i.foodValue) / 100
+        }
+        self.dataStorage.append(DataPoint(FoodCount: Int(foodPoints), AnimalCount: self.animals.count, FrameNumber: self.frameNumber))
+    }
+    
+}
+
+
+struct DataPoint {
+    var FoodCount: Int
+    var AnimalCount: Int
+    var FrameNumber: Int
 }

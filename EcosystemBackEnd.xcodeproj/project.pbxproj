@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3003C27323C14005009A4E46 /* syntheticMovementHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */; };
-		300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */ = {isa = PBXBuildFile; fileRef = 300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */; };
 		301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */; };
 		301E8FD823908ADA001B8727 /* PetNames.csv in Resources */ = {isa = PBXBuildFile; fileRef = 301E8FD723908ADA001B8727 /* PetNames.csv */; };
 		302908A8238A1DA300D4396D /* hungerStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 302908A7238A1DA300D4396D /* hungerStatShader.shader */; };
@@ -59,9 +57,6 @@
 		30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5A5F32380920B001F4524 /* SkyHandler.swift */; };
 		30F83893237DC04A0019A12E /* RenderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F83892237DC04A0019A12E /* RenderHandler.swift */; };
 		30FE8E2223AEB484001D3EC6 /* SimulationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */; };
-		30FE8E2623AEB4D9001D3EC6 /* SimulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */; };
-		30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */; };
-		30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */; };
 		507A89C723B188F8001C7B68 /* CustomSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A89C623B188F8001C7B68 /* CustomSliderCell.swift */; };
 		509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A27A8237A1664005ACA78 /* VectorHelpers.swift */; };
 /* End PBXBuildFile section */
@@ -84,8 +79,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = syntheticMovementHandler.swift; sourceTree = "<group>"; };
-		300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PhysicsHandler.metal; sourceTree = "<group>"; };
 		301E6FC8237B692E00B92E19 /* EnvironmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentHandler.swift; sourceTree = "<group>"; };
 		301E8FD723908ADA001B8727 /* PetNames.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PetNames.csv; sourceTree = "<group>"; };
 		302908A7238A1DA300D4396D /* hungerStatShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = hungerStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
@@ -144,9 +137,6 @@
 		30E5A5F32380920B001F4524 /* SkyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyHandler.swift; sourceTree = "<group>"; };
 		30F83892237DC04A0019A12E /* RenderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderHandler.swift; sourceTree = "<group>"; };
 		30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationHandler.swift; sourceTree = "<group>"; };
-		30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationController.swift; sourceTree = "<group>"; };
-		30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimulationController.xib; sourceTree = "<group>"; };
-		30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationBase.swift; sourceTree = "<group>"; };
 		507A89C623B188F8001C7B68 /* CustomSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderCell.swift; sourceTree = "<group>"; };
 		509A27A8237A1664005ACA78 /* VectorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -342,8 +332,6 @@
 				30A27F14238EE7FA0092DAF3 /* GameController.xib */,
 				30A30DD02390360900AD3BAB /* UserControls.swift */,
 				30A30DD12390360900AD3BAB /* UserControls.xib */,
-				30FE8E2423AEB4D9001D3EC6 /* SimulationController.swift */,
-				30FE8E2523AEB4D9001D3EC6 /* SimulationController.xib */,
 			);
 			path = UIHandling;
 			sourceTree = "<group>";
@@ -352,9 +340,6 @@
 			isa = PBXGroup;
 			children = (
 				30FE8E2123AEB484001D3EC6 /* SimulationHandler.swift */,
-				3003C27223C14005009A4E46 /* syntheticMovementHandler.swift */,
-				30FE8E2823AEB7FA001D3EC6 /* SimulationBase.swift */,
-				300DBEC2238D628F00B7F363 /* PhysicsHandler.metal */,
 			);
 			path = SimulationMode;
 			sourceTree = "<group>";
@@ -489,7 +474,6 @@
 				305700BE23787999006696D9 /* Assets.xcassets in Resources */,
 				3059C82D2380769000C7289C /* genericShader.shader in Resources */,
 				301E8FD823908ADA001B8727 /* PetNames.csv in Resources */,
-				30FE8E2723AEB4D9001D3EC6 /* SimulationController.xib in Resources */,
 				3033144D2379F13000C856F6 /* waterShader.shader in Resources */,
 				30A30DD32390360900AD3BAB /* UserControls.xib in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
@@ -526,12 +510,10 @@
 				30A30DD22390360900AD3BAB /* UserControls.swift in Sources */,
 				309B72C923EC8A59001EE378 /* GraphController.swift in Sources */,
 				309B72C123EC88FA001EE378 /* SizeableWindow.swift in Sources */,
-				30FE8E2623AEB4D9001D3EC6 /* SimulationController.swift in Sources */,
 				30FE8E2223AEB484001D3EC6 /* SimulationHandler.swift in Sources */,
 				30898EA0238858EF00427C76 /* StatsHandling.swift in Sources */,
 				30A27F18238F097F0092DAF3 /* WindowManager.swift in Sources */,
 				306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */,
-				3003C27323C14005009A4E46 /* syntheticMovementHandler.swift in Sources */,
 				3087F75F23DC001B00F8B6E8 /* MeshRendering.metal in Sources */,
 				509A27A9237A1664005ACA78 /* VectorHelpers.swift in Sources */,
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
@@ -548,9 +530,7 @@
 				30A444A9237EF66200BA29D4 /* DebugWindow.swift in Sources */,
 				309B72C423EC8914001EE378 /* ResizeableController.swift in Sources */,
 				305700B823787997006696D9 /* AppDelegate.swift in Sources */,
-				300DBEC3238D628F00B7F363 /* PhysicsHandler.metal in Sources */,
 				30B47A5923AC0EE5008324FF /* FrontHolder.swift in Sources */,
-				30FE8E2923AEB7FA001D3EC6 /* SimulationBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

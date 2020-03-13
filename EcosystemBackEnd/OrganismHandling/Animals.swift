@@ -13,7 +13,7 @@ class Animal: Matter {
     var height: CGFloat
     //Species Traits
     var lookType: LookType
-    var handler: SimulationBase
+    var handler: EnvironmentHandler
     //Priority Handling
     var hunger: Float
     var thirst: Float
@@ -94,7 +94,7 @@ class Animal: Matter {
     
     var speciesData: AnimalClass.Type
     
-    init(SpeciesStats: AnimalClass.Type, Position: SCNVector3, Handler: SimulationBase) {
+    init(SpeciesStats: AnimalClass.Type, Position: SCNVector3, Handler: EnvironmentHandler) {
         self.speciesData = SpeciesStats
         self.hunger = 100
         self.thirst = 100
@@ -123,13 +123,9 @@ class Animal: Matter {
         
         self.target = self.node.worldPosition.setValue(Component: .y, Value: handler.mapValueAt(self.node.worldPosition))
         
-        modify()
-        
+        self.affectedByGravity = SpeciesStats.affectedByGravity
     }
     
-    func modify() {
-        
-    }
 //
 //    init(DebugInit: EnvironmentHandler) {
 //        self.height = 0.2
@@ -202,9 +198,6 @@ class Animal: Matter {
 }
 
 class Bird: Animal {
-    override func modify() {
-        self.affectedByGravity = false
-    }
     
     override func randomTarget() {
         self.target = self.node.worldPosition + SCNVector3().random().toMagnitude(CGFloat.random(in: 45...60))
@@ -237,6 +230,8 @@ protocol AnimalClass {
     static var foodType: FoodType {get}
     static var name: String {get}
     static var movementFunction : (Animal) -> () {get}
+    static var frictionCoefficient: CGFloat {get}
+    static var affectedByGravity: Bool {get}
 }
 
 struct rabbit: AnimalClass {
@@ -285,6 +280,8 @@ struct rabbit: AnimalClass {
             }
         }
     }
+    static var frictionCoefficient: CGFloat = 1
+    static var affectedByGravity: Bool = true
 }
 
 struct fox: AnimalClass {
@@ -333,6 +330,8 @@ struct fox: AnimalClass {
             }
         }
     }
+    static var frictionCoefficient: CGFloat = 0.25
+    static var affectedByGravity: Bool = true
 }
 
 struct sparrow: AnimalClass {
@@ -359,17 +358,19 @@ struct sparrow: AnimalClass {
             $0.velocity = $0.velocity.toMagnitude(speedCoef)
         }
     }
+    static var frictionCoefficient: CGFloat = 0.25
+    static var affectedByGravity: Bool = false
 }
 
-func Rabbit(Position: SCNVector3, Handler: SimulationBase) -> Animal {
+func Rabbit(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
     return Animal(SpeciesStats: rabbit.self, Position: Position, Handler: Handler)
 }
 
-func Fox(Position: SCNVector3, Handler: SimulationBase) -> Animal {
+func Fox(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
     return Animal(SpeciesStats: fox.self, Position: Position, Handler: Handler)
 }
 
-func Sparrow(Position: SCNVector3, Handler: SimulationBase) -> Animal {
+func Sparrow(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
     return Bird(SpeciesStats: sparrow.self, Position: Position, Handler: Handler)
 }
 
@@ -384,4 +385,4 @@ enum Sex {
     case Female
 }
 
-var animalReproductionIndex: [String: (SCNVector3, SimulationBase) -> Animal] = ["rabbit": Rabbit, "fox": Fox, "sparrow": Sparrow]
+var animalReproductionIndex: [String: (SCNVector3, EnvironmentHandler) -> Animal] = ["rabbit": Rabbit, "fox": Fox, "sparrow": Sparrow]

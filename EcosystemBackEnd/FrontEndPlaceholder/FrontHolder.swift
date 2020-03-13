@@ -18,23 +18,14 @@ class FrontHolder: NSViewController {
         return button
     }()
     
-    var simButton: NSButton = {
-        let button = NSButton(title: "Data Collection", target: self, action: #selector(dataCollection))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         view.addSubview(classicButton)
-        view.addSubview(simButton)
         
         classicButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        simButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         classicButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        simButton.topAnchor.constraint(equalTo: classicButton.bottomAnchor).isActive = true
     }
     
     @objc func classic() {
@@ -48,13 +39,6 @@ class FrontHolder: NSViewController {
         
     @objc func startGame() {
         Manager.loadGame()
-    }
-    @objc func dataCollection() {
-        let controller = SimulationController()
-        let window = NSWindow(contentViewController: controller)
-        window.title = "Simulation Controller"
-        window.makeKeyAndOrderFront(self)
-        self.window?.close()
     }
     
 }
