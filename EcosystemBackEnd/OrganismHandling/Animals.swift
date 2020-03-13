@@ -96,10 +96,10 @@ class Animal: Matter {
     
     init(SpeciesStats: AnimalClass.Type, Position: SCNVector3, Handler: EnvironmentHandler) {
         self.speciesData = SpeciesStats
-        self.hunger = 100
-        self.thirst = 100
-        self.breedingUrge = 100
-        self.health = 100
+        self.hunger = SpeciesStats.maxHunger
+        self.thirst = SpeciesStats.maxThirst
+        self.breedingUrge = SpeciesStats.maxBreedingUrge
+        self.health = SpeciesStats.maxHealth
         self.maxSpeed = SpeciesStats.Speed
         self.efficiency = SpeciesStats.efficiency
         let model = getPrefab(SpeciesStats.name+".scn", Shaders: nil)
