@@ -279,8 +279,8 @@ struct rabbit: AnimalClass {
                 }
             }
         }
-        static var averageLitterSize: Int = 6
     }
+    static var averageLitterSize: Int = 6
     static var frictionCoefficient: CGFloat = 1
     static var affectedByGravity: Bool = true
 }
