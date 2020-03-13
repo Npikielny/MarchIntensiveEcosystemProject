@@ -39,6 +39,7 @@
 		306A152E241BD952005EFC1C /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 306A1524241BD952005EFC1C /* SourceSansPro-ExtraLightItalic.ttf */; };
 		306A152F241BD952005EFC1C /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 306A1525241BD952005EFC1C /* SourceSansPro-Italic.ttf */; };
 		306A1531241BD964005EFC1C /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306A1530241BD964005EFC1C /* Colors.swift */; };
+		306A1535241BDCA1005EFC1C /* UserControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306A1534241BDCA1005EFC1C /* UserControlsView.swift */; };
 		306FB08A237C8CD700BF155B /* PrefabHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB089237C8CD700BF155B /* PrefabHandler.swift */; };
 		306FB08C237C8E3B00BF155B /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306FB08B237C8E3B00BF155B /* Animals.swift */; };
 		3087F75F23DC001B00F8B6E8 /* MeshRendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */; };
@@ -132,6 +133,7 @@
 		306A1524241BD952005EFC1C /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		306A1525241BD952005EFC1C /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
 		306A1530241BD964005EFC1C /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		306A1534241BDCA1005EFC1C /* UserControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserControlsView.swift; sourceTree = "<group>"; };
 		306FB089237C8CD700BF155B /* PrefabHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefabHandler.swift; sourceTree = "<group>"; };
 		306FB08B237C8E3B00BF155B /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
 		3087F75E23DC001A00F8B6E8 /* MeshRendering.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MeshRendering.metal; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				30A27F1A238F0D0B0092DAF3 /* SplashScreen.xib */,
 				30A27F13238EE7FA0092DAF3 /* GameController.swift */,
 				30A27F14238EE7FA0092DAF3 /* GameController.xib */,
+				306A1534241BDCA1005EFC1C /* UserControlsView.swift */,
 				30A30DD02390360900AD3BAB /* UserControls.swift */,
 				30A30DD12390360900AD3BAB /* UserControls.xib */,
 			);
@@ -585,6 +588,7 @@
 				507A89C723B188F8001C7B68 /* CustomSliderCell.swift in Sources */,
 				306FB08C237C8E3B00BF155B /* Animals.swift in Sources */,
 				30A444A6237EF3EF00BA29D4 /* Food.swift in Sources */,
+				306A1535241BDCA1005EFC1C /* UserControlsView.swift in Sources */,
 				30E5A5F42380920B001F4524 /* SkyHandler.swift in Sources */,
 				30A9272223EE1BE500A89EBD /* PerlinCPU.swift in Sources */,
 				305700E623787A96006696D9 /* MeshRenderer.swift in Sources */,
