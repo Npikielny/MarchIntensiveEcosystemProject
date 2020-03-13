@@ -115,7 +115,7 @@ class Animal: Matter {
         
         self.move = SpeciesStats.movementFunction
         
-        super.init(Velocity: SCNVector3().zero(), Acceleration: SCNVector3().zero(), Node: model)
+        super.init(Velocity: SCNVector3(0,0,0), Acceleration: SCNVector3(0,0,0), Node: model)
         self.node.name = Handler.Names.randomElement()
         additionalSetup()
         self.node.worldPosition = Position
@@ -264,19 +264,29 @@ struct rabbit: AnimalClass {
             let g: CGFloat = -9.807
             let dy = y2H - h
             let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
-            if sqrtPart >= 0 {
-                let angle: CGFloat = {
-                    let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                    let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                    if $0.priority == .Flee {
-                        return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
-                    }else {
-                        return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+            if dx > 0 {
+                if sqrtPart >= 0 {
+                    let angle: CGFloat = {
+                        let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                        let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
+                        if $0.priority == .Flee {
+                            return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                        }else {
+                            return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
+                        }
+                    }($0)
+                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
+                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
+                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
+                        $0.velocity = SCNVector3(0,0,0)
                     }
-                }($0)
-                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
-            }else {
-                $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
+                }else {
+                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
+                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
+                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
+                        $0.velocity = SCNVector3(0,0,0)
+                    }
+                }
             }
         }
     }

@@ -42,7 +42,7 @@ class GameController: NSViewController {
         
 		// show statistics such as fps and timing information
 //        if building == true {
-            GameView.showsStatistics = true
+            GameView.showsStatistics = false
 //        }
 		GameView.delegate = self
         
