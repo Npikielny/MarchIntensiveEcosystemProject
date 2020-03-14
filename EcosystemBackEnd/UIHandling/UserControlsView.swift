@@ -147,7 +147,7 @@ struct selectedAnimalView: View {
 	
 	var body: some View {
 		
-		let animal = self.userControls.Manager.gameController?.handler.selectedAnimal
+        let animal = self.userControls.Manager.gameController?.handler.selectedAnimal ?? self.userControls.Manager.gameController?.handler.animals.first!
 		
 		let sex: String = {
 			if self.userControls.Manager.gameController?.handler.selectedAnimal?.sex == .Male {
@@ -248,8 +248,8 @@ struct selectedAnimalView: View {
 						}
 						
 						Divider()
-						
-						SceneKitView(modelName: (animal?.speciesData.name ?? "N/A"), scene: SCNScene(named: "art.scnassets/\(animal?.speciesData.name ?? "N/A").scn")!)
+						//MARK: E
+                        SceneKitView(modelName: (animal?.speciesData.name ?? "N/A"), scene: SCNScene(named: "art.scnassets/\(animal?.speciesData.name ?? "N/A").scn")!)
 						
 					}
 					.frame(height: geometryMain.size.height * 0.3)
