@@ -233,7 +233,8 @@ class HomeScreenViewController: NSViewController {
 		}
 		
 		if button.title == "Settings" {
-			print("Settings")
+            let settingsWindow = NSWindow(contentViewController: SettingsController())
+            settingsWindow.makeKeyAndOrderFront(self)
 		}
 
 		if button.title == "Credits" {

@@ -15,6 +15,8 @@
 		3033144D2379F13000C856F6 /* waterShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3033144C2379F13000C856F6 /* waterShader.shader */; };
 		3034681F237B024E00E32BF5 /* tree.shader in Resources */ = {isa = PBXBuildFile; fileRef = 3034681E237B024E00E32BF5 /* tree.shader */; };
 		30361B592389BAE60002B42D /* waterStatShader.shader in Resources */ = {isa = PBXBuildFile; fileRef = 30361B582389BAE60002B42D /* waterStatShader.shader */; };
+		303D0CC2241C554F000977AA /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303D0CC0241C554F000977AA /* SettingsController.swift */; };
+		303D0CC3241C554F000977AA /* SettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 303D0CC1241C554F000977AA /* SettingsController.xib */; };
 		30545AB023A544AE00006313 /* Matter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30545AAF23A544AE00006313 /* Matter.swift */; };
 		305700B823787997006696D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305700B723787997006696D9 /* AppDelegate.swift */; };
 		305700BC23787997006696D9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 305700BB23787997006696D9 /* art.scnassets */; };
@@ -102,6 +104,8 @@
 		3033144C2379F13000C856F6 /* waterShader.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = waterShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		3034681E237B024E00E32BF5 /* tree.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = tree.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		30361B582389BAE60002B42D /* waterStatShader.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = waterStatShader.shader; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		303D0CC0241C554F000977AA /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		303D0CC1241C554F000977AA /* SettingsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsController.xib; sourceTree = "<group>"; };
 		30545AAF23A544AE00006313 /* Matter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matter.swift; sourceTree = "<group>"; };
 		305700B423787997006696D9 /* EcosystemBackEnd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcosystemBackEnd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		305700B723787997006696D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -210,6 +214,15 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		303D0CC4241C5693000977AA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				303D0CC0241C554F000977AA /* SettingsController.swift */,
+				303D0CC1241C554F000977AA /* SettingsController.xib */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		303ECA232384424E0013503C /* SceneHandling */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +296,7 @@
 				305700B723787997006696D9 /* AppDelegate.swift */,
 				309B72BF23EC88C6001EE378 /* FrontEndPlaceholder */,
 				30A27F1D238F0D110092DAF3 /* UIHandling */,
+				303D0CC4241C5693000977AA /* Settings */,
 				305700BB23787997006696D9 /* art.scnassets */,
 				507A89C523B188E2001C7B68 /* Models */,
 				30FE8E2323AEB48B001D3EC6 /* SimulationMode */,
@@ -535,6 +549,7 @@
 				30A30DD32390360900AD3BAB /* UserControls.xib in Resources */,
 				306A1519241BD92E005EFC1C /* HomeScreen.xib in Resources */,
 				306A152D241BD952005EFC1C /* SourceSansPro-SemiBold.ttf in Resources */,
+				303D0CC3241C554F000977AA /* SettingsController.xib in Resources */,
 				305700BC23787997006696D9 /* art.scnassets in Resources */,
 				306A152E241BD952005EFC1C /* SourceSansPro-ExtraLightItalic.ttf in Resources */,
 				306A1529241BD952005EFC1C /* SourceSansPro-LightItalic.ttf in Resources */,
@@ -582,6 +597,7 @@
 				30ADAB4A2385842D001FEECE /* priorityHandling.swift in Sources */,
 				30545AB023A544AE00006313 /* Matter.swift in Sources */,
 				30ADAB46238583E4001FEECE /* MovementHandling.swift in Sources */,
+				303D0CC2241C554F000977AA /* SettingsController.swift in Sources */,
 				301E6FC9237B692E00B92E19 /* EnvironmentHandler.swift in Sources */,
 				306A1517241BD92E005EFC1C /* HomeScreenButton.swift in Sources */,
 				309C9306237B195C007AF60F /* TreeHandling.swift in Sources */,

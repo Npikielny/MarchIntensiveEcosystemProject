@@ -100,9 +100,31 @@ extension Animal {
     }
     
     func movementHandler() {
+        let correction: () -> () = {
+            self.inProcess = false
+            self.checkPriority()
+            self.setTarget()
+        }
         if self.dead == false {
             if self.inProcess == false {
                 self.targetTries += 1
+            }else {
+                switch self.priority {
+                case .Water:
+                    if self.thirst >= self.maxthirst {
+                        correction()
+                    }
+                case .Food:
+                    if self.hunger >= self.maxhunger {
+                        correction()
+                    }
+                case .Breed:
+                    if self.breedingUrge >= self.maxbreedingUrge {
+                        correction()
+                    }
+                default:
+                    break
+                }
             }
             if self.targetTries > 1575 {
                 self.checkPriority()
@@ -150,7 +172,7 @@ extension Animal {
                     self.inProcess = false
                 }
             }else {
-                self.getFood()
+                _ = self.getFood()
                 self.inProcess = false
             }
         case .Breed:
