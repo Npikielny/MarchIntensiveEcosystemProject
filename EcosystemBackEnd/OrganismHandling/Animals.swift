@@ -222,6 +222,8 @@ protocol AnimalClass {
     static var frictionCoefficient: CGFloat {get}
     static var affectedByGravity: Bool {get}
     static var averageLitterSize: Int {get}
+    static var minBreedingAge: Int {get}
+    static var maxAge: Int {get}
 }
 
 struct rabbit: AnimalClass {
@@ -283,14 +285,17 @@ struct rabbit: AnimalClass {
     static var averageLitterSize: Int = 6
     static var frictionCoefficient: CGFloat = 1
     static var affectedByGravity: Bool = true
+    
+    static var minBreedingAge: Int = 6
+    static var maxAge: Int = 2 * 12
 }
 
 struct fox: AnimalClass {
     static var lookType: LookType = .Forward
-    static var maxHunger: Float = 500
-    static var maxThirst: Float = 500
-    static var maxHealth: Float = 500
-    static var maxBreedingUrge: Float = 500
+    static var maxHunger: Float = 300
+    static var maxThirst: Float = 300
+    static var maxHealth: Float = 300
+    static var maxBreedingUrge: Float = 5000
     static var Speed: CGFloat = 20
     static var efficiency: CGFloat = 0.5
     static var species: Species = .Fox
@@ -344,6 +349,9 @@ struct fox: AnimalClass {
     static var frictionCoefficient: CGFloat = 0.25
     static var affectedByGravity: Bool = true
     static var averageLitterSize: Int = 2
+    
+    static var minBreedingAge: Int = 10
+    static var maxAge: Int = 5 * 12
 }
 
 struct sparrow: AnimalClass {
@@ -351,7 +359,7 @@ struct sparrow: AnimalClass {
     static var maxHunger: Float = 75
     static var maxThirst: Float = 75
     static var maxHealth: Float = 75
-    static var maxBreedingUrge: Float = 1000
+    static var maxBreedingUrge: Float = 100
     static var Speed: CGFloat = 25
     static var efficiency: CGFloat = 0.25
     static var species: Species = .Sparrow
@@ -373,6 +381,9 @@ struct sparrow: AnimalClass {
     static var frictionCoefficient: CGFloat = 0.25
     static var affectedByGravity: Bool = false
     static var averageLitterSize: Int = 3
+    
+    static var minBreedingAge: Int = 2 * 12
+    static var maxAge: Int = 3 * 12
 }
 
 func Rabbit(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {

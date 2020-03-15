@@ -11,17 +11,19 @@ import SceneKit
 extension Animal {
     
     func handleStats() {
-        self.age += 0.001
-        if self.age < 6 {
-            let value = (self.age+6)/12
+        self.age += 0.002
+        if self.age < Float(self.speciesData.minBreedingAge) {
+            let value = (self.age+Float(self.speciesData.minBreedingAge))/Float(self.speciesData.minBreedingAge*2)
             self.node.scale = SCNVector3(value,value,value)
         }
-        self.health -= 100/288/60/1.4
+        self.health -= 0.002/Float(self.speciesData.maxAge)*self.maxhealth
         self.Speed = CGFloat(Float(self.maxSpeed)/(1 + pow(2.18,0.1*(self.age-15))))
-        let ageMultiplier: Float = 1 + pow(2.18,-0.3*(self.age-6))
+        let power = (self.age - Float(self.speciesData.minBreedingAge)) * pow(Float(self.speciesData.maxAge - self.speciesData.minBreedingAge),-0.5) * -1
+        let ageMultiplier: Float = (1 + pow(2.18, power))
+        let x = ageMultiplier
         if self.inProcess == false {
             if self.hunger > 0 {
-                self.hunger = Float(CGFloat(self.hunger)-self.efficiency*((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018 / 2))
+                self.hunger -= Float(self.efficiency*((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018 / 2))
                 self.hunger -= 0.0001
                 
             }else {
@@ -30,7 +32,7 @@ extension Animal {
            }
             if self.thirst > 0 {
                 if (self.priority == .Water) == false {
-                    self.thirst = Float(CGFloat(self.thirst)-self.efficiency*((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0027 / 2))
+                    self.thirst -= Float(self.efficiency*((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0027 / 2))
                     self.thirst -= 0.0001
                }
                 

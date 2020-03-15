@@ -416,7 +416,8 @@ struct SceneKitView: NSViewRepresentable {
 		let model = self.scene.rootNode.childNode(withName: self.modelName, recursively: true)
 		
 		model?.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-		
+        
+        
 		// animate the 3d object
 		
 		// retrieve the SCNView
