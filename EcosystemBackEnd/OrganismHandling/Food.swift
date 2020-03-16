@@ -116,6 +116,7 @@ protocol FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? {get}
     static var timeToGrow: ClosedRange<TimeInterval>? {get}
     static var timeToFruit: ClosedRange<TimeInterval>? {get}
+    static var regrowthCount: Int {get}
 }
 
 
@@ -131,6 +132,7 @@ struct grass: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
     static var timeToGrow: ClosedRange<TimeInterval>? = 50...70
     static var timeToFruit: ClosedRange<TimeInterval>? = 50...70
+    static var regrowthCount: Int = 5
 }
 
 struct daisy: FoodClass {
@@ -145,6 +147,7 @@ struct daisy: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {return [$0]}
     static var timeToGrow: ClosedRange<TimeInterval>? = 40...60
     static var timeToFruit: ClosedRange<TimeInterval>? = 40...60
+    static var regrowthCount: Int = 3
 }
 
 struct apple: FoodClass {
@@ -159,6 +162,7 @@ struct apple: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
     static var timeToGrow: ClosedRange<TimeInterval>? = nil
     static var timeToFruit: ClosedRange<TimeInterval>? = nil
+    static var regrowthCount: Int = 0
 }
 
 struct cactus: FoodClass {
@@ -173,6 +177,7 @@ struct cactus: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
     static var timeToGrow: ClosedRange<TimeInterval>? = 150...200
     static var timeToFruit: ClosedRange<TimeInterval>? = 90...120
+    static var regrowthCount: Int = 7
 }
 
 struct berryBush: FoodClass {
@@ -187,6 +192,7 @@ struct berryBush: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = {let fruit = $0.childNode(withName: "Fruit", recursively: true)!; return fruit.childNodes}
     static var timeToGrow: ClosedRange<TimeInterval>? = 75...100
     static var timeToFruit: ClosedRange<TimeInterval>? = 45...60
+    static var regrowthCount: Int = 9
     
 }
 
@@ -202,6 +208,7 @@ struct meat: FoodClass {
     static var getFoodComponents: ((SCNNode) -> [SCNNode])? = nil
     static var timeToGrow: ClosedRange<TimeInterval>? = nil
     static var timeToFruit: ClosedRange<TimeInterval>? = nil
+    static var regrowthCount: Int = 0
 }
 
 class Food: Matter {
@@ -212,6 +219,7 @@ class Food: Matter {
     var dataStructure: FoodClass.Type
     
     var foodComponents: [SCNNode]?
+    var regrown: Int = 0
     
     init(Position: SCNVector3, DataStructure: FoodClass.Type, Handler: EnvironmentHandler) {
         self.dataStructure = DataStructure
@@ -294,16 +302,23 @@ class Food: Matter {
 //    }
     
     func eaten() {
+        self.regrown += 1
+        let removeItem = {
+            self.handler.foods.removeAll(where: {$0.node == self.node})
+            self.node.removeFromParentNode()
+        }
         switch self.dataStructure.foodGrowthType {
         case .Fruit:
-            handler.foods.removeAll(where: {$0.node == self.node})
-            self.node.removeFromParentNode()
+            removeItem()
         case .Meat:
-            handler.foods.removeAll(where: {$0.node == self.node})
-            self.node.removeFromParentNode()
+            removeItem()
         default:
-            self.foodComponents!.forEach({$0.isHidden = true})
-            self.foodComponents!.forEach({growFruit(Node: $0, Percent: Float(self.dataStructure.maxFoodValue) / Float(self.foodComponents!.count))})
+            if self.regrown >= self.dataStructure.regrowthCount {
+                removeItem()
+            }else {
+                self.foodComponents!.forEach({$0.isHidden = true})
+                self.foodComponents!.forEach({growFruit(Node: $0, Percent: Float(self.dataStructure.maxFoodValue) / Float(self.foodComponents!.count))})
+            }
         }
     }
     
