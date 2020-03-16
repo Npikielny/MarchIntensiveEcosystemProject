@@ -47,6 +47,7 @@ enum Priority {
     case Breed
     case Idle
     case Flee
+    case Hunt
 }
 
 

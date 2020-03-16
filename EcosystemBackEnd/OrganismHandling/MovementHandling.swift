@@ -10,13 +10,23 @@ import SceneKit
 
 extension Animal {
     func setTarget() {
+        print(self.hunter,self.speciesData.name)
         self.targetTries = 0
         switch self.priority {
             case .Food:
-                if let _ = self.targetFood {}else {
-                    if getFood() {
-                        self.checkPriority()
-                        self.setTarget()
+                if self.hunter {
+                    if let _ = (self as! Hunter).targetAnimal {}else {
+                        if getFood() == false {
+                            self.checkPriority()
+                            self.setTarget()
+                        }
+                    }
+                }else {
+                    if let _ = self.targetFood {}else {
+                        if getFood() == false {
+                            self.checkPriority()
+                            self.setTarget()
+                        }
                     }
                 }
                 
@@ -69,6 +79,7 @@ extension Animal {
                 randomTarget()
                 
             default: //Idle
+                self.priority = .Idle
                 randomTarget()
         }
         if self.affectedByGravity {
@@ -79,7 +90,9 @@ extension Animal {
                 self.target = self.target.setValue(Component: .y, Value: h)
             }
         }
-        self.inProcess = false
+        if self.priority != .Hunt {
+            self.inProcess = false
+        }
     }
     
     func isNearTarget() -> Bool {
@@ -123,6 +136,19 @@ extension Animal {
                     if self.breedingUrge >= self.maxbreedingUrge {
                         correction()
                     }
+                case .Hunt:
+                    if self.hunter {
+                        if let targetAnimal = (self as! Hunter).targetAnimal {
+                            self.target = targetAnimal.node.worldPosition
+                        }else {
+                            if getFood() == false {
+                                self.checkPriority()
+                                self.setTarget()
+                            }
+                        }
+                    }else {
+                        checkPriority()
+                    }
                 default:
                     break
                 }
@@ -162,6 +188,7 @@ extension Animal {
 //            }
             self.barring = []
         }
+        self.nearbyHunters = []
     }
     
     fileprivate func executeProcesses() {
@@ -200,6 +227,15 @@ extension Animal {
             if self.drink() {
                 self.inProcess = false
             }
+        case .Hunt:
+            if let targetAnimal = ((self as! Hunter).targetAnimal) {
+                    self.attack(targetAnimal)
+            }else {
+                if getFood() == false {
+                    self.checkPriority()
+                    self.setTarget()
+                }
+            }
         default:
             self.inProcess = false
         }
@@ -216,8 +252,26 @@ extension Animal {
             self.target = self.targetFood!.node.worldPosition
             return true
         }else {
-            self.barring.append(.Food)
-            return false
+            if self.hunter == true {
+                var animalFoods = self.handler.animals
+                animalFoods.removeAll(where: {$0.speciesData.name == self.speciesData.name})
+//                animalFoods.removeAll(where: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() > self.speciesData.perceptionCap})
+//                for i in animalFoods {
+//                    i.nearbyHunters.append(self)
+//                }
+                if let checkedAnimal = animalFoods.min(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()}) {
+                    (self as! Hunter).targetAnimal = checkedAnimal
+                    self.priority = .Hunt
+                    self.inProcess = true
+                    return true
+                }else {
+                    self.barring.append(.Food)
+                    return false
+                }
+            }else {
+                self.barring.append(.Food)
+                return false
+            }
         }
     }
     
@@ -234,6 +288,10 @@ extension Animal {
         }
         self.barring.append(.Breed)
         return false
+    }
+    
+    func attack(_ Defender: Animal) {
+        Defender.health -= self.speciesData.attackDamage
     }
     
     static func == (left: Animal, right: Animal) -> Bool {

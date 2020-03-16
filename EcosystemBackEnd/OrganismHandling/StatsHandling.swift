@@ -23,9 +23,10 @@ extension Animal {
         let x = ageMultiplier
         if self.inProcess == false {
             if self.hunger > 0 {
+//                self.hunger = 0
                 self.hunger -= Float(self.efficiency*((self.velocity.getMagnitude()) * CGFloat(ageMultiplier) * 0.0018 / 2))
                 self.hunger -= 0.0001
-                
+
             }else {
                 self.hunger = 0
                 self.health -= ageMultiplier * 0.025 * self.age/6

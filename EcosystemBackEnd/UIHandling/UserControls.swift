@@ -172,7 +172,9 @@ class UserControls: NSViewController, ObservableObject {
 			self.priority = "Idle"
 		case .Flee:
 			self.priority = "Flee"
-		case .none:
+        case .Hunt:
+            self.priority = "Hunt"
+		default:
 			self.priority = "N/A"
 		}
 		

@@ -83,6 +83,10 @@ class Animal: Matter {
     
     var speciesData: AnimalClass.Type
     
+    var hunter: Bool = false
+    
+    var nearbyHunters = [Animal]()
+    
     init(SpeciesStats: AnimalClass.Type, Position: SCNVector3, Handler: EnvironmentHandler) {
         self.speciesData = SpeciesStats
         self.hunger = SpeciesStats.maxHunger
@@ -113,6 +117,8 @@ class Animal: Matter {
         self.target = self.node.worldPosition.setValue(Component: .y, Value: handler.mapValueAt(self.node.worldPosition))
         
         self.affectedByGravity = SpeciesStats.affectedByGravity
+        
+        self.hunter = SpeciesStats.hunter
     }
     
 //
@@ -207,6 +213,10 @@ class Bird: Animal {
     }
 }
 
+class Hunter: Animal {
+    var targetAnimal: Animal?
+}
+
 protocol AnimalClass {
     static var lookType: LookType {get}
     static var maxHunger: Float {get}
@@ -225,6 +235,8 @@ protocol AnimalClass {
     static var averageLitterSize: Int {get}
     static var minBreedingAge: Int {get}
     static var maxAge: Int {get}
+    static var hunter: Bool {get}
+    static var attackDamage: Float {get}
 }
 
 struct rabbit: AnimalClass {
@@ -290,6 +302,9 @@ struct rabbit: AnimalClass {
     
     static var minBreedingAge: Int = 6
     static var maxAge: Int = 2 * 12
+    
+    static var hunter: Bool = false
+    static var attackDamage: Float = 0
 }
 
 struct fox: AnimalClass {
@@ -306,48 +321,11 @@ struct fox: AnimalClass {
     static var name: String = "fox"
     static var movementFunction: (Animal) -> () = {
         let h = $0.handler.mapValueAt($0.node.worldPosition)
-        if ($0.velocity.zero(.y)).getMagnitude() == 0 {
-            let distance = ($0.target - $0.node.worldPosition).zero(.y).getMagnitude()
-            let tp: SCNVector3 = {
-                let maxDist: CGFloat = 10
-                if distance <= maxDist {
-                    return $0.target
-                }else {
-                    return ($0.target - $0.node.worldPosition).toMagnitude(maxDist) + $0.node.worldPosition
-                }
-            }($0)
-            let y2H = $0.handler.mapValueAt(tp)
-            let dx = (tp - $0.node.worldPosition).zero(.y).getMagnitude()
-            let dx2 = pow(dx, 2)
-            let v2 = pow($0.Speed,2)
-            let g: CGFloat = -9.807
-            let dy = y2H - h
-            let sqrtPart = dx2 - 4 * ((g*dx2)/(v2*2)) * ((g*dx2)/(v2*2) - dy)
-            if dx > 0 {
-                if sqrtPart >= 0 {
-                    let angle: CGFloat = {
-                        let a1 = atan((-1 * dx + pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                        let a2 = atan((-1 * dx - pow(sqrtPart,0.5))/((g*dx2)/(v2)))
-                        if $0.priority == .Flee {
-                            return [a1,a2].min(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
-                        }else {
-                            return [a1,a2].max(by: {abs($0) < abs($1)}) ?? CGFloat.pi / 4
-                        }
-                    }($0)
-                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(angle)).setValue(Component: .y, Value: $0.Speed * sin(angle))
-                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
-                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
-                        $0.velocity = SCNVector3(0,0,0)
-                    }
-                }else {
-                    $0.velocity = tp.directionVector(Center: $0.node.worldPosition).setValue(Component: .y, Value: 0).toMagnitude($0.Speed*cos(CGFloat.pi/4)).setValue(Component: .y, Value: $0.Speed * sin(CGFloat.pi/4))
-                    if $0.velocity.x.isNaN || $0.velocity.y.isNaN || $0.velocity.z.isNaN {
-                        print(y2H,h,dx,dx2,v2,g,dy,sqrtPart,$0.Speed)
-                        $0.velocity = SCNVector3(0,0,0)
-                    }
-                }
-            }
-        }
+        let accel: SCNVector3 = ($0.target - $0.node.worldPosition).zero(.y)
+        $0.velocity += accel.toMagnitude(0.1)
+        if $0.priority == .Hunt {
+            $0.velocity = $0.velocity.toMagnitude($0.Speed)
+        }else {$0.velocity = $0.velocity.toMagnitude($0.Speed / 4)}
     }
     static var frictionCoefficient: CGFloat = 0.25
     static var affectedByGravity: Bool = true
@@ -355,6 +333,9 @@ struct fox: AnimalClass {
     
     static var minBreedingAge: Int = 10
     static var maxAge: Int = 5 * 12
+    
+    static var hunter: Bool = true
+    static var attackDamage: Float = 30
 }
 
 struct sparrow: AnimalClass {
@@ -388,6 +369,9 @@ struct sparrow: AnimalClass {
     
     static var minBreedingAge: Int = 2 * 12
     static var maxAge: Int = 3 * 12
+    
+    static var hunter: Bool = false
+    static var attackDamage: Float = 0
 }
 
 func Rabbit(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
@@ -395,7 +379,7 @@ func Rabbit(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
 }
 
 func Fox(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
-    return Animal(SpeciesStats: fox.self, Position: Position, Handler: Handler)
+    return Hunter(SpeciesStats: fox.self, Position: Position, Handler: Handler)
 }
 
 func Sparrow(Position: SCNVector3, Handler: EnvironmentHandler) -> Animal {
