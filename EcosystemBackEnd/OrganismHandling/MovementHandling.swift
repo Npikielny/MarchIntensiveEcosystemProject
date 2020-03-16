@@ -21,7 +21,8 @@ extension Animal {
                 }
                 
             case .Water:
-                let groundVerts = self.handler.drinkableVertices!
+                var groundVerts = self.handler.drinkableVertices!
+                groundVerts.removeAll(where: {($0.vector - self.node.worldPosition).getMagnitude() > self.speciesData.perceptionCap})
                 if let position = groundVerts.min(by: {($0.vector - self.node.position).getMagnitude()<($1.vector - self.node.position).getMagnitude()}) {
                     self.target = position.vector
                 }else {
@@ -207,6 +208,7 @@ extension Animal {
     func getFood() -> Bool {
         var foods = self.handler.foods
         let acceptableFoods = foodConversion[self.speciesData.foodType]
+        foods.removeAll(where: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() > self.speciesData.perceptionCap})
         foods.removeAll(where: {acceptableFoods?.contains($0.dataStructure.foodEaterType) == false})
         foods.removeAll(where: {$0.foodValue <= 0})
         if foods.count > 0 {
@@ -223,7 +225,7 @@ extension Animal {
         var potentialMates = self.handler.animals
         potentialMates.removeAll(where: {$0.speciesData != self.speciesData})
         potentialMates.removeAll(where: {$0.breedingUrge > 70})
-        
+        potentialMates.removeAll(where: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() > self.speciesData.perceptionCap})
         potentialMates.sort(by: {($0.node.worldPosition - self.node.worldPosition).getMagnitude() < ($1.node.worldPosition - self.node.worldPosition).getMagnitude()})
         for i in potentialMates {
             if self.breedRequest(i) {
@@ -250,6 +252,7 @@ extension EnvironmentHandler {
         self.healthNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.0, 0, 0)
         self.breedNode.worldPosition = self.selectedAnimal!.node.worldPosition.setValue(Component: .y, Value: 8)+SCNVector3(1.5, 0, 0)
         self.targetNode.worldPosition = self.selectedAnimal!.target
+        
         self.targetNode.geometry = SCNSphere(radius: CGFloat(self.selectedAnimal!.targetTries)/500+CGFloat(self.selectedAnimal!.node.boundingSphere.radius/2)+self.selectedAnimal!.Speed/30)
         self.targetNode.geometry?.materials.first!.diffuse.contents = NSColor.systemOrange.withAlphaComponent(100)
        let height = (self.thirstNode.boundingBox.max.y-self.thirstNode.boundingBox.min.y)

@@ -215,6 +215,7 @@ protocol AnimalClass {
     static var maxBreedingUrge: Float {get}
     static var Speed: CGFloat {get}
     static var efficiency: CGFloat {get}
+    static var perceptionCap: CGFloat {get}
     static var species: Species {get}
     static var foodType: FoodType {get}
     static var name: String {get}
@@ -234,6 +235,7 @@ struct rabbit: AnimalClass {
     static var maxBreedingUrge: Float = 100
     static var Speed: CGFloat = 20
     static var efficiency: CGFloat = 0.8
+    static var perceptionCap: CGFloat = 100
     static var species: Species = .Rabbit
     static var foodType: FoodType = .Vegetarian
     static var name: String = "rabbit"
@@ -298,6 +300,7 @@ struct fox: AnimalClass {
     static var maxBreedingUrge: Float = 5000
     static var Speed: CGFloat = 20
     static var efficiency: CGFloat = 0.5
+    static var perceptionCap: CGFloat = 200
     static var species: Species = .Fox
     static var foodType: FoodType = .Meat
     static var name: String = "fox"
@@ -362,6 +365,7 @@ struct sparrow: AnimalClass {
     static var maxBreedingUrge: Float = 100
     static var Speed: CGFloat = 25
     static var efficiency: CGFloat = 0.25
+    static var perceptionCap: CGFloat = 200
     static var species: Species = .Sparrow
     static var foodType: FoodType = .Fruit
     static var name: String = "sparrow"
