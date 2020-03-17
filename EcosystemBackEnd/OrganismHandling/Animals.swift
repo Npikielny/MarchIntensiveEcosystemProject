@@ -149,7 +149,7 @@ class Animal: Matter {
                 self.handler.animals.removeAll(where: {$0.node == self.node})
                 self.node.removeFromParentNode()
 				
-				for _ in 0..<3 {
+                for _ in 0..<Int(self.speciesData.maxHealth)/50 {
 					Meat(Position: self.node.worldPosition, Handler: self.handler).velocity = SCNVector3(x: .random(in: -5..<5), y: .random(in: 1..<10), z: .random(in: -5..<5))
 				}
 				
@@ -309,12 +309,12 @@ struct rabbit: AnimalClass {
 
 struct fox: AnimalClass {
     static var lookType: LookType = .Forward
-    static var maxHunger: Float = 300
-    static var maxThirst: Float = 300
-    static var maxHealth: Float = 300
+    static var maxHunger: Float = 150
+    static var maxThirst: Float = 150
+    static var maxHealth: Float = 250
     static var maxBreedingUrge: Float = 5000
     static var Speed: CGFloat = 20
-    static var efficiency: CGFloat = 0.5
+    static var efficiency: CGFloat = 3
     static var perceptionCap: CGFloat = 200
     static var species: Species = .Fox
     static var foodType: FoodType = .Meat

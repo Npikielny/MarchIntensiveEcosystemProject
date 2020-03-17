@@ -28,6 +28,23 @@ extension GameController: SCNSceneRendererDelegate {
         if self.handler.initialized {
             self.handler.process()
             self.handler.updateTime()
+            
+            let Speed: CGFloat = {
+                if self.speed.net() == 0 {
+                    return 0.1
+                }else {
+                    return 1
+                }
+            }()
+            
+            
+            if let _ = self.handler.camera {
+                self.handler.camera!.node.position = self.handler.camera!.node.position + self.handler.camera!.node.worldUp.scalarMultiplication(Scalar: self.vertical.net() * Speed)
+                self.handler.camera!.node.position = self.handler.camera!.node.position + self.handler.camera!.node.worldRight.scalarMultiplication(Scalar: self.horizontal.net() * Speed)
+                self.handler.camera!.node.position = self.handler.camera!.node.position + self.handler.camera!.node.worldFront.scalarMultiplication(Scalar: self.forward.net() * Speed)
+                
+                
+            }
         }
         
         

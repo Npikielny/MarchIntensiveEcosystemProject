@@ -10,7 +10,6 @@ import SceneKit
 
 extension Animal {
     func setTarget() {
-        print(self.hunter,self.speciesData.name)
         self.targetTries = 0
         switch self.priority {
             case .Food:
@@ -171,7 +170,13 @@ extension Animal {
                         executeProcesses()
                     }
                 }else {
-                    self.move(self)
+                    if self.affectedByGravity {
+                        if self.velocity.y == 0 {
+                            self.move(self)
+                        }
+                    }else {
+                        self.move(self)
+                    }
                 }
             }
             additionalPhysics() // overridable function

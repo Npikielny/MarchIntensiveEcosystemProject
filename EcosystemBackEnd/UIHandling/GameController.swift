@@ -11,8 +11,6 @@ import SceneKit
 
 class GameController: NSViewController {
     
-    var cameraMovement: SIMD3<Float> = SIMD3(0,0,0)
-    var cameraRotation: SIMD2<Float> = SIMD2(0,0)
     var camera: Camera!
     
     
@@ -35,10 +33,10 @@ class GameController: NSViewController {
 		GameView.loops = true
 		GameView.isPlaying = true
 		// allows the user to manipulate the camera
-		GameView.allowsCameraControl = true
+		GameView.allowsCameraControl = false
         GameView.scene?.isPaused = false
-		GameView.defaultCameraController.interactionMode = .fly
-		GameView.defaultCameraController.inertiaEnabled = true
+//		GameView.defaultCameraController.interactionMode = .fly
+//		GameView.defaultCameraController.inertiaEnabled = true
         
 		// show statistics such as fps and timing information
 //        if building == true {
@@ -62,38 +60,45 @@ class GameController: NSViewController {
         
     }
     
-//    override func keyDown(with event: NSEvent) {
+    var vertical = keybinding()
+    var horizontal = keybinding()
+    var forward = keybinding()
+    
+    var verticalRotate = keybinding()
+    var horizontalRotate = keybinding()
+    
+    var speed = keybinding()
+    
+    
+    override func keyDown(with event: NSEvent) {
 //        if let _ = self.camera {
-//            if event.keyCode == 13 {cameraMovement.z = -1} //W
-//            if event.keyCode == 0 {cameraMovement.x = -1} //A
-//            if event.keyCode == 1 {cameraMovement.z = 1} //S
-//            if event.keyCode == 2 {cameraMovement.x = 1} //D
-//            if event.keyCode == 126 {cameraRotation.y = 1} //Forward
-//            if event.keyCode == 123 {cameraRotation.x = -1} //Left
-//            if event.keyCode == 125 {cameraRotation.y = -1} //Backward
-//            if event.keyCode == 124 {cameraRotation.x = 1} //Right
-//            if event.keyCode == 44 {camera.rotationY = 0}
-//            if event.keyCode == 12 {cameraMovement.y = -1} //Down
-//            if event.keyCode == 14 {cameraMovement.y = 1} //Up
+        if event.keyCode == 13 {forward.positive = true} //W
+        if event.keyCode == 1 {forward.negative = true} //S
+        if event.keyCode == 0 {horizontal.negative = true} //A
+        if event.keyCode == 2 {horizontal.positive = true} //D
+        if event.keyCode == 126 {} //Forward
+        if event.keyCode == 125 {} //Backward
+        if event.keyCode == 123 {} //Left
+        if event.keyCode == 124 {} //Right
+        if event.keyCode == 12 {vertical.negative = true} //Down
+        if event.keyCode == 14 {vertical.positive = true} //Up
+        if event.keyCode == 8 {speed.positive = true} //Speed
 //        }
-//    }
+    }
 //
-//    override func keyUp(with event: NSEvent) {
-//        if let _ = self.camera {
-//            if let _ = self.camera {
-//                if event.keyCode == 13 {cameraMovement.z = 0} //W
-//                if event.keyCode == 0 {cameraMovement.x = 0} //A
-//                if event.keyCode == 1 {cameraMovement.z = 0} //S
-//                if event.keyCode == 2 {cameraMovement.x = 0} //D
-//                if event.keyCode == 126 {cameraRotation.y = 0} //Up
-//                if event.keyCode == 123 {cameraRotation.x = 0} //Left
-//                if event.keyCode == 125 {cameraRotation.y = 0} //Down
-//                if event.keyCode == 124 {cameraRotation.x = 0} //Right
-//                if event.keyCode == 12 {cameraMovement.y = 0} //Down
-//                if event.keyCode == 14 {cameraMovement.y = 0} //Up
-//            }
-//        }
-//    }
+    override func keyUp(with event: NSEvent) {
+        if event.keyCode == 13 {forward.positive = false} //W
+        if event.keyCode == 1 {forward.negative = false} //S
+        if event.keyCode == 0 {horizontal.negative = false} //A
+        if event.keyCode == 2 {horizontal.positive = false} //D
+        if event.keyCode == 126 {} //Forward
+        if event.keyCode == 125 {} //Backward
+        if event.keyCode == 123 {} //Left
+        if event.keyCode == 124 {} //Right
+        if event.keyCode == 12 {vertical.negative = false} //Down
+        if event.keyCode == 14 {vertical.positive = false} //Up
+        if event.keyCode == 8 {speed.positive = false} //Speed
+    }
     
     @objc
     func handleClick(_ gestureRecognizer: NSGestureRecognizer) {
@@ -103,4 +108,19 @@ class GameController: NSViewController {
         self.handler.updateTime()
     }
     
+}
+
+class keybinding {
+    var positive: Bool = false
+    var negative: Bool = false
+    lazy var net: () -> CGFloat = {
+        if (self.positive && self.negative) || (self.positive == false && self.negative == false) {
+            return CGFloat(0)
+        }else if self.positive {
+            return CGFloat(1)
+        }else {
+            return CGFloat(-1)
+        }
+    }
+    init() {}
 }

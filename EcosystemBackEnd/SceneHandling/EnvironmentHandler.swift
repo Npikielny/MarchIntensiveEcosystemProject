@@ -439,7 +439,7 @@ class EnvironmentHandler {
                 newPlants()
                 selectionhandling()
             }
-            cameraMovement()
+//            cameraMovement()
         }
     }
     
@@ -484,14 +484,14 @@ class EnvironmentHandler {
         }
     }
     
-    fileprivate func cameraMovement() {
-        if self.camera.cameraType == .following {
-            if let animal = self.selectedAnimal {
-                self.camera.node.position = (animal.node.worldPosition - animal.velocity).setValue(Component: .y, Value: 10) + (SCNVector3(x: 5, y: 0, z: 5))
-                self.camera.node.look(at: animal.node.worldPosition)
-            }
-        }
-    }
+//    fileprivate func cameraMovement() {
+//        if self.camera.cameraType == .following {
+//            if let animal = self.selectedAnimal {
+//                self.camera.node.position = (animal.node.worldPosition - animal.velocity).setValue(Component: .y, Value: 10) + (SCNVector3(x: 5, y: 0, z: 5))
+//                self.camera.node.look(at: animal.node.worldPosition)
+//            }
+//        }
+//    }
     
 
     func collectData() {
